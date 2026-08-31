@@ -19,9 +19,9 @@ interface SelectOption {
 const logLevelOptions: SelectOption[] = [
   {
     value: 'all',
-    label: 'All Types',
+    label: 'Todos os tipos',
     icon: 'i-ph:funnel',
-    color: '#9333ea',
+    color: '#2a8a91',
   },
   {
     value: 'provider',
@@ -33,31 +33,31 @@ const logLevelOptions: SelectOption[] = [
     value: 'api',
     label: 'API',
     icon: 'i-ph:cloud',
-    color: '#3b82f6',
+    color: '#2a8a91',
   },
   {
     value: 'error',
-    label: 'Errors',
+    label: 'Erros',
     icon: 'i-ph:warning-circle',
     color: '#ef4444',
   },
   {
     value: 'warning',
-    label: 'Warnings',
+    label: 'Avisos',
     icon: 'i-ph:warning',
-    color: '#f59e0b',
+    color: '#f5a623',
   },
   {
     value: 'info',
-    label: 'Info',
+    label: 'Informação',
     icon: 'i-ph:info',
-    color: '#3b82f6',
+    color: '#2a8a91',
   },
   {
     value: 'debug',
     label: 'Debug',
     icon: 'i-ph:bug',
-    color: '#6b7280',
+    color: '#6d7a81',
   },
 ];
 
@@ -136,11 +136,11 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
       return (
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-            <span>Model: {details.model}</span>
+            <span>Modelo: {details.model}</span>
             <span>•</span>
             <span>Tokens: {details.totalTokens}</span>
             <span>•</span>
-            <span>Duration: {details.duration}ms</span>
+            <span>Duração: {details.duration}ms</span>
           </div>
           {details.prompt && (
             <div className="flex flex-col gap-1">
@@ -152,7 +152,7 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
           )}
           {details.response && (
             <div className="flex flex-col gap-1">
-              <div className="text-xs font-medium text-gray-700 dark:text-gray-300">Response:</div>
+              <div className="text-xs font-medium text-gray-700 dark:text-gray-300">Resposta:</div>
               <pre className="text-xs text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded p-2 whitespace-pre-wrap">
                 {details.response}
               </pre>
@@ -170,12 +170,12 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
             <span>•</span>
             <span>Status: {details.statusCode}</span>
             <span>•</span>
-            <span>Duration: {details.duration}ms</span>
+            <span>Duração: {details.duration}ms</span>
           </div>
           <div className="text-xs text-gray-600 dark:text-gray-400 break-all">{details.url}</div>
           {details.request && (
             <div className="flex flex-col gap-1">
-              <div className="text-xs font-medium text-gray-700 dark:text-gray-300">Request:</div>
+              <div className="text-xs font-medium text-gray-700 dark:text-gray-300">Requisição:</div>
               <pre className="text-xs text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded p-2 whitespace-pre-wrap">
                 {JSON.stringify(details.request, null, 2)}
               </pre>
@@ -183,7 +183,7 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
           )}
           {details.response && (
             <div className="flex flex-col gap-1">
-              <div className="text-xs font-medium text-gray-700 dark:text-gray-300">Response:</div>
+              <div className="text-xs font-medium text-gray-700 dark:text-gray-300">Resposta:</div>
               <pre className="text-xs text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded p-2 whitespace-pre-wrap">
                 {JSON.stringify(details.response, null, 2)}
               </pre>
@@ -191,7 +191,7 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
           )}
           {details.error && (
             <div className="flex flex-col gap-1">
-              <div className="text-xs font-medium text-red-500">Error:</div>
+              <div className="text-xs font-medium text-red-500">Erro:</div>
               <pre className="text-xs text-red-400 bg-red-50 dark:bg-red-500/10 rounded p-2 whitespace-pre-wrap">
                 {JSON.stringify(details.error, null, 2)}
               </pre>
@@ -215,8 +215,8 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
       className={classNames(
         'flex flex-col gap-2',
         'rounded-lg p-4',
-        'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-        'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+        'bg-[#f7f9f9] dark:bg-[#0f1417]',
+        'border border-[#dde3e5] dark:border-[#1a2229]',
         style.bg,
         'transition-all duration-200',
       )}
@@ -232,7 +232,7 @@ const LogEntryItem = ({ log, isExpanded: forceExpanded, use24Hour, showTimestamp
                   onClick={() => setLocalExpanded(!localExpanded)}
                   className="text-xs text-gray-500 dark:text-gray-400 hover:text-purple-500 dark:hover:text-purple-400 transition-colors"
                 >
-                  {localExpanded ? 'Hide' : 'Show'} Details
+                  {localExpanded ? 'Ocultar' : 'Mostrar'} detalhes
                 </button>
                 {localExpanded && renderDetails(log.details)}
               </>
@@ -294,9 +294,9 @@ export function EventLogsTab() {
   useEffect(() => {
     const startTime = performance.now();
 
-    logStore.logInfo('Event Logs tab mounted', {
+    logStore.logInfo('Aba de registros aberta', {
       type: 'component_mount',
-      message: 'Event Logs tab component mounted',
+      message: 'Componente da aba de registros montado',
       component: 'EventLogsTab',
     });
 
@@ -309,9 +309,9 @@ export function EventLogsTab() {
   // Log filter changes
   const handleLevelFilterChange = useCallback(
     (newLevel: string) => {
-      logStore.logInfo('Log level filter changed', {
+      logStore.logInfo('Filtro de nível alterado', {
         type: 'filter_change',
-        message: `Log level filter changed from ${selectedLevel} to ${newLevel}`,
+        message: `Filtro de nível alterado de ${selectedLevel} para ${newLevel}`,
         component: 'EventLogsTab',
         previousLevel: selectedLevel,
         newLevel,
@@ -326,9 +326,9 @@ export function EventLogsTab() {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (searchQuery) {
-        logStore.logInfo('Log search performed', {
+        logStore.logInfo('Busca nos registros', {
           type: 'search',
-          message: `Search performed with query "${searchQuery}" (${filteredLogs.length} results)`,
+          message: `Busca por "${searchQuery}" (${filteredLogs.length} resultados)`,
           component: 'EventLogsTab',
           query: searchQuery,
           resultsCount: filteredLogs.length,
@@ -349,17 +349,17 @@ export function EventLogsTab() {
 
       const duration = performance.now() - startTime;
 
-      logStore.logSuccess('Logs refreshed successfully', {
+      logStore.logSuccess('Registros atualizados', {
         type: 'refresh',
-        message: `Successfully refreshed ${Object.keys(logs).length} logs`,
+        message: `${Object.keys(logs).length} registros atualizados`,
         component: 'EventLogsTab',
         duration,
         logsCount: Object.keys(logs).length,
       });
     } catch (error) {
-      logStore.logError('Failed to refresh logs', error, {
+      logStore.logError('Não foi possível atualizar os registros', error, {
         type: 'refresh_error',
-        message: 'Failed to refresh logs',
+        message: 'Não foi possível atualizar os registros',
         component: 'EventLogsTab',
       });
     } finally {
@@ -369,9 +369,9 @@ export function EventLogsTab() {
 
   // Log preference changes
   const handlePreferenceChange = useCallback((type: string, value: boolean) => {
-    logStore.logInfo('Log preference changed', {
+    logStore.logInfo('Preferência de registros alterada', {
       type: 'preference_change',
-      message: `Log preference "${type}" changed to ${value}`,
+      message: `Preferência "${type}" alterada para ${value}`,
       component: 'EventLogsTab',
       preference: type,
       value,
@@ -433,17 +433,17 @@ export function EventLogsTab() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success('Event logs exported successfully as JSON');
+      toast.success('Registros exportados em JSON');
     } catch (error) {
       console.error('Failed to export JSON:', error);
-      toast.error('Failed to export event logs as JSON');
+      toast.error('Não foi possível exportar os registros em JSON');
     }
   };
 
   const exportAsCSV = () => {
     try {
       // Convert logs to CSV format
-      const headers = ['Timestamp', 'Level', 'Category', 'Message', 'Details'];
+      const headers = ['Data e hora', 'Nível', 'Categoria', 'Mensagem', 'Detalhes'];
       const csvData = [
         headers,
         ...filteredLogs.map((log) => [
@@ -467,10 +467,10 @@ export function EventLogsTab() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success('Event logs exported successfully as CSV');
+      toast.success('Registros exportados em CSV');
     } catch (error) {
       console.error('Failed to export CSV:', error);
-      toast.error('Failed to export event logs as CSV');
+      toast.error('Não foi possível exportar os registros em CSV');
     }
   };
 
@@ -492,7 +492,7 @@ export function EventLogsTab() {
           yPos = margin;
         }
 
-        doc.setFillColor('#F3F4F6');
+        doc.setFillColor('#eef1f2');
         doc.rect(margin - 2, yPos - 5, pageWidth - 2 * (margin - 2), lineHeight + 6, 'F');
         doc.setFont('helvetica', 'bold');
         doc.setTextColor('#111827');
@@ -507,27 +507,27 @@ export function EventLogsTab() {
       doc.setTextColor('#FFFFFF');
       doc.setFontSize(24);
       doc.setFont('helvetica', 'bold');
-      doc.text('Event Logs Report', margin, 35);
+      doc.text('Relatório de registros', margin, 35);
 
       // Add subtitle with bolt.diy
       doc.setFontSize(12);
       doc.setFont('helvetica', 'normal');
-      doc.text('bolt.diy - AI Development Platform', margin, 45);
+      doc.text('bolt.diy - plataforma de desenvolvimento com IA', margin, 45);
       yPos = 70;
 
       // Add report summary section
-      addSectionHeader('Report Summary');
+      addSectionHeader('Resumo do relatório');
 
       doc.setFontSize(10);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor('#374151');
 
       const summaryItems = [
-        { label: 'Generated', value: new Date().toLocaleString() },
-        { label: 'Total Logs', value: filteredLogs.length.toString() },
-        { label: 'Filter Applied', value: selectedLevel === 'all' ? 'All Types' : selectedLevel },
-        { label: 'Search Query', value: searchQuery || 'None' },
-        { label: 'Time Format', value: use24Hour ? '24-hour' : '12-hour' },
+        { label: 'Gerado em', value: new Date().toLocaleString() },
+        { label: 'Total de registros', value: filteredLogs.length.toString() },
+        { label: 'Filtro aplicado', value: selectedLevel === 'all' ? 'Todos os tipos' : selectedLevel },
+        { label: 'Busca', value: searchQuery || 'Nenhuma' },
+        { label: 'Formato de hora', value: use24Hour ? '24 horas' : '12 horas' },
       ];
 
       summaryItems.forEach((item) => {
@@ -541,7 +541,7 @@ export function EventLogsTab() {
       yPos += lineHeight * 2;
 
       // Add statistics section
-      addSectionHeader('Log Statistics');
+      addSectionHeader('Estatísticas dos registros');
 
       // Calculate statistics
       const stats = {
@@ -555,15 +555,15 @@ export function EventLogsTab() {
 
       // Create two columns for statistics
       const leftStats = [
-        { label: 'Error Logs', value: stats.error, color: '#DC2626' },
-        { label: 'Warning Logs', value: stats.warning, color: '#F59E0B' },
-        { label: 'Info Logs', value: stats.info, color: '#3B82F6' },
+        { label: 'Registros de erro', value: stats.error, color: '#DC2626' },
+        { label: 'Registros de aviso', value: stats.warning, color: '#f5a623' },
+        { label: 'Registros de informação', value: stats.info, color: '#2a8a91' },
       ];
 
       const rightStats = [
-        { label: 'Debug Logs', value: stats.debug, color: '#6B7280' },
-        { label: 'LLM Logs', value: stats.provider, color: '#10B981' },
-        { label: 'API Logs', value: stats.api, color: '#3B82F6' },
+        { label: 'Registros de debug', value: stats.debug, color: '#6D7A81' },
+        { label: 'Registros de LLM', value: stats.provider, color: '#10B981' },
+        { label: 'Registros de API', value: stats.api, color: '#2a8a91' },
       ];
 
       const colWidth = (pageWidth - 2 * margin) / 2;
@@ -592,7 +592,7 @@ export function EventLogsTab() {
       yPos += lineHeight * 2;
 
       // Add logs section
-      addSectionHeader('Event Logs');
+      addSectionHeader('Registros');
 
       // Helper function to add a log entry with improved formatting
       const addLogEntry = (log: LogEntry) => {
@@ -620,28 +620,28 @@ export function EventLogsTab() {
           error: '#FEE2E2',
           warning: '#FEF3C7',
           info: '#DBEAFE',
-          debug: '#F3F4F6',
+          debug: '#eef1f2',
         };
 
         const textColors: Record<string, string> = {
           error: '#DC2626',
-          warning: '#F59E0B',
-          info: '#3B82F6',
-          debug: '#6B7280',
+          warning: '#f5a623',
+          info: '#2a8a91',
+          debug: '#6D7A81',
         };
 
         const levelWidth = doc.getTextWidth(log.level.toUpperCase()) + 10;
-        doc.setFillColor(levelColors[log.level] || '#F3F4F6');
+        doc.setFillColor(levelColors[log.level] || '#eef1f2');
         doc.roundedRect(margin, yPos - 4, levelWidth, lineHeight + 4, 1, 1, 'F');
 
         // Add log level text
-        doc.setTextColor(textColors[log.level] || '#6B7280');
+        doc.setTextColor(textColors[log.level] || '#6D7A81');
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(8);
         doc.text(log.level.toUpperCase(), margin + 5, yPos);
 
         // Add timestamp
-        doc.setTextColor('#6B7280');
+        doc.setTextColor('#6D7A81');
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(9);
         doc.text(timestamp, margin + levelWidth + 10, yPos);
@@ -649,11 +649,11 @@ export function EventLogsTab() {
         // Add category if present
         if (log.category) {
           const categoryX = margin + levelWidth + doc.getTextWidth(timestamp) + 20;
-          doc.setFillColor('#F3F4F6');
+          doc.setFillColor('#eef1f2');
 
           const categoryWidth = doc.getTextWidth(log.category) + 10;
           doc.roundedRect(categoryX, yPos - 4, categoryWidth, lineHeight + 4, 2, 2, 'F');
-          doc.setTextColor('#6B7280');
+          doc.setTextColor('#6D7A81');
           doc.text(log.category, categoryX + 5, yPos);
         }
 
@@ -669,7 +669,7 @@ export function EventLogsTab() {
 
         // Add details if present
         if (log.details) {
-          doc.setTextColor('#6B7280');
+          doc.setTextColor('#6D7A81');
           doc.setFontSize(8);
 
           const detailsStr = JSON.stringify(log.details, null, 2);
@@ -704,12 +704,12 @@ export function EventLogsTab() {
         doc.setTextColor('#9CA3AF');
 
         // Add page numbers
-        doc.text(`Page ${i} of ${totalPages}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 10, {
+        doc.text(`Página ${i} de ${totalPages}`, pageWidth / 2, doc.internal.pageSize.getHeight() - 10, {
           align: 'center',
         });
 
         // Add footer text
-        doc.text('Generated by bolt.diy', margin, doc.internal.pageSize.getHeight() - 10);
+        doc.text('Gerado por bolt.diy', margin, doc.internal.pageSize.getHeight() - 10);
 
         const dateStr = new Date().toLocaleDateString();
         doc.text(dateStr, pageWidth - margin, doc.internal.pageSize.getHeight() - 10, { align: 'right' });
@@ -717,10 +717,10 @@ export function EventLogsTab() {
 
       // Save the PDF
       doc.save(`bolt-event-logs-${new Date().toISOString()}.pdf`);
-      toast.success('Event logs exported successfully as PDF');
+      toast.success('Registros exportados em PDF');
     } catch (error) {
       console.error('Failed to export PDF:', error);
-      toast.error('Failed to export event logs as PDF');
+      toast.error('Não foi possível exportar os registros em PDF');
     }
   };
 
@@ -732,11 +732,11 @@ export function EventLogsTab() {
           let content = `[${timestamp}] ${log.level.toUpperCase()}: ${log.message}\n`;
 
           if (log.category) {
-            content += `Category: ${log.category}\n`;
+            content += `Categoria: ${log.category}\n`;
           }
 
           if (log.details) {
-            content += `Details:\n${JSON.stringify(log.details, null, 2)}\n`;
+            content += `Detalhes:\n${JSON.stringify(log.details, null, 2)}\n`;
           }
 
           return content + '-'.repeat(80) + '\n';
@@ -752,35 +752,35 @@ export function EventLogsTab() {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
-      toast.success('Event logs exported successfully as text file');
+      toast.success('Registros exportados em texto');
     } catch (error) {
       console.error('Failed to export text file:', error);
-      toast.error('Failed to export event logs as text file');
+      toast.error('Não foi possível exportar os registros em texto');
     }
   };
 
   const exportFormats: ExportFormat[] = [
     {
       id: 'json',
-      label: 'Export as JSON',
+      label: 'Exportar em JSON',
       icon: 'i-ph:file-js',
       handler: exportAsJSON,
     },
     {
       id: 'csv',
-      label: 'Export as CSV',
+      label: 'Exportar em CSV',
       icon: 'i-ph:file-csv',
       handler: exportAsCSV,
     },
     {
       id: 'pdf',
-      label: 'Export as PDF',
+      label: 'Exportar em PDF',
       icon: 'i-ph:file-pdf',
       handler: exportAsPDF,
     },
     {
       id: 'txt',
-      label: 'Export as Text',
+      label: 'Exportar em texto',
       icon: 'i-ph:file-text',
       handler: exportAsText,
     },
@@ -806,21 +806,21 @@ export function EventLogsTab() {
             'group flex items-center gap-2',
             'rounded-lg px-3 py-1.5',
             'text-sm text-gray-900 dark:text-white',
-            'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-            'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+            'bg-[#f7f9f9] dark:bg-[#0f1417]',
+            'border border-[#dde3e5] dark:border-[#1a2229]',
             'hover:bg-purple-500/10 dark:hover:bg-purple-500/20',
             'transition-all duration-200',
           )}
         >
           <span className="i-ph:download text-lg text-gray-500 dark:text-gray-400 group-hover:text-purple-500 transition-colors" />
-          Export
+          Exportar
         </button>
 
         <Dialog showCloseButton>
           <div className="p-6">
             <DialogTitle className="flex items-center gap-2">
               <div className="i-ph:download w-5 h-5" />
-              Export Event Logs
+              Exportar registros
             </DialogTitle>
 
             <div className="mt-4 flex flex-col gap-2">
@@ -830,9 +830,9 @@ export function EventLogsTab() {
                   onClick={() => handleFormatClick(format.handler)}
                   className={classNames(
                     'flex items-center gap-3 px-4 py-3 text-sm rounded-lg transition-colors w-full text-left',
-                    'bg-white dark:bg-[#0A0A0A]',
-                    'border border-[#E5E5E5] dark:border-[#1A1A1A]',
-                    'hover:bg-purple-50 dark:hover:bg-[#1a1a1a]',
+                    'bg-white dark:bg-[#0f1417]',
+                    'border border-[#dde3e5] dark:border-[#1a2229]',
+                    'hover:bg-purple-50 dark:hover:bg-[#1a2229]',
                     'hover:border-purple-200 dark:hover:border-purple-900/30',
                     'text-bolt-elements-textPrimary',
                   )}
@@ -841,10 +841,10 @@ export function EventLogsTab() {
                   <div>
                     <div className="font-medium">{format.label}</div>
                     <div className="text-xs text-bolt-elements-textSecondary mt-0.5">
-                      {format.id === 'json' && 'Export as a structured JSON file'}
-                      {format.id === 'csv' && 'Export as a CSV spreadsheet'}
-                      {format.id === 'pdf' && 'Export as a formatted PDF document'}
-                      {format.id === 'txt' && 'Export as a formatted text file'}
+                      {format.id === 'json' && 'Arquivo JSON estruturado'}
+                      {format.id === 'csv' && 'Planilha CSV'}
+                      {format.id === 'pdf' && 'Documento PDF formatado'}
+                      {format.id === 'txt' && 'Arquivo de texto formatado'}
                     </div>
                   </div>
                 </button>
@@ -866,8 +866,8 @@ export function EventLogsTab() {
                 'flex items-center gap-2',
                 'rounded-lg px-3 py-1.5',
                 'text-sm text-gray-900 dark:text-white',
-                'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-                'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+                'bg-[#f7f9f9] dark:bg-[#0f1417]',
+                'border border-[#dde3e5] dark:border-[#1a2229]',
                 'hover:bg-purple-500/10 dark:hover:bg-purple-500/20',
                 'transition-all duration-200',
               )}
@@ -876,14 +876,14 @@ export function EventLogsTab() {
                 className={classNames('text-lg', selectedLevelOption?.icon || 'i-ph:funnel')}
                 style={{ color: selectedLevelOption?.color }}
               />
-              {selectedLevelOption?.label || 'All Types'}
+              {selectedLevelOption?.label || 'Todos os tipos'}
               <span className="i-ph:caret-down text-lg text-gray-500 dark:text-gray-400" />
             </button>
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>
             <DropdownMenu.Content
-              className="min-w-[200px] bg-white dark:bg-[#0A0A0A] rounded-lg shadow-lg py-1 z-[250] animate-in fade-in-0 zoom-in-95 border border-[#E5E5E5] dark:border-[#1A1A1A]"
+              className="min-w-[200px] bg-white dark:bg-[#0f1417] rounded-lg shadow-lg py-1 z-[250] animate-in fade-in-0 zoom-in-95 border border-[#dde3e5] dark:border-[#1a2229]"
               sideOffset={5}
               align="start"
               side="bottom"
@@ -914,7 +914,7 @@ export function EventLogsTab() {
               onCheckedChange={(value) => handlePreferenceChange('timestamps', value)}
               className="data-[state=checked]:bg-purple-500"
             />
-            <span className="text-sm text-gray-500 dark:text-gray-400">Show Timestamps</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Mostrar horário</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -923,7 +923,7 @@ export function EventLogsTab() {
               onCheckedChange={(value) => handlePreferenceChange('24hour', value)}
               className="data-[state=checked]:bg-purple-500"
             />
-            <span className="text-sm text-gray-500 dark:text-gray-400">24h Time</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Formato 24h</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -932,7 +932,7 @@ export function EventLogsTab() {
               onCheckedChange={(value) => handlePreferenceChange('autoExpand', value)}
               className="data-[state=checked]:bg-purple-500"
             />
-            <span className="text-sm text-gray-500 dark:text-gray-400">Auto Expand</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">Expandir automaticamente</span>
           </div>
 
           <div className="w-px h-4 bg-gray-200 dark:bg-gray-700" />
@@ -943,15 +943,15 @@ export function EventLogsTab() {
               'group flex items-center gap-2',
               'rounded-lg px-3 py-1.5',
               'text-sm text-gray-900 dark:text-white',
-              'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-              'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+              'bg-[#f7f9f9] dark:bg-[#0f1417]',
+              'border border-[#dde3e5] dark:border-[#1a2229]',
               'hover:bg-purple-500/10 dark:hover:bg-purple-500/20',
               'transition-all duration-200',
               { 'animate-spin': isRefreshing },
             )}
           >
             <span className="i-ph:arrows-clockwise text-lg text-gray-500 dark:text-gray-400 group-hover:text-purple-500 transition-colors" />
-            Refresh
+            Atualizar
           </button>
 
           <ExportButton />
@@ -962,13 +962,13 @@ export function EventLogsTab() {
         <div className="relative">
           <input
             type="text"
-            placeholder="Search logs..."
+            placeholder="Buscar registros…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={classNames(
               'w-full px-4 py-2 pl-10 rounded-lg',
-              'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-              'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+              'bg-[#f7f9f9] dark:bg-[#0f1417]',
+              'border border-[#dde3e5] dark:border-[#1a2229]',
               'text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400',
               'focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500',
               'transition-all duration-200',
@@ -986,14 +986,14 @@ export function EventLogsTab() {
             className={classNames(
               'flex flex-col items-center justify-center gap-4',
               'rounded-lg p-8 text-center',
-              'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-              'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+              'bg-[#f7f9f9] dark:bg-[#0f1417]',
+              'border border-[#dde3e5] dark:border-[#1a2229]',
             )}
           >
             <span className="i-ph:clipboard-text text-4xl text-gray-400 dark:text-gray-600" />
             <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-medium text-gray-900 dark:text-white">No Logs Found</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Try adjusting your search or filters</p>
+              <h3 className="text-sm font-medium text-gray-900 dark:text-white">Nenhum registro encontrado</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Ajuste a busca ou os filtros</p>
             </div>
           </motion.div>
         ) : (

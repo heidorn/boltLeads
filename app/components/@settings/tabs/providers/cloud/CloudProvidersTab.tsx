@@ -54,9 +54,9 @@ const PROVIDER_ICONS: Record<ProviderName, IconType> = {
 
 // Update PROVIDER_DESCRIPTIONS to use the same type
 const PROVIDER_DESCRIPTIONS: Partial<Record<ProviderName, string>> = {
-  Anthropic: 'Access Claude and other Anthropic models',
-  Github: 'Use OpenAI models hosted through GitHub infrastructure',
-  OpenAI: 'Use GPT-4, GPT-3.5, and other OpenAI models',
+  Anthropic: 'Acesse o Claude e outros modelos da Anthropic',
+  Github: 'Use modelos da OpenAI hospedados na infraestrutura do GitHub',
+  OpenAI: 'Use GPT-4, GPT-3.5 e outros modelos da OpenAI',
 };
 
 const CloudProvidersTab = () => {
@@ -95,7 +95,7 @@ const CloudProvidersTab = () => {
       });
 
       setCategoryEnabled(enabled);
-      toast.success(enabled ? 'All cloud providers enabled' : 'All cloud providers disabled');
+      toast.success(enabled ? 'Todos os provedores em nuvem ativos' : 'Todos os provedores em nuvem desativados');
     },
     [filteredProviders, settings],
   );
@@ -106,11 +106,11 @@ const CloudProvidersTab = () => {
       settings.updateProviderSettings(provider.name, { ...provider.settings, enabled });
 
       if (enabled) {
-        logStore.logProvider(`Provider ${provider.name} enabled`, { provider: provider.name });
-        toast.success(`${provider.name} enabled`);
+        logStore.logProvider(`Provedor ${provider.name} ativo`, { provider: provider.name });
+        toast.success(`${provider.name} ativo`);
       } else {
-        logStore.logProvider(`Provider ${provider.name} disabled`, { provider: provider.name });
-        toast.success(`${provider.name} disabled`);
+        logStore.logProvider(`Provedor ${provider.name} desativado`, { provider: provider.name });
+        toast.success(`${provider.name} desativado`);
       }
     },
     [settings],
@@ -123,11 +123,11 @@ const CloudProvidersTab = () => {
       // Update the provider settings in the store
       settings.updateProviderSettings(provider.name, { ...provider.settings, baseUrl: newBaseUrl });
 
-      logStore.logProvider(`Base URL updated for ${provider.name}`, {
+      logStore.logProvider(`URL base de ${provider.name} atualizada`, {
         provider: provider.name,
         baseUrl: newBaseUrl,
       });
-      toast.success(`${provider.name} base URL updated`);
+      toast.success(`URL base de ${provider.name} atualizada`);
       setEditingProvider(null);
     },
     [settings],
@@ -153,13 +153,13 @@ const CloudProvidersTab = () => {
               <TbCloudComputing className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-md font-medium text-bolt-elements-textPrimary">Cloud Providers</h4>
-              <p className="text-sm text-bolt-elements-textSecondary">Connect to cloud-based AI models and services</p>
+              <h4 className="text-md font-medium text-bolt-elements-textPrimary">Provedores em nuvem</h4>
+              <p className="text-sm text-bolt-elements-textSecondary">Conecte-se a modelos e serviços de IA na nuvem</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-sm text-bolt-elements-textSecondary">Enable All Cloud</span>
+            <span className="text-sm text-bolt-elements-textSecondary">Ativar todos na nuvem</span>
             <Switch checked={categoryEnabled} onCheckedChange={handleToggleCategory} />
           </div>
         </div>
@@ -188,7 +188,7 @@ const CloudProvidersTab = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Configurable
+                    Configurável
                   </motion.span>
                 )}
               </div>
@@ -207,7 +207,7 @@ const CloudProvidersTab = () => {
                   <div className={classNames('w-6 h-6', 'transition-transform duration-200', 'group-hover:rotate-12')}>
                     {React.createElement(PROVIDER_ICONS[provider.name as ProviderName] || BsRobot, {
                       className: 'w-full h-full',
-                      'aria-label': `${provider.name} logo`,
+                      'aria-label': `Logotipo de ${provider.name}`,
                     })}
                   </div>
                 </motion.div>
@@ -221,8 +221,8 @@ const CloudProvidersTab = () => {
                       <p className="text-xs text-bolt-elements-textSecondary mt-0.5">
                         {PROVIDER_DESCRIPTIONS[provider.name as keyof typeof PROVIDER_DESCRIPTIONS] ||
                           (URL_CONFIGURABLE_PROVIDERS.includes(provider.name)
-                            ? 'Configure custom endpoint for this provider'
-                            : 'Standard AI provider integration')}
+                            ? 'Configure um endpoint personalizado para este provedor'
+                            : 'Integração padrão de provedor de IA')}
                       </p>
                     </div>
                     <Switch
@@ -243,7 +243,7 @@ const CloudProvidersTab = () => {
                           <input
                             type="text"
                             defaultValue={provider.settings.baseUrl}
-                            placeholder={`Enter ${provider.name} base URL`}
+                            placeholder={`Informe a URL base de ${provider.name}`}
                             className={classNames(
                               'flex-1 px-3 py-1.5 rounded-lg text-sm',
                               'bg-bolt-elements-background-depth-3 border border-bolt-elements-borderColor',
@@ -269,7 +269,7 @@ const CloudProvidersTab = () => {
                             <div className="flex items-center gap-2 text-bolt-elements-textSecondary">
                               <div className="i-ph:link text-sm" />
                               <span className="group-hover/url:text-purple-500 transition-colors">
-                                {provider.settings.baseUrl || 'Click to set base URL'}
+                                {provider.settings.baseUrl || 'Clique para definir a URL base'}
                               </span>
                             </div>
                           </div>
@@ -280,7 +280,7 @@ const CloudProvidersTab = () => {
                         <div className="mt-2 text-xs text-green-500">
                           <div className="flex items-center gap-1">
                             <div className="i-ph:info" />
-                            <span>Environment URL set in .env file</span>
+                            <span>URL definida no arquivo .env</span>
                           </div>
                         </div>
                       )}

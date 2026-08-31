@@ -17,12 +17,12 @@ export function useGitHubDeploy() {
     const connection = getLocalStorage('github_connection');
 
     if (!connection?.token || !connection?.user) {
-      toast.error('Please connect your GitHub account in Settings > Connections first');
+      toast.error('Conecte sua conta do GitHub em Configurações > Conexões');
       return false;
     }
 
     if (!currentChatId) {
-      toast.error('No active chat found');
+      toast.error('Nenhum chat ativo');
       return false;
     }
 
@@ -32,7 +32,7 @@ export function useGitHubDeploy() {
       const artifact = workbenchStore.firstArtifact;
 
       if (!artifact) {
-        throw new Error('No active project found');
+        throw new Error('Nenhum projeto ativo');
       }
 
       // Create a deployment artifact for visual feedback
@@ -40,7 +40,7 @@ export function useGitHubDeploy() {
       workbenchStore.addArtifact({
         id: deploymentId,
         messageId: deploymentId,
-        title: 'GitHub Deployment',
+        title: 'Deploy no GitHub',
         type: 'standalone',
       });
 
@@ -74,7 +74,7 @@ export function useGitHubDeploy() {
           error: formatBuildFailureOutput(buildOutput?.output),
           source: 'github',
         });
-        throw new Error('Build failed');
+        throw new Error('Não foi possível concluir o build');
       }
 
       // Notify that build succeeded and deployment preparation is starting
@@ -149,7 +149,7 @@ export function useGitHubDeploy() {
       });
 
       // Show success toast notification
-      toast.success(`🚀 GitHub deployment preparation completed successfully!`);
+      toast.success(`Preparação do deploy no GitHub concluída`);
 
       return {
         success: true,
@@ -158,7 +158,7 @@ export function useGitHubDeploy() {
       };
     } catch (err) {
       console.error('GitHub deploy error:', err);
-      toast.error(err instanceof Error ? err.message : 'GitHub deployment preparation failed');
+      toast.error(err instanceof Error ? err.message : 'Não foi possível preparar o deploy no GitHub');
 
       return false;
     } finally {

@@ -130,7 +130,7 @@ const getDiskInfo = (): DiskInfo[] => {
             percentage: 0,
             mountpoint: '/',
             timestamp: new Date().toISOString(),
-            error: error instanceof Error ? error.message : 'Unknown error',
+            error: error instanceof Error ? error.message : 'Erro desconhecido',
           },
         ];
       }
@@ -182,7 +182,7 @@ const getDiskInfo = (): DiskInfo[] => {
             percentage: 0,
             mountpoint: '/',
             timestamp: new Date().toISOString(),
-            error: error instanceof Error ? error.message : 'Unknown error',
+            error: error instanceof Error ? error.message : 'Erro desconhecido',
           },
         ];
       }
@@ -226,7 +226,7 @@ const getDiskInfo = (): DiskInfo[] => {
             percentage: 0,
             mountpoint: 'C:\\',
             timestamp: new Date().toISOString(),
-            error: error instanceof Error ? error.message : 'Unknown error',
+            error: error instanceof Error ? error.message : 'Erro desconhecido',
           },
         ];
       }
@@ -258,7 +258,7 @@ const getDiskInfo = (): DiskInfo[] => {
         percentage: 0,
         mountpoint: '/',
         timestamp: new Date().toISOString(),
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Erro desconhecido',
       },
     ];
   }
@@ -279,7 +279,7 @@ export const loader: LoaderFunction = async ({ request: _request }) => {
           percentage: 0,
           mountpoint: '/',
           timestamp: new Date().toISOString(),
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: error instanceof Error ? error.message : 'Erro desconhecido',
         },
       ],
       { status: 500 },
@@ -302,7 +302,7 @@ export const action = async ({ request: _request }: ActionFunctionArgs) => {
           percentage: 0,
           mountpoint: '/',
           timestamp: new Date().toISOString(),
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: error instanceof Error ? error.message : 'Erro desconhecido',
         },
       ],
       { status: 500 },

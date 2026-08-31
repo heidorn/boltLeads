@@ -19,7 +19,7 @@ async function githubStatsLoader({ request, context }: { request: Request; conte
       process.env.VITE_GITHUB_ACCESS_TOKEN;
 
     if (!githubToken) {
-      return json({ error: 'GitHub token not found' }, { status: 401 });
+      return json({ error: 'Token do GitHub não encontrado' }, { status: 401 });
     }
 
     // Get user info first
@@ -33,7 +33,7 @@ async function githubStatsLoader({ request, context }: { request: Request; conte
 
     if (!userResponse.ok) {
       if (userResponse.status === 401) {
-        return json({ error: 'Invalid GitHub token' }, { status: 401 });
+        return json({ error: 'Token do GitHub inválido' }, { status: 401 });
       }
 
       throw new Error(`GitHub API error: ${userResponse.status}`);
@@ -184,7 +184,7 @@ async function githubStatsLoader({ request, context }: { request: Request; conte
     console.error('Error fetching GitHub stats:', error);
     return json(
       {
-        error: 'Failed to fetch GitHub statistics',
+        error: 'Não foi possível carregar as estatísticas do GitHub',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },

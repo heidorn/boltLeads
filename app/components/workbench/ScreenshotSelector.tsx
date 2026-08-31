@@ -84,7 +84,7 @@ export const ScreenshotSelector = memo(
         } catch (error) {
           console.error('Failed to initialize stream:', error);
           setIsSelectionMode(false);
-          toast.error('Failed to initialize screen capture');
+          toast.error('Não foi possível iniciar a captura de tela');
         }
       }
 
@@ -193,16 +193,16 @@ export const ScreenshotSelector = memo(
               const file = new File([blob], 'screenshot.png', { type: 'image/png' });
               setUploadedFiles([...uploadedFiles, file]);
               setImageDataList([...imageDataList, base64Image]);
-              toast.success('Screenshot captured and added to chat');
+              toast.success('Captura de tela adicionada ao chat');
             } else {
-              toast.error('Could not add screenshot to chat');
+              toast.error('Não foi possível adicionar a captura de tela ao chat');
             }
           }
         };
         reader.readAsDataURL(blob);
       } catch (error) {
         console.error('Failed to capture screenshot:', error);
-        toast.error('Failed to capture screenshot');
+        toast.error('Não foi possível capturar a tela');
 
         if (mediaStreamRef.current) {
           mediaStreamRef.current.getTracks().forEach((track) => track.stop());

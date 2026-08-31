@@ -40,11 +40,27 @@ function parseCookies(cookieHeader: string): Record<string, string> {
 }
 
 async function chatAction({ context, request }: ActionFunctionArgs) {
+  /*
+   * Quando o stream morre, alguém precisa contar ao usuário. Este callback é
+   * preenchido assim que o dataStream existe; até lá, um stream que trava cedo
+   * cai no `catch` de sempre.
+   */
+  let avisarStreamMorto: ((motivo: string) => void) | undefined;
+
   const streamRecovery = new StreamRecoveryManager({
-    timeout: 45000,
+    /*
+     * 90s entre partes. O valor antigo (45s) derrubava geração legítima: entre
+     * o `step-start` e o primeiro texto o modelo pode passar bem disso com
+     * contexto grande.
+     */
+    timeout: 90000,
     maxRetries: 2,
     onTimeout: () => {
       logger.warn('Stream timeout - attempting recovery');
+    },
+    onGiveUp: () => {
+      logger.error('Stream considerado morto — encerrando e avisando o cliente');
+      avisarStreamMorto?.('O modelo parou de responder no meio da geração.');
     },
   });
 
@@ -88,7 +104,8 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
     const totalMessageContent = messages.reduce((acc, message) => acc + message.content, '');
     logger.debug(`Total message length: ${totalMessageContent.split(' ').length}, words`);
 
-    let lastChunk: string | undefined = undefined;
+    // Controla a abertura da caixa de raciocínio no stream (só abre quando há texto).
+    let pensamentoAberto = false;
 
     const dataStream = createDataStream({
       async execute(dataStream) {
@@ -112,7 +129,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
             label: 'summary',
             status: 'in-progress',
             order: progressCounter++,
-            message: 'Analysing Request',
+            message: 'Analisando a requisição',
           } satisfies ProgressAnnotation);
 
           // Create a summary of the chat
@@ -139,7 +156,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
             label: 'summary',
             status: 'complete',
             order: progressCounter++,
-            message: 'Analysis Complete',
+            message: 'Análise concluída',
           } satisfies ProgressAnnotation);
 
           dataStream.writeMessageAnnotation({
@@ -155,7 +172,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
             label: 'context',
             status: 'in-progress',
             order: progressCounter++,
-            message: 'Determining Files to Read',
+            message: 'Definindo os arquivos a ler',
           } satisfies ProgressAnnotation);
 
           // Select context files
@@ -201,7 +218,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
             label: 'context',
             status: 'complete',
             order: progressCounter++,
-            message: 'Code Files Selected',
+            message: 'Arquivos de código selecionados',
           } satisfies ProgressAnnotation);
 
           // logger.debug('Code Files Selected');
@@ -241,7 +258,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
                 label: 'response',
                 status: 'complete',
                 order: progressCounter++,
-                message: 'Response Generated',
+                message: 'Resposta gerada',
               } satisfies ProgressAnnotation);
               await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -282,7 +299,12 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
               messageSliceId,
             });
 
-            result.mergeIntoDataStream(dataStream);
+            /*
+             * `sendReasoning`: sem isto os blocos de raciocínio do modelo ficam no
+             * servidor e a tela não recebe nada enquanto ele pensa — o que é
+             * indistinguível de travado.
+             */
+            result.mergeIntoDataStream(dataStream, { sendReasoning: true });
 
             (async () => {
               for await (const part of result.fullStream) {
@@ -304,8 +326,30 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
           label: 'response',
           status: 'in-progress',
           order: progressCounter++,
-          message: 'Generating Response',
+          message: 'Gerando a resposta',
         } satisfies ProgressAnnotation);
+
+        /*
+         * A partir daqui o relógio corre: se nem a primeira parte chegar, o
+         * usuário precisa saber. Antes, `startMonitoring` nunca era chamado e o
+         * monitoramento só começava na primeira parte que o stream emitisse.
+         */
+        streamRecovery.startMonitoring();
+
+        avisarStreamMorto = (motivo: string) => {
+          dataStream.writeData({
+            type: 'progress',
+            label: 'response',
+            status: 'complete',
+            order: progressCounter++,
+            message: motivo,
+          } satisfies ProgressAnnotation);
+
+          dataStream.writeMessageAnnotation({
+            type: 'streamError',
+            value: { message: motivo, isRetryable: true },
+          } as any);
+        };
 
         const result = await streamText({
           messages: [...processedMessages],
@@ -344,11 +388,11 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
           }
           streamRecovery.stop();
         })();
-        result.mergeIntoDataStream(dataStream);
+        result.mergeIntoDataStream(dataStream, { sendReasoning: true });
       },
       onError: (error: any) => {
         // Provide more specific error messages for common issues
-        const errorMessage = error.message || 'Unknown error';
+        const errorMessage = error.message || 'Erro desconhecido';
 
         if (errorMessage.includes('model') && errorMessage.includes('not found')) {
           return 'Custom error: Invalid model selected. Please check that the model name is correct and available.';
@@ -383,24 +427,12 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
     }).pipeThrough(
       new TransformStream({
         transform: (chunk, controller) => {
-          if (!lastChunk) {
-            lastChunk = ' ';
-          }
-
-          if (typeof chunk === 'string') {
-            if (chunk.startsWith('g') && !lastChunk.startsWith('g')) {
-              controller.enqueue(encoder.encode(`0: "<div class=\\"__boltThought__\\">"\n`));
-            }
-
-            if (lastChunk.startsWith('g') && !chunk.startsWith('g')) {
-              controller.enqueue(encoder.encode(`0: "</div>\\n"\n`));
-            }
-          }
-
-          lastChunk = chunk;
-
-          let transformedChunk = chunk;
-
+          /*
+           * Chunks `g:` são o raciocínio do modelo. Nem todo modelo expõe o texto:
+           * o Claude 5 manda o bloco assinado e vazio, e abrir a caixa para ele
+           * punha um "Raciocínio" em branco em cima de toda resposta. Por isso a
+           * caixa só abre quando chega conteúdo de verdade.
+           */
           if (typeof chunk === 'string' && chunk.startsWith('g')) {
             let content = chunk.split(':').slice(1).join(':');
 
@@ -408,11 +440,35 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
               content = content.slice(0, content.length - 1);
             }
 
-            transformedChunk = `0:${content}\n`;
+            let texto = '';
+
+            try {
+              texto = String(JSON.parse(content) ?? '');
+            } catch {
+              texto = content.replace(/^"|"$/g, '');
+            }
+
+            if (!texto.trim()) {
+              return;
+            }
+
+            if (!pensamentoAberto) {
+              controller.enqueue(encoder.encode(`0: "<div class=\\"__boltThought__\\">"\n`));
+              pensamentoAberto = true;
+            }
+
+            controller.enqueue(encoder.encode(`0:${content}\n`));
+
+            return;
+          }
+
+          if (pensamentoAberto) {
+            controller.enqueue(encoder.encode(`0: "</div>\\n"\n`));
+            pensamentoAberto = false;
           }
 
           // Convert the string stream to a byte stream
-          const str = typeof transformedChunk === 'string' ? transformedChunk : JSON.stringify(transformedChunk);
+          const str = typeof chunk === 'string' ? chunk : JSON.stringify(chunk);
           controller.enqueue(encoder.encode(str));
         },
       }),
@@ -432,7 +488,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
 
     const errorResponse = {
       error: true,
-      message: error.message || 'An unexpected error occurred',
+      message: error.message || 'Ocorreu um erro inesperado',
       statusCode: error.statusCode || 500,
       isRetryable: error.isRetryable !== false, // Default to retryable unless explicitly false
       provider: error.provider || 'unknown',
@@ -442,7 +498,7 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
       return new Response(
         JSON.stringify({
           ...errorResponse,
-          message: 'Invalid or missing API key',
+          message: 'Chave da API inválida ou ausente',
           statusCode: 401,
           isRetryable: false,
         }),

@@ -8,7 +8,7 @@ interface LoadingStateProps {
   className?: string;
 }
 
-export function LoadingState({ message = 'Loading...', size = 'md', className = '' }: LoadingStateProps) {
+export function LoadingState({ message = 'Carregando…', size = 'md', className = '' }: LoadingStateProps) {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6',
@@ -44,10 +44,10 @@ interface ErrorStateProps {
 }
 
 export function ErrorState({
-  title = 'Error',
+  title = 'Erro',
   message,
   onRetry,
-  retryLabel = 'Try Again',
+  retryLabel = 'Tentar de novo',
   size = 'md',
   className = '',
 }: ErrorStateProps) {
@@ -90,10 +90,10 @@ interface SuccessStateProps {
 }
 
 export function SuccessState({
-  title = 'Success',
+  title = 'Sucesso',
   message,
   onAction,
-  actionLabel = 'Continue',
+  actionLabel = 'Continuar',
   size = 'md',
   className = '',
 }: SuccessStateProps) {
@@ -135,10 +135,10 @@ export function GitHubConnectionRequired({ onConnect, className = '' }: GitHubCo
   return (
     <div className={classNames('flex flex-col items-center justify-center py-12 text-center', className)}>
       <Github className="w-12 h-12 text-bolt-elements-textTertiary mb-4" />
-      <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-2">GitHub Connection Required</h3>
+      <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-2">Conexão com o GitHub necessária</h3>
       <p className="text-sm text-bolt-elements-textSecondary mb-6 max-w-md">
-        Please connect your GitHub account to access this feature. You'll be able to browse repositories, push code, and
-        manage your GitHub integration.
+        Conecte sua conta do GitHub para usar este recurso. Você poderá navegar pelos repositórios, enviar código e
+        gerenciar sua integração com o GitHub.
       </p>
       {onConnect && (
         <button
@@ -146,7 +146,7 @@ export function GitHubConnectionRequired({ onConnect, className = '' }: GitHubCo
           className="px-6 py-3 bg-bolt-elements-item-contentAccent text-white rounded-lg hover:bg-bolt-elements-item-contentAccent/90 transition-colors flex items-center gap-2"
         >
           <Github className="w-4 h-4" />
-          Connect GitHub
+          Conectar ao GitHub
         </button>
       )}
     </div>
@@ -168,7 +168,7 @@ export function InformationState({
   message,
   icon = Info,
   onAction,
-  actionLabel = 'Got it',
+  actionLabel = 'Entendi',
   size = 'md',
   className = '',
 }: InformationStateProps) {

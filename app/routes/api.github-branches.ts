@@ -32,11 +32,11 @@ async function githubBranchesLoader({ request, context }: { request: Request; co
       githubToken = body.token;
 
       if (!owner || !repo) {
-        return json({ error: 'Owner and repo parameters are required' }, { status: 400 });
+        return json({ error: 'Os parâmetros owner e repo são obrigatórios' }, { status: 400 });
       }
 
       if (!githubToken) {
-        return json({ error: 'GitHub token is required' }, { status: 400 });
+        return json({ error: 'O token do GitHub é obrigatório' }, { status: 400 });
       }
     } else {
       // Handle GET request with params and cookie token (backwards compatibility)
@@ -45,7 +45,7 @@ async function githubBranchesLoader({ request, context }: { request: Request; co
       repo = url.searchParams.get('repo') || '';
 
       if (!owner || !repo) {
-        return json({ error: 'Owner and repo parameters are required' }, { status: 400 });
+        return json({ error: 'Os parâmetros owner e repo são obrigatórios' }, { status: 400 });
       }
 
       // Get API keys from cookies (server-side only)
@@ -64,7 +64,7 @@ async function githubBranchesLoader({ request, context }: { request: Request; co
     }
 
     if (!githubToken) {
-      return json({ error: 'GitHub token not found' }, { status: 401 });
+      return json({ error: 'Token do GitHub não encontrado' }, { status: 401 });
     }
 
     // First, get repository info to know the default branch
@@ -78,11 +78,11 @@ async function githubBranchesLoader({ request, context }: { request: Request; co
 
     if (!repoResponse.ok) {
       if (repoResponse.status === 404) {
-        return json({ error: 'Repository not found' }, { status: 404 });
+        return json({ error: 'Repositório não encontrado' }, { status: 404 });
       }
 
       if (repoResponse.status === 401) {
-        return json({ error: 'Invalid GitHub token' }, { status: 401 });
+        return json({ error: 'Token do GitHub inválido' }, { status: 401 });
       }
 
       throw new Error(`GitHub API error: ${repoResponse.status}`);
@@ -139,7 +139,7 @@ async function githubBranchesLoader({ request, context }: { request: Request; co
       if (error.message.includes('fetch')) {
         return json(
           {
-            error: 'Failed to connect to GitHub. Please check your network connection.',
+            error: 'Não foi possível conectar ao GitHub. Verifique sua conexão de rede.',
           },
           { status: 503 },
         );
@@ -147,7 +147,7 @@ async function githubBranchesLoader({ request, context }: { request: Request; co
 
       return json(
         {
-          error: `Failed to fetch branches: ${error.message}`,
+          error: `Não foi possível carregar as branches: ${error.message}`,
         },
         { status: 500 },
       );
@@ -155,7 +155,7 @@ async function githubBranchesLoader({ request, context }: { request: Request; co
 
     return json(
       {
-        error: 'An unexpected error occurred while fetching branches',
+        error: 'Ocorreu um erro inesperado ao carregar as branches',
       },
       { status: 500 },
     );

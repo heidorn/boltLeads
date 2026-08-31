@@ -17,12 +17,12 @@ export function useGitLabDeploy() {
     const connection = getLocalStorage('gitlab_connection');
 
     if (!connection?.token || !connection?.user) {
-      toast.error('Please connect your GitLab account in Settings > Connections first');
+      toast.error('Conecte sua conta do GitLab em Configurações > Conexões');
       return false;
     }
 
     if (!currentChatId) {
-      toast.error('No active chat found');
+      toast.error('Nenhum chat ativo');
       return false;
     }
 
@@ -32,7 +32,7 @@ export function useGitLabDeploy() {
       const artifact = workbenchStore.firstArtifact;
 
       if (!artifact) {
-        throw new Error('No active project found');
+        throw new Error('Nenhum projeto ativo');
       }
 
       // Create a deployment artifact for visual feedback
@@ -40,7 +40,7 @@ export function useGitLabDeploy() {
       workbenchStore.addArtifact({
         id: deploymentId,
         messageId: deploymentId,
-        title: 'GitLab Deployment',
+        title: 'Deploy no GitLab',
         type: 'standalone',
       });
 
@@ -74,7 +74,7 @@ export function useGitLabDeploy() {
           error: formatBuildFailureOutput(buildOutput?.output),
           source: 'gitlab',
         });
-        throw new Error('Build failed');
+        throw new Error('Não foi possível concluir o build');
       }
 
       // Notify that build succeeded and deployment preparation is starting
@@ -149,7 +149,7 @@ export function useGitLabDeploy() {
       });
 
       // Show success toast notification
-      toast.success(`🚀 GitLab deployment preparation completed successfully!`);
+      toast.success(`Preparação do deploy no GitLab concluída`);
 
       return {
         success: true,
@@ -158,7 +158,7 @@ export function useGitLabDeploy() {
       };
     } catch (err) {
       console.error('GitLab deploy error:', err);
-      toast.error(err instanceof Error ? err.message : 'GitLab deployment preparation failed');
+      toast.error(err instanceof Error ? err.message : 'Não foi possível preparar o deploy no GitLab');
 
       return false;
     } finally {

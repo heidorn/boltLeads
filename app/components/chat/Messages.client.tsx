@@ -38,14 +38,14 @@ export const Messages = forwardRef<HTMLDivElement, MessagesProps>(
     const handleFork = async (messageId: string) => {
       try {
         if (!db || !chatId.get()) {
-          toast.error('Chat persistence is not available');
+          toast.error('O histórico do chat não está disponível');
           return;
         }
 
         const urlId = await forkChat(db, chatId.get()!, messageId);
         window.location.href = `/chat/${urlId}`;
       } catch (error) {
-        toast.error('Failed to fork chat: ' + (error as Error).message);
+        toast.error('Não foi possível criar o fork do chat: ' + (error as Error).message);
       }
     };
 

@@ -31,29 +31,29 @@ export function ImportButtons(importChat: ((description: string, messages: Messa
 
                   // Standard format
                   if (Array.isArray(data.messages)) {
-                    await importChat(data.description || 'Imported Chat', data.messages);
-                    toast.success('Chat imported successfully');
+                    await importChat(data.description || 'Chat importado', data.messages);
+                    toast.success('Chat importado');
 
                     return;
                   }
 
-                  toast.error('Invalid chat file format');
+                  toast.error('Formato de arquivo de chat inválido');
                 } catch (error: unknown) {
                   if (error instanceof Error) {
-                    toast.error('Failed to parse chat file: ' + error.message);
+                    toast.error('Não foi possível ler o arquivo do chat: ' + error.message);
                   } else {
-                    toast.error('Failed to parse chat file');
+                    toast.error('Não foi possível ler o arquivo do chat');
                   }
                 }
               };
-              reader.onerror = () => toast.error('Failed to read chat file');
+              reader.onerror = () => toast.error('Não foi possível abrir o arquivo do chat');
               reader.readAsText(file);
             } catch (error) {
-              toast.error(error instanceof Error ? error.message : 'Failed to import chat');
+              toast.error(error instanceof Error ? error.message : 'Não foi possível importar o chat');
             }
             e.target.value = ''; // Reset file input
           } else {
-            toast.error('Something went wrong');
+            toast.error('Algo deu errado');
           }
         }}
       />
@@ -76,7 +76,7 @@ export function ImportButtons(importChat: ((description: string, messages: Messa
             )}
           >
             <span className="i-ph:upload-simple w-4 h-4" />
-            Import Chat
+            Importar chat
           </Button>
           <ImportFolderButton
             importChat={importChat}

@@ -48,12 +48,12 @@ export const ServiceHeader = memo(
                 {isTestingConnection ? (
                   <>
                     <div className="i-ph:spinner-gap w-4 h-4 animate-spin" />
-                    Testing...
+                    Testando…
                   </>
                 ) : (
                   <>
                     <div className="i-ph:plug-charging w-4 h-4" />
-                    Test Connection
+                    Testar conexão
                   </>
                 )}
               </Button>

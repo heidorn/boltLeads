@@ -37,14 +37,14 @@ export function ConnectionForm({
   onDisconnect,
   error,
   serviceName,
-  tokenLabel = 'Access Token',
+  tokenLabel = 'Token de acesso',
   tokenPlaceholder,
   getTokenUrl,
   environmentVariable,
   tokenTypes,
   selectedTokenType,
   onTokenTypeChange,
-  connectedMessage = `Connected to ${serviceName}`,
+  connectedMessage = `${serviceName} conectado`,
   children,
 }: ConnectionFormProps) {
   return (
@@ -61,11 +61,11 @@ export function ConnectionForm({
               <div className="text-xs text-bolt-elements-textSecondary bg-bolt-elements-background-depth-1 dark:bg-bolt-elements-background-depth-1 p-3 rounded-lg mb-4">
                 <p className="flex items-center gap-1 mb-1">
                   <span className="i-ph:lightbulb w-3.5 h-3.5 text-bolt-elements-icon-success dark:text-bolt-elements-icon-success" />
-                  <span className="font-medium">Tip:</span> You can also set the{' '}
+                  <span className="font-medium">Dica:</span> você também pode definir a variável de ambiente{' '}
                   <code className="px-1 py-0.5 bg-bolt-elements-background-depth-2 dark:bg-bolt-elements-background-depth-2 rounded">
                     {environmentVariable}
                   </code>{' '}
-                  environment variable to connect automatically.
+                  para conectar automaticamente.
                 </p>
               </div>
             )}
@@ -74,7 +74,7 @@ export function ConnectionForm({
               {tokenTypes && tokenTypes.length > 1 && onTokenTypeChange && (
                 <div>
                   <label className="block text-sm text-bolt-elements-textSecondary dark:text-bolt-elements-textSecondary mb-2">
-                    Token Type
+                    Tipo de token
                   </label>
                   <select
                     value={selectedTokenType}
@@ -110,7 +110,7 @@ export function ConnectionForm({
                   value={token}
                   onChange={(e) => onTokenChange(e.target.value)}
                   disabled={isConnecting}
-                  placeholder={tokenPlaceholder || `Enter your ${serviceName} access token`}
+                  placeholder={tokenPlaceholder || `Informe seu token de acesso do ${serviceName}`}
                   className={classNames(
                     'w-full px-3 py-2 rounded-lg text-sm',
                     'bg-bolt-elements-background-depth-1',
@@ -127,7 +127,7 @@ export function ConnectionForm({
                     rel="noopener noreferrer"
                     className="text-bolt-elements-borderColorActive hover:underline inline-flex items-center gap-1"
                   >
-                    Get your token
+                    Obter seu token
                     <div className="i-ph:arrow-square-out w-4 h-4" />
                   </a>
                 </div>
@@ -146,8 +146,8 @@ export function ConnectionForm({
                 disabled={isConnecting || !token.trim()}
                 className={classNames(
                   'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
-                  'bg-[#303030] text-white',
-                  'hover:bg-[#5E41D0] hover:text-white',
+                  'bg-[#26313a] text-white',
+                  'hover:bg-[#f2552c] hover:text-white',
                   'disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200',
                   'transform active:scale-95',
                 )}
@@ -155,12 +155,12 @@ export function ConnectionForm({
                 {isConnecting ? (
                   <>
                     <div className="i-ph:spinner-gap animate-spin" />
-                    Connecting...
+                    Conectando…
                   </>
                 ) : (
                   <>
                     <div className="i-ph:plug-charging w-4 h-4" />
-                    Connect
+                    Conectar
                   </>
                 )}
               </button>
@@ -178,7 +178,7 @@ export function ConnectionForm({
                 )}
               >
                 <div className="i-ph:plug w-4 h-4" />
-                Disconnect
+                Desconectar
               </button>
               <span className="text-sm text-bolt-elements-textSecondary flex items-center gap-1">
                 <div className="i-ph:check-circle w-4 h-4 text-green-500" />

@@ -73,7 +73,7 @@ export function useGitLabConnection(): UseGitLabConnectionReturn {
       setIsLoading(false);
     } catch (error) {
       console.error('Error loading saved connection:', error);
-      setError('Failed to load saved connection');
+      setError('Não foi possível carregar a conexão salva');
       setIsLoading(false);
 
       // Clean up corrupted data
@@ -120,7 +120,7 @@ export function useGitLabConnection(): UseGitLabConnectionReturn {
 
   const connect = useCallback(async (token: string, gitlabUrl = 'https://gitlab.com') => {
     if (!token.trim()) {
-      setError('Token is required');
+      setError('O token é obrigatório');
       return;
     }
 
@@ -134,7 +134,7 @@ export function useGitLabConnection(): UseGitLabConnectionReturn {
       const result = await gitlabConnectionStore.connect(token, gitlabUrl);
 
       if (!result.success) {
-        throw new Error(result.error || 'Connection failed');
+        throw new Error(result.error || 'Não foi possível conectar');
       }
 
       console.log('GitLab connection successful, now fetching stats...');
@@ -154,14 +154,14 @@ export function useGitLabConnection(): UseGitLabConnectionReturn {
         // Don't fail the connection if stats fail
       }
 
-      toast.success('Connected to GitLab successfully!');
+      toast.success('Conectado ao GitLab');
     } catch (error) {
       console.error('Failed to connect to GitLab:', error);
 
-      const errorMessage = error instanceof Error ? error.message : 'Failed to connect to GitLab';
+      const errorMessage = error instanceof Error ? error.message : 'Não foi possível conectar ao GitLab';
 
       setError(errorMessage);
-      toast.error(`Failed to connect: ${errorMessage}`);
+      toast.error(`Não foi possível conectar: ${errorMessage}`);
       throw error;
     } finally {
       setIsConnecting(false);
@@ -181,7 +181,7 @@ export function useGitLabConnection(): UseGitLabConnectionReturn {
     gitlabConnectionStore.disconnect();
 
     setError(null);
-    toast.success('Disconnected from GitLab');
+    toast.success('Desconectado do GitLab');
   }, []);
 
   const refreshConnection = useCallback(async () => {
@@ -196,7 +196,7 @@ export function useGitLabConnection(): UseGitLabConnectionReturn {
       await refreshConnectionData(connection);
     } catch (error) {
       console.error('Error refreshing connection:', error);
-      setError('Failed to refresh connection');
+      setError('Não foi possível atualizar a conexão');
       throw error;
     } finally {
       setIsLoading(false);

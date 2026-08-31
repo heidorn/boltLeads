@@ -14,13 +14,15 @@ let commitJson = {
   version: JSON.stringify(process.env.npm_package_version),
 };
 
+// Laranja Chama (#F2552C) em truecolor; degrada para laranja 256 onde não houver.
+const chama = (text) => `\x1b[38;2;242;85;44m${text}\x1b[0m`;
+const dim = (text) => `\x1b[2m${text}\x1b[0m`;
+
 console.log(`
-★═══════════════════════════════════════★
-          B O L T . D I Y
-         ⚡️  Welcome  ⚡️
-★═══════════════════════════════════════★
+${chama('/')} L E A D S   P E R   H O U R
+  ${dim('Studio — da ideia ao produto')}
 `);
-console.log('📍 Current Version Tag:', `v${commitJson.version}`);
-console.log('📍 Current Commit Version:', commitJson.hash);
-console.log('  Please wait until the URL appears here');
-console.log('★═══════════════════════════════════════★');
+console.log(dim('  versão      '), `v${commitJson.version}`);
+console.log(dim('  commit      '), commitJson.hash);
+console.log(dim('  aguarde o endereço local aparecer abaixo'));
+console.log('');

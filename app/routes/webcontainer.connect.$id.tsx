@@ -11,7 +11,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Connect to WebContainer</title>
+        <title>Conectar ao WebContainer</title>
       </head>
       <body>
         <script type="module">

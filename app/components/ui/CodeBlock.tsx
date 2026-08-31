@@ -61,7 +61,7 @@ export function CodeBlock({
             </span>
           )}
         </div>
-        <Tooltip content={copied ? 'Copied!' : 'Copy code'}>
+        <Tooltip content={copied ? 'Copiado' : 'Copiar código'}>
           <motion.button
             onClick={handleCopy}
             className="p-1.5 rounded-md text-bolt-elements-textTertiary hover:text-bolt-elements-textSecondary dark:text-bolt-elements-textTertiary-dark dark:hover:text-bolt-elements-textSecondary-dark hover:bg-bolt-elements-background-depth-2 dark:hover:bg-bolt-elements-background-depth-3 transition-colors"

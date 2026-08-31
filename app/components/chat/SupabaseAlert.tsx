@@ -21,11 +21,11 @@ export function SupabaseChatAlert({ alert, clearAlert, postMessage }: Props) {
   const isConnected = !!(connection.token && connection.selectedProjectId);
 
   // Set title and description based on connection state
-  const title = isConnected ? 'Supabase Query' : 'Supabase Connection Required';
-  const description = isConnected ? 'Execute database query' : 'Supabase connection required';
+  const title = isConnected ? 'Consulta no Supabase' : 'Conexão com o Supabase necessária';
+  const description = isConnected ? 'Executar consulta no banco de dados' : 'Conexão com o Supabase necessária';
   const message = isConnected
-    ? 'Please review the proposed changes and apply them to your database.'
-    : 'Please connect to Supabase to continue with this operation.';
+    ? 'Revise as mudanças propostas e aplique-as ao seu banco de dados.'
+    : 'Conecte-se ao Supabase para continuar com esta operação.';
 
   const handleConnectClick = () => {
     // Dispatch an event to open the Supabase connection dialog
@@ -67,7 +67,7 @@ export function SupabaseChatAlert({ alert, clearAlert, postMessage }: Props) {
     } catch (error) {
       console.error('Failed to execute Supabase action:', error);
       postMessage(
-        `*Error executing Supabase query please fix and return the query again*\n\`\`\`\n${error instanceof Error ? error.message : String(error)}\n\`\`\`\n`,
+        `*Erro ao executar a consulta no Supabase, corrija e devolva a consulta*\n\`\`\`\n${error instanceof Error ? error.message : String(error)}\n\`\`\`\n`,
       );
     } finally {
       setIsExecuting(false);
@@ -114,7 +114,7 @@ export function SupabaseChatAlert({ alert, clearAlert, postMessage }: Props) {
           {!isConnected ? (
             <div className="p-3 rounded-md bg-bolt-elements-background-depth-3">
               <span className="text-sm text-bolt-elements-textPrimary">
-                You must first connect to Supabase and select a project.
+                Conecte-se ao Supabase e selecione um projeto primeiro.
               </span>
             </div>
           ) : (
@@ -125,7 +125,7 @@ export function SupabaseChatAlert({ alert, clearAlert, postMessage }: Props) {
               >
                 <div className="i-ph:database text-bolt-elements-textPrimary mr-2"></div>
                 <span className="text-sm text-bolt-elements-textPrimary flex-grow">
-                  {description || 'Create table and setup auth'}
+                  {description || 'Criar tabela e configurar autenticação'}
                 </span>
                 <div
                   className={`i-ph:caret-up text-bolt-elements-textPrimary transition-transform ${isCollapsed ? 'rotate-180' : ''}`}
@@ -158,7 +158,7 @@ export function SupabaseChatAlert({ alert, clearAlert, postMessage }: Props) {
                   'flex items-center gap-1.5',
                 )}
               >
-                Connect to Supabase
+                Conectar ao Supabase
               </button>
             ) : (
               <button
@@ -174,7 +174,7 @@ export function SupabaseChatAlert({ alert, clearAlert, postMessage }: Props) {
                   isExecuting ? 'opacity-70 cursor-not-allowed' : '',
                 )}
               >
-                {isExecuting ? 'Applying...' : 'Apply Changes'}
+                {isExecuting ? 'Aplicando…' : 'Aplicar mudanças'}
               </button>
             )}
             <button
@@ -189,7 +189,7 @@ export function SupabaseChatAlert({ alert, clearAlert, postMessage }: Props) {
                 isExecuting ? 'opacity-70 cursor-not-allowed' : '',
               )}
             >
-              Dismiss
+              Dispensar
             </button>
           </div>
         </div>

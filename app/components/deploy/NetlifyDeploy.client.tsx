@@ -16,12 +16,12 @@ export function useNetlifyDeploy() {
 
   const handleNetlifyDeploy = async () => {
     if (!netlifyConn.user || !netlifyConn.token) {
-      toast.error('Please connect to Netlify first in the settings tab!');
+      toast.error('Conecte sua conta do Netlify em Configurações');
       return false;
     }
 
     if (!currentChatId) {
-      toast.error('No active chat found');
+      toast.error('Nenhum chat ativo');
       return false;
     }
 
@@ -31,7 +31,7 @@ export function useNetlifyDeploy() {
       const artifact = workbenchStore.firstArtifact;
 
       if (!artifact) {
-        throw new Error('No active project found');
+        throw new Error('Nenhum projeto ativo');
       }
 
       // Create a deployment artifact for visual feedback
@@ -39,7 +39,7 @@ export function useNetlifyDeploy() {
       workbenchStore.addArtifact({
         id: deploymentId,
         messageId: deploymentId,
-        title: 'Netlify Deployment',
+        title: 'Deploy no Netlify',
         type: 'standalone',
       });
 
@@ -74,7 +74,7 @@ export function useNetlifyDeploy() {
           error: formatBuildFailureOutput(buildOutput?.output),
           source: 'netlify',
         });
-        throw new Error('Build failed');
+        throw new Error('Não foi possível concluir o build');
       }
 
       // Notify that build succeeded and deployment is starting
@@ -112,7 +112,7 @@ export function useNetlifyDeploy() {
       }
 
       if (!buildPathExists) {
-        throw new Error('Could not find build output directory. Please check your build configuration.');
+        throw new Error('Não foi possível encontrar o diretório de saída do build. Verifique a configuração do build.');
       }
 
       async function getAllFiles(dirPath: string): Promise<Record<string, string>> {
@@ -162,10 +162,10 @@ export function useNetlifyDeploy() {
 
         // Notify that deployment failed
         deployArtifact.runner.handleDeployAction('deploying', 'failed', {
-          error: data.error || 'Invalid deployment response',
+          error: data.error || 'Resposta de deploy inválida',
           source: 'netlify',
         });
-        throw new Error(data.error || 'Invalid deployment response');
+        throw new Error(data.error || 'Resposta de deploy inválida');
       }
 
       const maxAttempts = 20; // 2 minutes timeout
@@ -192,10 +192,12 @@ export function useNetlifyDeploy() {
           if (deploymentStatus.state === 'error') {
             // Notify that deployment failed
             deployArtifact.runner.handleDeployAction('deploying', 'failed', {
-              error: 'Deployment failed: ' + (deploymentStatus.error_message || 'Unknown error'),
+              error: 'Não foi possível concluir o deploy: ' + (deploymentStatus.error_message || 'Erro desconhecido'),
               source: 'netlify',
             });
-            throw new Error('Deployment failed: ' + (deploymentStatus.error_message || 'Unknown error'));
+            throw new Error(
+              'Não foi possível concluir o deploy: ' + (deploymentStatus.error_message || 'Erro desconhecido'),
+            );
           }
 
           attempts++;
@@ -210,10 +212,10 @@ export function useNetlifyDeploy() {
       if (attempts >= maxAttempts) {
         // Notify that deployment timed out
         deployArtifact.runner.handleDeployAction('deploying', 'failed', {
-          error: 'Deployment timed out',
+          error: 'O deploy excedeu o tempo limite',
           source: 'netlify',
         });
-        throw new Error('Deployment timed out');
+        throw new Error('O deploy excedeu o tempo limite');
       }
 
       // Store the site ID if it's a new site
@@ -228,12 +230,12 @@ export function useNetlifyDeploy() {
       });
 
       // Show success toast notification
-      toast.success(`🚀 Netlify deployment completed successfully!`);
+      toast.success(`Deploy no Netlify concluído`);
 
       return true;
     } catch (error) {
       console.error('Deploy error:', error);
-      toast.error(error instanceof Error ? error.message : 'Deployment failed');
+      toast.error(error instanceof Error ? error.message : 'Não foi possível concluir o deploy');
 
       return false;
     } finally {

@@ -133,7 +133,7 @@ export const DeployButton = ({
             disabled={isDeploying || !activePreview || isStreaming}
             className="rounded-md items-center justify-center [&:is(:disabled,.disabled)]:cursor-not-allowed [&:is(:disabled,.disabled)]:opacity-60 px-3 py-1.5 text-xs bg-accent-500 text-white hover:text-bolt-elements-item-contentAccent [&:not(:disabled,.disabled)]:hover:bg-bolt-elements-button-primary-backgroundHover outline-accent-500 flex gap-1.7"
           >
-            {isDeploying ? `Deploying to ${deployingTo}...` : 'Deploy'}
+            {isDeploying ? `Fazendo deploy em ${deployingTo}…` : 'Deploy'}
             <span className={classNames('i-ph:caret-down transition-transform')} />
           </DropdownMenu.Trigger>
           <DropdownMenu.Content
@@ -166,7 +166,7 @@ export const DeployButton = ({
                 src="https://cdn.simpleicons.org/netlify"
               />
               <span className="mx-auto">
-                {!netlifyConn.user ? 'No Netlify Account Connected' : 'Deploy to Netlify'}
+                {!netlifyConn.user ? 'Nenhuma conta Netlify conectada' : 'Deploy no Netlify'}
               </span>
               {netlifyConn.user && <NetlifyDeploymentLink />}
             </DropdownMenu.Item>
@@ -189,7 +189,9 @@ export const DeployButton = ({
                 src="https://cdn.simpleicons.org/vercel/white"
                 alt="vercel"
               />
-              <span className="mx-auto">{!vercelConn.user ? 'No Vercel Account Connected' : 'Deploy to Vercel'}</span>
+              <span className="mx-auto">
+                {!vercelConn.user ? 'Nenhuma conta Vercel conectada' : 'Deploy no Vercel'}
+              </span>
               {vercelConn.user && <VercelDeploymentLink />}
             </DropdownMenu.Item>
 
@@ -211,7 +213,7 @@ export const DeployButton = ({
                 src="https://cdn.simpleicons.org/github"
                 alt="github"
               />
-              <span className="mx-auto">Deploy to GitHub</span>
+              <span className="mx-auto">Deploy no GitHub</span>
             </DropdownMenu.Item>
 
             <DropdownMenu.Item
@@ -232,7 +234,9 @@ export const DeployButton = ({
                 src="https://cdn.simpleicons.org/gitlab"
                 alt="gitlab"
               />
-              <span className="mx-auto">{!gitlabIsConnected ? 'No GitLab Account Connected' : 'Deploy to GitLab'}</span>
+              <span className="mx-auto">
+                {!gitlabIsConnected ? 'Nenhuma conta GitLab conectada' : 'Deploy no GitLab'}
+              </span>
             </DropdownMenu.Item>
 
             <DropdownMenu.Item
@@ -247,7 +251,7 @@ export const DeployButton = ({
                 src="https://cdn.simpleicons.org/cloudflare"
                 alt="cloudflare"
               />
-              <span className="mx-auto">Deploy to Cloudflare (Coming Soon)</span>
+              <span className="mx-auto">Deploy na Cloudflare (em breve)</span>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>

@@ -14,14 +14,108 @@ body {
   background-color: var(--bolt-elements-bg-depth-1);
 }
 
+/*
+ * Atmosfera de fundo — o espectro da marca (Chama → Rubi → Verde água),
+ * contido: é ambiente, não decoração.
+ */
 :root {
-  --gradient-opacity: 0.8;
-  --primary-color: rgba(158, 117, 240, var(--gradient-opacity));
-  --secondary-color: rgba(138, 43, 226, var(--gradient-opacity));
-  --accent-color: rgba(128, 59, 239, var(--gradient-opacity));
-  // --primary-color: rgba(147, 112, 219, var(--gradient-opacity));
-  // --secondary-color: rgba(138, 43, 226, var(--gradient-opacity));
-  // --accent-color: rgba(180, 170, 220, var(--gradient-opacity));
+  --gradient-opacity: 0.55;
+  --primary-color: rgba(242, 85, 44, var(--gradient-opacity)); // Laranja Chama
+  --secondary-color: rgba(216, 50, 26, var(--gradient-opacity)); // Rubi
+  --accent-color: rgba(17, 94, 102, var(--gradient-opacity)); // Verde água
+}
+
+:root[data-theme='light'] {
+  // No claro os raios entram em multiply: precisam de bem menos intensidade.
+  --gradient-opacity: 0.16;
+}
+
+/* ===== Tipografia da marca ============================================= */
+html,
+body {
+  font-family: var(--lph-font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/*
+ * Switzer em títulos e números — é o que faz uma tela parecer LPH.
+ * A hierarquia vem de peso/tamanho/cor, nunca de caixas empilhadas.
+ */
+h1,
+h2,
+h3,
+h4,
+.lph-display {
+  font-family: var(--lph-font-display);
+  letter-spacing: -0.015em;
+}
+
+::selection {
+  background: var(--lph-chama);
+  color: #fff;
+}
+
+/* ===== Assinaturas da marca =========================================== */
+
+/* Régua espectral — uma vez por vista (fio inferior do topo do app). */
+.lph-rule-brand {
+  height: 2px;
+  border: 0;
+  background: var(--lph-grad-spectrum);
+}
+
+/* Rótulo com a barra "/" — vem de PER / HOUR (alusão a km/h). */
+.lph-slash-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--bolt-elements-textTertiary);
+
+  &::before {
+    content: '/ ';
+    color: var(--lph-chama);
+    font-weight: 700;
+  }
+}
+
+/* Números de dado — Switzer, dígitos tabulares. */
+.lph-num {
+  font-family: var(--lph-font-display);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* O raio como indicador de atividade, no lugar do pontinho verde genérico. */
+.lph-live-bolt {
+  color: var(--lph-chama);
+  animation: lph-bolt-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes lph-bolt-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/*
+ * Arrasto da divisória entre a conversa e o workbench: as transições de layout
+ * fariam o painel chegar 200ms depois do cursor. Vale só enquanto o ponteiro está preso.
+ */
+html[data-resizing] * {
+  transition-property: none !important;
+}
+
+/* Foco visível na cor da marca — acessibilidade sem exceção. */
+:focus-visible {
+  outline: 2px solid var(--lph-chama);
+  outline-offset: 2px;
 }
 
 .modern-scrollbar {

@@ -15,7 +15,7 @@ export const defaultDesignScheme: DesignScheme = {
     textSecondary: '#A3A3A3',
     border: '#2F2F2F',
     success: '#10b981',
-    warning: '#f59e0b',
+    warning: '#f5a623',
     error: '#ef4444',
   },
   features: ['rounded'],

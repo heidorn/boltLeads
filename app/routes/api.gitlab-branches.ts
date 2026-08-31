@@ -26,11 +26,11 @@ async function gitlabBranchesLoader({ request }: { request: Request }) {
     const { token, gitlabUrl = 'https://gitlab.com', projectId } = body;
 
     if (!token) {
-      return json({ error: 'GitLab token is required' }, { status: 400 });
+      return json({ error: 'O token do GitLab é obrigatório' }, { status: 400 });
     }
 
     if (!projectId) {
-      return json({ error: 'Project ID is required' }, { status: 400 });
+      return json({ error: 'O ID do projeto é obrigatório' }, { status: 400 });
     }
 
     // Fetch branches from GitLab API
@@ -46,19 +46,19 @@ async function gitlabBranchesLoader({ request }: { request: Request }) {
 
     if (!response.ok) {
       if (response.status === 401) {
-        return json({ error: 'Invalid GitLab token' }, { status: 401 });
+        return json({ error: 'Token do GitLab inválido' }, { status: 401 });
       }
 
       if (response.status === 404) {
-        return json({ error: 'Project not found or no access' }, { status: 404 });
+        return json({ error: 'Projeto não encontrado ou sem acesso' }, { status: 404 });
       }
 
-      const errorText = await response.text().catch(() => 'Unknown error');
+      const errorText = await response.text().catch(() => 'Erro desconhecido');
       console.error('GitLab API error:', response.status, errorText);
 
       return json(
         {
-          error: `GitLab API error: ${response.status}`,
+          error: `Erro da API do GitLab: ${response.status}`,
         },
         { status: response.status },
       );
@@ -117,7 +117,7 @@ async function gitlabBranchesLoader({ request }: { request: Request }) {
       if (error.message.includes('fetch')) {
         return json(
           {
-            error: 'Failed to connect to GitLab. Please check your network connection.',
+            error: 'Não foi possível conectar ao GitLab. Verifique sua conexão de rede.',
           },
           { status: 503 },
         );
@@ -125,7 +125,7 @@ async function gitlabBranchesLoader({ request }: { request: Request }) {
 
       return json(
         {
-          error: `Failed to fetch branches: ${error.message}`,
+          error: `Não foi possível carregar as branches: ${error.message}`,
         },
         { status: 500 },
       );
@@ -133,7 +133,7 @@ async function gitlabBranchesLoader({ request }: { request: Request }) {
 
     return json(
       {
-        error: 'An unexpected error occurred while fetching branches',
+        error: 'Ocorreu um erro inesperado ao carregar as branches',
       },
       { status: 500 },
     );

@@ -80,7 +80,7 @@ export function useDataOperations({
     // Dismiss any existing toast first
     toast.dismiss('progress-toast');
 
-    toast.loading('Preparing settings export...', {
+    toast.loading('Preparando a exportação das configurações…', {
       position: 'bottom-right',
       autoClose: 3000,
       toastId: 'progress-toast',
@@ -88,19 +88,19 @@ export function useDataOperations({
 
     try {
       // Step 1: Export settings
-      showProgress('Exporting settings', 25);
+      showProgress('Exportando configurações', 25);
 
       const settingsData = await ImportExportService.exportSettings();
 
       // Step 2: Create blob
-      showProgress('Creating file', 50);
+      showProgress('Criando o arquivo', 50);
 
       const blob = new Blob([JSON.stringify(settingsData, null, 2)], {
         type: 'application/json',
       });
 
       // Step 3: Download file
-      showProgress('Downloading file', 75);
+      showProgress('Baixando o arquivo', 75);
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -112,12 +112,12 @@ export function useDataOperations({
       URL.revokeObjectURL(url);
 
       // Step 4: Complete
-      showProgress('Completing export', 100);
+      showProgress('Concluindo a exportação', 100);
 
       // Dismiss progress toast before showing success toast
       toast.dismiss('progress-toast');
 
-      toast.success('Settings exported successfully', {
+      toast.success('Configurações exportadas', {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -130,10 +130,13 @@ export function useDataOperations({
       // Dismiss progress toast before showing error toast
       toast.dismiss('progress-toast');
 
-      toast.error(`Failed to export settings: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        position: 'bottom-right',
-        autoClose: 3000,
-      });
+      toast.error(
+        `Não foi possível exportar as configurações: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+        },
+      );
     } finally {
       setIsExporting(false);
       setProgressPercent(0);
@@ -148,7 +151,7 @@ export function useDataOperations({
   const handleExportSelectedSettings = useCallback(
     async (categoryIds: string[]) => {
       if (!categoryIds || categoryIds.length === 0) {
-        toast.error('No settings categories selected', {
+        toast.error('Nenhuma categoria de configuração selecionada', {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -161,7 +164,7 @@ export function useDataOperations({
       // Dismiss any existing toast first
       toast.dismiss('progress-toast');
 
-      toast.loading(`Preparing export of ${categoryIds.length} settings categories...`, {
+      toast.loading(`Preparando a exportação de ${categoryIds.length} categorias de configuração…`, {
         position: 'bottom-right',
         autoClose: 3000,
         toastId: 'progress-toast',
@@ -169,12 +172,12 @@ export function useDataOperations({
 
       try {
         // Step 1: Export all settings
-        showProgress('Exporting settings', 20);
+        showProgress('Exportando configurações', 20);
 
         const allSettings = await ImportExportService.exportSettings();
 
         // Step 2: Filter settings by category
-        showProgress('Filtering selected categories', 40);
+        showProgress('Filtrando as categorias selecionadas', 40);
 
         const filteredSettings: Record<string, any> = {
           exportDate: allSettings.exportDate,
@@ -188,14 +191,14 @@ export function useDataOperations({
         });
 
         // Step 3: Create blob
-        showProgress('Creating file', 60);
+        showProgress('Criando o arquivo', 60);
 
         const blob = new Blob([JSON.stringify(filteredSettings, null, 2)], {
           type: 'application/json',
         });
 
         // Step 4: Download file
-        showProgress('Downloading file', 80);
+        showProgress('Baixando o arquivo', 80);
 
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -207,12 +210,12 @@ export function useDataOperations({
         URL.revokeObjectURL(url);
 
         // Step 5: Complete
-        showProgress('Completing export', 100);
+        showProgress('Concluindo a exportação', 100);
 
         // Dismiss progress toast before showing success toast
         toast.dismiss('progress-toast');
 
-        toast.success(`${categoryIds.length} settings categories exported successfully`, {
+        toast.success(`${categoryIds.length} categorias de configuração exportadas`, {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -228,10 +231,13 @@ export function useDataOperations({
         // Dismiss progress toast before showing error toast
         toast.dismiss('progress-toast');
 
-        toast.error(`Failed to export settings: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-          position: 'bottom-right',
-          autoClose: 3000,
-        });
+        toast.error(
+          `Não foi possível exportar as configurações: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+          {
+            position: 'bottom-right',
+            autoClose: 3000,
+          },
+        );
       } finally {
         setIsExporting(false);
         setProgressPercent(0);
@@ -246,7 +252,7 @@ export function useDataOperations({
    */
   const handleExportAllChats = useCallback(async () => {
     if (!db) {
-      toast.error('Database not available', {
+      toast.error('Banco de dados indisponível', {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -265,7 +271,7 @@ export function useDataOperations({
     // Dismiss any existing toast first
     toast.dismiss('progress-toast');
 
-    toast.loading('Preparing chats export...', {
+    toast.loading('Preparando a exportação dos chats…', {
       position: 'bottom-right',
       autoClose: 3000,
       toastId: 'progress-toast',
@@ -273,7 +279,7 @@ export function useDataOperations({
 
     try {
       // Step 1: Export chats
-      showProgress('Retrieving chats from database', 25);
+      showProgress('Buscando os chats no banco de dados', 25);
 
       console.log('Database details:', {
         name: db.name,
@@ -314,14 +320,14 @@ export function useDataOperations({
       console.log(`Preparing to export ${exportData.chats.length} chats`);
 
       // Step 2: Create blob
-      showProgress('Creating file', 50);
+      showProgress('Criando o arquivo', 50);
 
       const blob = new Blob([JSON.stringify(exportData, null, 2)], {
         type: 'application/json',
       });
 
       // Step 3: Download file
-      showProgress('Downloading file', 75);
+      showProgress('Baixando o arquivo', 75);
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -333,12 +339,12 @@ export function useDataOperations({
       URL.revokeObjectURL(url);
 
       // Step 4: Complete
-      showProgress('Completing export', 100);
+      showProgress('Concluindo a exportação', 100);
 
       // Dismiss progress toast before showing success toast
       toast.dismiss('progress-toast');
 
-      toast.success(`${exportData.chats.length} chats exported successfully`, {
+      toast.success(`${exportData.chats.length} chats exportados`, {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -351,10 +357,13 @@ export function useDataOperations({
       // Dismiss progress toast before showing error toast
       toast.dismiss('progress-toast');
 
-      toast.error(`Failed to export chats: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        position: 'bottom-right',
-        autoClose: 3000,
-      });
+      toast.error(
+        `Não foi possível exportar os chats: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+        },
+      );
     } finally {
       setIsExporting(false);
       setProgressPercent(0);
@@ -369,7 +378,7 @@ export function useDataOperations({
   const handleExportSelectedChats = useCallback(
     async (chatIds: string[]) => {
       if (!db) {
-        toast.error('Database not available', {
+        toast.error('Banco de dados indisponível', {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -377,7 +386,7 @@ export function useDataOperations({
       }
 
       if (!chatIds || chatIds.length === 0) {
-        toast.error('No chats selected', {
+        toast.error('Nenhum chat selecionado', {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -390,7 +399,7 @@ export function useDataOperations({
       // Dismiss any existing toast first
       toast.dismiss('progress-toast');
 
-      toast.loading(`Preparing export of ${chatIds.length} chats...`, {
+      toast.loading(`Preparando a exportação de ${chatIds.length} chats…`, {
         position: 'bottom-right',
         autoClose: 3000,
         toastId: 'progress-toast',
@@ -398,7 +407,7 @@ export function useDataOperations({
 
       try {
         // Step 1: Get chats from database
-        showProgress('Retrieving chats from database', 25);
+        showProgress('Buscando os chats no banco de dados', 25);
 
         const transaction = db.transaction(['chats'], 'readonly');
         const store = transaction.objectStore('chats');
@@ -425,14 +434,14 @@ export function useDataOperations({
         };
 
         // Step 2: Create blob
-        showProgress('Creating file', 50);
+        showProgress('Criando o arquivo', 50);
 
         const blob = new Blob([JSON.stringify(exportData, null, 2)], {
           type: 'application/json',
         });
 
         // Step 3: Download file
-        showProgress('Downloading file', 75);
+        showProgress('Baixando o arquivo', 75);
 
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -444,12 +453,12 @@ export function useDataOperations({
         URL.revokeObjectURL(url);
 
         // Step 4: Complete
-        showProgress('Completing export', 100);
+        showProgress('Concluindo a exportação', 100);
 
         // Dismiss progress toast before showing success toast
         toast.dismiss('progress-toast');
 
-        toast.success(`${filteredChats.length} chats exported successfully`, {
+        toast.success(`${filteredChats.length} chats exportados`, {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -462,10 +471,13 @@ export function useDataOperations({
         // Dismiss progress toast before showing error toast
         toast.dismiss('progress-toast');
 
-        toast.error(`Failed to export selected chats: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-          position: 'bottom-right',
-          autoClose: 3000,
-        });
+        toast.error(
+          `Não foi possível exportar os chats selecionados: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+          {
+            position: 'bottom-right',
+            autoClose: 3000,
+          },
+        );
       } finally {
         setIsExporting(false);
         setProgressPercent(0);
@@ -487,7 +499,7 @@ export function useDataOperations({
       // Dismiss any existing toast first
       toast.dismiss('progress-toast');
 
-      toast.loading(`Importing settings from ${file.name}...`, {
+      toast.loading(`Importando configurações de ${file.name}…`, {
         position: 'bottom-right',
         autoClose: 3000,
         toastId: 'progress-toast',
@@ -495,33 +507,33 @@ export function useDataOperations({
 
       try {
         // Step 1: Read file
-        showProgress('Reading file', 20);
+        showProgress('Lendo o arquivo', 20);
 
         const fileContent = await file.text();
 
         // Step 2: Parse JSON
-        showProgress('Parsing settings data', 40);
+        showProgress('Lendo os dados das configurações', 40);
 
         const importedData = JSON.parse(fileContent);
 
         // Step 3: Validate data
-        showProgress('Validating settings data', 60);
+        showProgress('Validando os dados das configurações', 60);
 
         // Save current settings for potential undo
         const currentSettings = await ImportExportService.exportSettings();
         setLastOperation({ type: 'import-settings', data: { previous: currentSettings } });
 
         // Step 4: Import settings
-        showProgress('Applying settings', 80);
+        showProgress('Aplicando as configurações', 80);
         await ImportExportService.importSettings(importedData);
 
         // Step 5: Complete
-        showProgress('Completing import', 100);
+        showProgress('Concluindo a importação', 100);
 
         // Dismiss progress toast before showing success toast
         toast.dismiss('progress-toast');
 
-        toast.success('Settings imported successfully', {
+        toast.success('Configurações importadas', {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -535,10 +547,13 @@ export function useDataOperations({
         // Dismiss progress toast before showing error toast
         toast.dismiss('progress-toast');
 
-        toast.error(`Failed to import settings: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-          position: 'bottom-right',
-          autoClose: 3000,
-        });
+        toast.error(
+          `Não foi possível importar as configurações: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+          {
+            position: 'bottom-right',
+            autoClose: 3000,
+          },
+        );
       } finally {
         setIsImporting(false);
         setProgressPercent(0);
@@ -555,7 +570,7 @@ export function useDataOperations({
   const handleImportChats = useCallback(
     async (file: File) => {
       if (!db) {
-        toast.error('Database not available', {
+        toast.error('Banco de dados indisponível', {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -568,7 +583,7 @@ export function useDataOperations({
       // Dismiss any existing toast first
       toast.dismiss('progress-toast');
 
-      toast.loading(`Importing chats from ${file.name}...`, {
+      toast.loading(`Importando chats de ${file.name}…`, {
         position: 'bottom-right',
         autoClose: 3000,
         toastId: 'progress-toast',
@@ -576,31 +591,31 @@ export function useDataOperations({
 
       try {
         // Step 1: Read file
-        showProgress('Reading file', 20);
+        showProgress('Lendo o arquivo', 20);
 
         const fileContent = await file.text();
 
         // Step 2: Parse JSON and validate structure
-        showProgress('Parsing chat data', 40);
+        showProgress('Lendo os dados dos chats', 40);
 
         const importedData = JSON.parse(fileContent);
 
         if (!importedData.chats || !Array.isArray(importedData.chats)) {
-          throw new Error('Invalid chat data format: missing or invalid chats array');
+          throw new Error('Formato de dados inválido: a lista de chats está ausente ou inválida');
         }
 
         // Step 3: Validate each chat object
-        showProgress('Validating chat data', 60);
+        showProgress('Validando os dados dos chats', 60);
 
         const validatedChats = importedData.chats.map((chat: any) => {
           if (!chat.id || !Array.isArray(chat.messages)) {
-            throw new Error('Invalid chat format: missing required fields');
+            throw new Error('Formato de chat inválido: campos obrigatórios ausentes');
           }
 
           // Ensure each message has required fields
           const validatedMessages = chat.messages.map((msg: any) => {
             if (!msg.role || !msg.content) {
-              throw new Error('Invalid message format: missing required fields');
+              throw new Error('Formato de mensagem inválido: campos obrigatórios ausentes');
             }
 
             return {
@@ -624,13 +639,13 @@ export function useDataOperations({
         });
 
         // Step 4: Save current chats for potential undo
-        showProgress('Preparing database transaction', 70);
+        showProgress('Preparando a transação no banco de dados', 70);
 
         const currentChats = await ImportExportService.exportAllChats(db);
         setLastOperation({ type: 'import-chats', data: { previous: currentChats } });
 
         // Step 5: Import chats
-        showProgress(`Importing ${validatedChats.length} chats`, 80);
+        showProgress(`Importando ${validatedChats.length} chats`, 80);
 
         const transaction = db.transaction(['chats'], 'readwrite');
         const store = transaction.objectStore('chats');
@@ -643,7 +658,7 @@ export function useDataOperations({
 
           if (processed % 5 === 0 || processed === validatedChats.length) {
             showProgress(
-              `Imported ${processed} of ${validatedChats.length} chats`,
+              `${processed} de ${validatedChats.length} chats importados`,
               80 + (processed / validatedChats.length) * 20,
             );
           }
@@ -655,12 +670,12 @@ export function useDataOperations({
         });
 
         // Step 6: Complete
-        showProgress('Completing import', 100);
+        showProgress('Concluindo a importação', 100);
 
         // Dismiss progress toast before showing success toast
         toast.dismiss('progress-toast');
 
-        toast.success(`${validatedChats.length} chats imported successfully`, {
+        toast.success(`${validatedChats.length} chats importados`, {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -674,10 +689,13 @@ export function useDataOperations({
         // Dismiss progress toast before showing error toast
         toast.dismiss('progress-toast');
 
-        toast.error(`Failed to import chats: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-          position: 'bottom-right',
-          autoClose: 3000,
-        });
+        toast.error(
+          `Não foi possível importar os chats: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+          {
+            position: 'bottom-right',
+            autoClose: 3000,
+          },
+        );
       } finally {
         setIsImporting(false);
         setProgressPercent(0);
@@ -699,7 +717,7 @@ export function useDataOperations({
       // Dismiss any existing toast first
       toast.dismiss('progress-toast');
 
-      toast.loading(`Importing API keys from ${file.name}...`, {
+      toast.loading(`Importando chaves da API de ${file.name}…`, {
         position: 'bottom-right',
         autoClose: 3000,
         toastId: 'progress-toast',
@@ -707,17 +725,17 @@ export function useDataOperations({
 
       try {
         // Step 1: Read file
-        showProgress('Reading file', 20);
+        showProgress('Lendo o arquivo', 20);
 
         const fileContent = await file.text();
 
         // Step 2: Parse JSON
-        showProgress('Parsing API keys data', 40);
+        showProgress('Lendo os dados das chaves da API', 40);
 
         const importedData = JSON.parse(fileContent);
 
         // Step 3: Validate data
-        showProgress('Validating API keys data', 60);
+        showProgress('Validando os dados das chaves da API', 60);
 
         // Get current API keys from cookies for potential undo
         const apiKeysStr = document.cookie.split(';').find((row) => row.trim().startsWith('apiKeys='));
@@ -725,14 +743,14 @@ export function useDataOperations({
         setLastOperation({ type: 'import-api-keys', data: { previous: currentApiKeys } });
 
         // Step 4: Import API keys
-        showProgress('Applying API keys', 80);
+        showProgress('Aplicando as chaves da API', 80);
 
         const newKeys = ImportExportService.importAPIKeys(importedData);
         const apiKeysJson = JSON.stringify(newKeys);
         document.cookie = `apiKeys=${apiKeysJson}; path=/; max-age=31536000`;
 
         // Step 5: Complete
-        showProgress('Completing import', 100);
+        showProgress('Concluindo a importação', 100);
 
         // Dismiss progress toast before showing success toast
         toast.dismiss('progress-toast');
@@ -744,8 +762,8 @@ export function useDataOperations({
         ).length;
 
         toast.success(
-          `${keyCount} API keys imported successfully (${newKeyCount} new/updated)\n` +
-            'Note: Keys are stored in browser cookies. For server-side usage, add them to your .env.local file.',
+          `${keyCount} chaves da API importadas (${newKeyCount} novas ou atualizadas)\n` +
+            'As chaves ficam em cookies do navegador. Para uso no servidor, adicione-as ao arquivo .env.local.',
           { position: 'bottom-right', autoClose: 5000 },
         );
 
@@ -758,10 +776,13 @@ export function useDataOperations({
         // Dismiss progress toast before showing error toast
         toast.dismiss('progress-toast');
 
-        toast.error(`Failed to import API keys: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-          position: 'bottom-right',
-          autoClose: 3000,
-        });
+        toast.error(
+          `Não foi possível importar as chaves da API: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+          {
+            position: 'bottom-right',
+            autoClose: 3000,
+          },
+        );
       } finally {
         setIsImporting(false);
         setProgressPercent(0);
@@ -781,7 +802,7 @@ export function useDataOperations({
     // Dismiss any existing toast first
     toast.dismiss('progress-toast');
 
-    toast.loading('Resetting settings...', {
+    toast.loading('Redefinindo as configurações…', {
       position: 'bottom-right',
       autoClose: 3000,
       toastId: 'progress-toast',
@@ -790,22 +811,22 @@ export function useDataOperations({
     try {
       if (db) {
         // Step 1: Save current settings for potential undo
-        showProgress('Backing up current settings', 25);
+        showProgress('Fazendo backup das configurações atuais', 25);
 
         const currentSettings = await ImportExportService.exportSettings();
         setLastOperation({ type: 'reset-settings', data: { previous: currentSettings } });
 
         // Step 2: Reset settings
-        showProgress('Resetting settings to defaults', 50);
+        showProgress('Redefinindo as configurações para o padrão', 50);
         await ImportExportService.resetAllSettings(db);
 
         // Step 3: Complete
-        showProgress('Completing reset', 100);
+        showProgress('Concluindo a redefinição', 100);
 
         // Dismiss progress toast before showing success toast
         toast.dismiss('progress-toast');
 
-        toast.success('Settings reset successfully', {
+        toast.success('Configurações redefinidas', {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -817,7 +838,7 @@ export function useDataOperations({
         // Dismiss progress toast before showing error toast
         toast.dismiss('progress-toast');
 
-        toast.error('Database not available', {
+        toast.error('Banco de dados indisponível', {
           position: 'bottom-right',
           autoClose: 3000,
         });
@@ -828,10 +849,13 @@ export function useDataOperations({
       // Dismiss progress toast before showing error toast
       toast.dismiss('progress-toast');
 
-      toast.error(`Failed to reset settings: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        position: 'bottom-right',
-        autoClose: 3000,
-      });
+      toast.error(
+        `Não foi possível redefinir as configurações: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+        },
+      );
     } finally {
       setIsResetting(false);
       setProgressPercent(0);
@@ -844,7 +868,7 @@ export function useDataOperations({
    */
   const handleResetChats = useCallback(async () => {
     if (!db) {
-      toast.error('Database not available', {
+      toast.error('Banco de dados indisponível', {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -857,7 +881,7 @@ export function useDataOperations({
     // Dismiss any existing toast first
     toast.dismiss('progress-toast');
 
-    toast.loading('Deleting all chats...', {
+    toast.loading('Excluindo todos os chats…', {
       position: 'bottom-right',
       autoClose: 3000,
       toastId: 'progress-toast',
@@ -865,22 +889,22 @@ export function useDataOperations({
 
     try {
       // Step 1: Save current chats for potential undo
-      showProgress('Backing up current chats', 25);
+      showProgress('Fazendo backup dos chats atuais', 25);
 
       const currentChats = await ImportExportService.exportAllChats(db);
       setLastOperation({ type: 'reset-chats', data: { previous: currentChats } });
 
       // Step 2: Delete chats
-      showProgress('Deleting chats from database', 50);
+      showProgress('Excluindo os chats do banco de dados', 50);
       await ImportExportService.deleteAllChats(db);
 
       // Step 3: Complete
-      showProgress('Completing deletion', 100);
+      showProgress('Concluindo a exclusão', 100);
 
       // Dismiss progress toast before showing success toast
       toast.dismiss('progress-toast');
 
-      toast.success('All chats deleted successfully', {
+      toast.success('Todos os chats foram excluídos', {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -894,10 +918,13 @@ export function useDataOperations({
       // Dismiss progress toast before showing error toast
       toast.dismiss('progress-toast');
 
-      toast.error(`Failed to delete chats: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        position: 'bottom-right',
-        autoClose: 3000,
-      });
+      toast.error(
+        `Não foi possível excluir os chats: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+        },
+      );
     } finally {
       setIsResetting(false);
       setProgressPercent(0);
@@ -915,7 +942,7 @@ export function useDataOperations({
     // Dismiss any existing toast first
     toast.dismiss('progress-toast');
 
-    toast.loading('Creating API keys template...', {
+    toast.loading('Criando o modelo de chaves da API…', {
       position: 'bottom-right',
       autoClose: 3000,
       toastId: 'progress-toast',
@@ -923,12 +950,12 @@ export function useDataOperations({
 
     try {
       // Step 1: Create template
-      showProgress('Creating template', 50);
+      showProgress('Criando o modelo', 50);
 
       const templateData = ImportExportService.createAPIKeysTemplate();
 
       // Step 2: Download file
-      showProgress('Downloading template', 75);
+      showProgress('Baixando o modelo', 75);
 
       const blob = new Blob([JSON.stringify(templateData, null, 2)], {
         type: 'application/json',
@@ -943,12 +970,12 @@ export function useDataOperations({
       URL.revokeObjectURL(url);
 
       // Step 3: Complete
-      showProgress('Completing download', 100);
+      showProgress('Concluindo o download', 100);
 
       // Dismiss progress toast before showing success toast
       toast.dismiss('progress-toast');
 
-      toast.success('Template downloaded successfully', {
+      toast.success('Modelo baixado', {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -958,7 +985,7 @@ export function useDataOperations({
       // Dismiss progress toast before showing error toast
       toast.dismiss('progress-toast');
 
-      toast.error(`Failed to download template: ${error instanceof Error ? error.message : 'Unknown error'}`, {
+      toast.error(`Não foi possível baixar o modelo: ${error instanceof Error ? error.message : 'Erro desconhecido'}`, {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -979,7 +1006,7 @@ export function useDataOperations({
     // Dismiss any existing toast first
     toast.dismiss('progress-toast');
 
-    toast.loading('Exporting API keys...', {
+    toast.loading('Exportando as chaves da API…', {
       position: 'bottom-right',
       autoClose: 3000,
       toastId: 'progress-toast',
@@ -987,26 +1014,26 @@ export function useDataOperations({
 
     try {
       // Step 1: Get API keys from all sources
-      showProgress('Retrieving API keys', 25);
+      showProgress('Buscando as chaves da API', 25);
 
       // Create a fetch request to get API keys from server
       const response = await fetch('/api/export-api-keys');
 
       if (!response.ok) {
-        throw new Error('Failed to retrieve API keys from server');
+        throw new Error('Não foi possível obter as chaves da API no servidor');
       }
 
       const apiKeys = await response.json();
 
       // Step 2: Create blob
-      showProgress('Creating file', 50);
+      showProgress('Criando o arquivo', 50);
 
       const blob = new Blob([JSON.stringify(apiKeys, null, 2)], {
         type: 'application/json',
       });
 
       // Step 3: Download file
-      showProgress('Downloading file', 75);
+      showProgress('Baixando o arquivo', 75);
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1018,12 +1045,12 @@ export function useDataOperations({
       URL.revokeObjectURL(url);
 
       // Step 4: Complete
-      showProgress('Completing export', 100);
+      showProgress('Concluindo a exportação', 100);
 
       // Dismiss progress toast before showing success toast
       toast.dismiss('progress-toast');
 
-      toast.success('API keys exported successfully', {
+      toast.success('Chaves da API exportadas', {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -1036,10 +1063,13 @@ export function useDataOperations({
       // Dismiss progress toast before showing error toast
       toast.dismiss('progress-toast');
 
-      toast.error(`Failed to export API keys: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        position: 'bottom-right',
-        autoClose: 3000,
-      });
+      toast.error(
+        `Não foi possível exportar as chaves da API: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+        {
+          position: 'bottom-right',
+          autoClose: 3000,
+        },
+      );
     } finally {
       setIsExporting(false);
       setProgressPercent(0);
@@ -1052,7 +1082,7 @@ export function useDataOperations({
    */
   const handleUndo = useCallback(async () => {
     if (!lastOperation || !db) {
-      toast.error('Nothing to undo', {
+      toast.error('Nada para desfazer', {
         position: 'bottom-right',
         autoClose: 3000,
       });
@@ -1062,7 +1092,7 @@ export function useDataOperations({
     // Dismiss any existing toast first
     toast.dismiss('progress-toast');
 
-    toast.loading('Processing undo operation...', {
+    toast.loading('Desfazendo a última operação…', {
       position: 'bottom-right',
       autoClose: 3000,
       toastId: 'progress-toast',
@@ -1077,7 +1107,7 @@ export function useDataOperations({
           // Dismiss progress toast before showing success toast
           toast.dismiss('progress-toast');
 
-          toast.success('Operation undone successfully', {
+          toast.success('Operação desfeita', {
             position: 'bottom-right',
             autoClose: 3000,
           });
@@ -1109,7 +1139,7 @@ export function useDataOperations({
           // Dismiss progress toast before showing success toast
           toast.dismiss('progress-toast');
 
-          toast.success('Operation undone successfully', {
+          toast.success('Operação desfeita', {
             position: 'bottom-right',
             autoClose: 3000,
           });
@@ -1128,7 +1158,7 @@ export function useDataOperations({
           // Dismiss progress toast before showing success toast
           toast.dismiss('progress-toast');
 
-          toast.success('Operation undone successfully', {
+          toast.success('Operação desfeita', {
             position: 'bottom-right',
             autoClose: 3000,
           });
@@ -1157,7 +1187,7 @@ export function useDataOperations({
           // Dismiss progress toast before showing success toast
           toast.dismiss('progress-toast');
 
-          toast.success('Operation undone successfully', {
+          toast.success('Operação desfeita', {
             position: 'bottom-right',
             autoClose: 3000,
           });
@@ -1179,7 +1209,7 @@ export function useDataOperations({
           // Dismiss progress toast before showing success toast
           toast.dismiss('progress-toast');
 
-          toast.success('Operation undone successfully', {
+          toast.success('Operação desfeita', {
             position: 'bottom-right',
             autoClose: 3000,
           });
@@ -1195,7 +1225,7 @@ export function useDataOperations({
           // Dismiss progress toast before showing error toast
           toast.dismiss('progress-toast');
 
-          toast.error('Cannot undo this operation', {
+          toast.error('Não é possível desfazer esta operação', {
             position: 'bottom-right',
             autoClose: 3000,
           });
@@ -1209,7 +1239,7 @@ export function useDataOperations({
       // Dismiss progress toast before showing error toast
       toast.dismiss('progress-toast');
 
-      toast.error(`Failed to undo: ${error instanceof Error ? error.message : 'Unknown error'}`, {
+      toast.error(`Não foi possível desfazer: ${error instanceof Error ? error.message : 'Erro desconhecido'}`, {
         position: 'bottom-right',
         autoClose: 3000,
       });

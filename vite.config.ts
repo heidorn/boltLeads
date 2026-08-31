@@ -13,6 +13,14 @@ dotenv.config();
 
 export default defineConfig((config) => {
   return {
+    /*
+     * Porta fixa do Studio: 5180 fica fora da faixa que outros projetos Vite
+     * disputam (5173+), então o endereço local não muda de sessão para sessão.
+     */
+    server: {
+      port: Number(process.env.PORT) || 5180,
+      strictPort: false,
+    },
     define: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     },

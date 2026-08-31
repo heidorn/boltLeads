@@ -67,7 +67,7 @@ export async function autoConnectVercel() {
 
   if (!envToken) {
     console.error('No Vercel token found in environment');
-    return { success: false, error: 'No Vercel token found in environment' };
+    return { success: false, error: 'Nenhum token do Vercel encontrado no ambiente' };
   }
 
   try {
@@ -100,9 +100,9 @@ export async function autoConnectVercel() {
       token: envToken,
     });
 
-    logStore.logInfo('Auto-connected to Vercel', {
+    logStore.logInfo('Conectado automaticamente ao Vercel', {
       type: 'system',
-      message: `Auto-connected to Vercel as ${userData.user?.username || userData.username}`,
+      message: `Conectado automaticamente ao Vercel como ${userData.user?.username || userData.username}`,
     });
 
     // Fetch stats
@@ -114,14 +114,17 @@ export async function autoConnectVercel() {
     return { success: true };
   } catch (error) {
     console.error('Failed to auto-connect to Vercel:', error);
-    logStore.logError(`Vercel auto-connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-      type: 'system',
-      message: 'Vercel auto-connection failed',
-    });
+    logStore.logError(
+      `Não foi possível conectar automaticamente ao Vercel: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+      {
+        type: 'system',
+        message: 'Não foi possível conectar automaticamente ao Vercel',
+      },
+    );
 
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: error instanceof Error ? error.message : 'Erro desconhecido',
     };
   } finally {
     console.log('Setting isConnecting to false');
@@ -199,8 +202,8 @@ export async function fetchVercelStats(token: string) {
     });
   } catch (error) {
     console.error('Vercel API Error:', error);
-    logStore.logError('Failed to fetch Vercel stats', { error });
-    toast.error('Failed to fetch Vercel statistics');
+    logStore.logError('Não foi possível carregar as estatísticas do Vercel', { error });
+    toast.error('Não foi possível carregar as estatísticas do Vercel');
   } finally {
     isFetchingStats.set(false);
   }

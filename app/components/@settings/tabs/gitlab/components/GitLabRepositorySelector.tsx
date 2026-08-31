@@ -54,15 +54,17 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
       });
 
       if (!response.ok) {
-        const errorData: any = await response.json().catch(() => ({ error: 'Failed to fetch repositories' }));
-        throw new Error(errorData.error || 'Failed to fetch repositories');
+        const errorData: any = await response
+          .json()
+          .catch(() => ({ error: 'Não foi possível carregar os repositórios' }));
+        throw new Error(errorData.error || 'Não foi possível carregar os repositórios');
       }
 
       const data: any = await response.json();
       setRepositories(data.projects || []);
     } catch (err) {
       console.error('Failed to fetch GitLab repositories:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch repositories');
+      setError(err instanceof Error ? err.message : 'Não foi possível carregar os repositórios');
 
       // Fallback to empty array on error
       setRepositories([]);
@@ -166,9 +168,9 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
   if (!isConnected || !connection) {
     return (
       <div className="text-center p-8">
-        <p className="text-bolt-elements-textSecondary mb-4">Please connect to GitLab first to browse repositories</p>
+        <p className="text-bolt-elements-textSecondary mb-4">Conecte-se ao GitLab para ver os repositórios</p>
         <Button variant="outline" onClick={() => window.location.reload()}>
-          Refresh Connection
+          Atualizar conexão
         </Button>
       </div>
     );
@@ -179,12 +181,12 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
       <div className="text-center p-8">
         <div className="text-red-500 mb-4">
           <GitBranch className="w-12 h-12 mx-auto mb-2" />
-          <p className="font-medium">Failed to load repositories</p>
+          <p className="font-medium">Não foi possível carregar os repositórios</p>
           <p className="text-sm text-bolt-elements-textSecondary mt-1">{error}</p>
         </div>
         <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
           <RefreshCw className={classNames('w-4 h-4 mr-2', { 'animate-spin': isRefreshing })} />
-          Try Again
+          Tentar de novo
         </Button>
       </div>
     );
@@ -194,7 +196,7 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
     return (
       <div className="flex flex-col items-center justify-center p-8 space-y-4">
         <div className="animate-spin w-8 h-8 border-2 border-bolt-elements-borderColorActive border-t-transparent rounded-full" />
-        <p className="text-sm text-bolt-elements-textSecondary">Loading repositories...</p>
+        <p className="text-sm text-bolt-elements-textSecondary">Carregando repositórios…</p>
       </div>
     );
   }
@@ -203,10 +205,10 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
     return (
       <div className="text-center p-8">
         <GitBranch className="w-12 h-12 text-bolt-elements-textTertiary mx-auto mb-4" />
-        <p className="text-bolt-elements-textSecondary mb-4">No repositories found</p>
+        <p className="text-bolt-elements-textSecondary mb-4">Nenhum repositório encontrado</p>
         <Button variant="outline" onClick={handleRefresh} disabled={isRefreshing}>
           <RefreshCw className={classNames('w-4 h-4 mr-2', { 'animate-spin': isRefreshing })} />
-          Refresh
+          Atualizar
         </Button>
       </div>
     );
@@ -222,9 +224,9 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
       {/* Header with stats */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">Select Repository to Clone</h3>
+          <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">Selecione o repositório para clonar</h3>
           <p className="text-sm text-bolt-elements-textSecondary">
-            {filteredRepositories.length} of {repositories.length} repositories
+            {filteredRepositories.length} de {repositories.length} repositórios
           </p>
         </div>
         <Button
@@ -235,13 +237,13 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
           className="flex items-center gap-2"
         >
           <RefreshCw className={classNames('w-4 h-4', { 'animate-spin': isRefreshing })} />
-          Refresh
+          Atualizar
         </Button>
       </div>
 
       {error && repositories.length > 0 && (
         <div className="p-3 rounded-lg bg-yellow-50 border border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-700">
-          <p className="text-sm text-yellow-800 dark:text-yellow-200">Warning: {error}. Showing cached data.</p>
+          <p className="text-sm text-yellow-800 dark:text-yellow-200">Aviso: {error}. Exibindo dados em cache.</p>
         </div>
       )}
 
@@ -252,7 +254,7 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-bolt-elements-textTertiary" />
           <input
             type="text"
-            placeholder="Search repositories..."
+            placeholder="Buscar repositórios…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 rounded-lg bg-bolt-elements-background-depth-1 border border-bolt-elements-borderColor text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary focus:outline-none focus:ring-1 focus:ring-bolt-elements-borderColorActive"
@@ -267,10 +269,10 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
             onChange={(e) => setSortBy(e.target.value as SortOption)}
             className="px-3 py-2 rounded-lg bg-bolt-elements-background-depth-1 border border-bolt-elements-borderColor text-bolt-elements-textPrimary text-sm focus:outline-none focus:ring-1 focus:ring-bolt-elements-borderColorActive"
           >
-            <option value="updated">Recently updated</option>
-            <option value="stars">Most starred</option>
-            <option value="name">Name (A-Z)</option>
-            <option value="created">Recently created</option>
+            <option value="updated">Atualizados recentemente</option>
+            <option value="stars">Com mais stars</option>
+            <option value="name">Nome (A-Z)</option>
+            <option value="created">Criados recentemente</option>
           </select>
         </div>
 
@@ -282,9 +284,9 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
             onChange={(e) => setFilterBy(e.target.value as FilterOption)}
             className="px-3 py-2 rounded-lg bg-bolt-elements-background-depth-1 border border-bolt-elements-borderColor text-bolt-elements-textPrimary text-sm focus:outline-none focus:ring-1 focus:ring-bolt-elements-borderColorActive"
           >
-            <option value="all">All repositories</option>
-            <option value="owned">Owned repositories</option>
-            <option value="member">Member repositories</option>
+            <option value="all">Todos os repositórios</option>
+            <option value="owned">Repositórios próprios</option>
+            <option value="member">Repositórios como membro</option>
           </select>
         </div>
       </div>
@@ -304,9 +306,9 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
           {totalPages > 1 && (
             <div className="flex items-center justify-between pt-4 border-t border-bolt-elements-borderColor">
               <div className="text-sm text-bolt-elements-textSecondary">
-                Showing {Math.min(startIndex + 1, filteredRepositories.length)} to{' '}
-                {Math.min(startIndex + REPOS_PER_PAGE, filteredRepositories.length)} of {filteredRepositories.length}{' '}
-                repositories
+                Exibindo {Math.min(startIndex + 1, filteredRepositories.length)} a{' '}
+                {Math.min(startIndex + REPOS_PER_PAGE, filteredRepositories.length)} de {filteredRepositories.length}{' '}
+                repositórios
               </div>
               <div className="flex items-center gap-2">
                 <Button
@@ -315,10 +317,10 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
                   variant="outline"
                   size="sm"
                 >
-                  Previous
+                  Anterior
                 </Button>
                 <span className="text-sm text-bolt-elements-textSecondary px-3">
-                  {currentPage} of {totalPages}
+                  {currentPage} de {totalPages}
                 </span>
                 <Button
                   onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
@@ -326,7 +328,7 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
                   variant="outline"
                   size="sm"
                 >
-                  Next
+                  Avançar
                 </Button>
               </div>
             </div>
@@ -334,7 +336,7 @@ export function GitLabRepositorySelector({ onClone, className }: GitLabRepositor
         </>
       ) : (
         <div className="text-center py-8">
-          <p className="text-bolt-elements-textSecondary">No repositories found matching your search criteria.</p>
+          <p className="text-bolt-elements-textSecondary">Nenhum repositório corresponde à busca.</p>
         </div>
       )}
 

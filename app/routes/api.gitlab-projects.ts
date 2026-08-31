@@ -22,7 +22,7 @@ async function gitlabProjectsLoader({ request }: { request: Request }) {
     const { token, gitlabUrl = 'https://gitlab.com' } = body;
 
     if (!token) {
-      return json({ error: 'GitLab token is required' }, { status: 400 });
+      return json({ error: 'O token do GitLab é obrigatório' }, { status: 400 });
     }
 
     // Fetch user's projects from GitLab API
@@ -38,15 +38,15 @@ async function gitlabProjectsLoader({ request }: { request: Request }) {
 
     if (!response.ok) {
       if (response.status === 401) {
-        return json({ error: 'Invalid GitLab token' }, { status: 401 });
+        return json({ error: 'Token do GitLab inválido' }, { status: 401 });
       }
 
-      const errorText = await response.text().catch(() => 'Unknown error');
+      const errorText = await response.text().catch(() => 'Erro desconhecido');
       console.error('GitLab API error:', response.status, errorText);
 
       return json(
         {
-          error: `GitLab API error: ${response.status}`,
+          error: `Erro da API do GitLab: ${response.status}`,
         },
         { status: response.status },
       );
@@ -79,7 +79,7 @@ async function gitlabProjectsLoader({ request }: { request: Request }) {
       if (error.message.includes('fetch')) {
         return json(
           {
-            error: 'Failed to connect to GitLab. Please check your network connection.',
+            error: 'Não foi possível conectar ao GitLab. Verifique sua conexão de rede.',
           },
           { status: 503 },
         );
@@ -87,7 +87,7 @@ async function gitlabProjectsLoader({ request }: { request: Request }) {
 
       return json(
         {
-          error: `Failed to fetch projects: ${error.message}`,
+          error: `Não foi possível obter os projetos: ${error.message}`,
         },
         { status: 500 },
       );
@@ -95,7 +95,7 @@ async function gitlabProjectsLoader({ request }: { request: Request }) {
 
     return json(
       {
-        error: 'An unexpected error occurred while fetching projects',
+        error: 'Ocorreu um erro inesperado ao carregar os projetos',
       },
       { status: 500 },
     );

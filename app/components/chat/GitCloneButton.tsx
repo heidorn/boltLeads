@@ -97,13 +97,13 @@ export default function GitCloneButton({ importChat, className }: GitCloneButton
             const fileSize = new TextEncoder().encode(textContent).length;
 
             if (fileSize > MAX_FILE_SIZE) {
-              skippedFiles.push(`${filePath} (too large: ${Math.round(fileSize / 1024)}KB)`);
+              skippedFiles.push(`${filePath} (muito grande: ${Math.round(fileSize / 1024)}KB)`);
               continue;
             }
 
             // Check total size
             if (totalSize + fileSize > MAX_TOTAL_SIZE) {
-              skippedFiles.push(`${filePath} (would exceed total size limit)`);
+              skippedFiles.push(`${filePath} (excederia o limite total de tamanho)`);
               continue;
             }
 
@@ -113,7 +113,7 @@ export default function GitCloneButton({ importChat, className }: GitCloneButton
               content: textContent,
             });
           } catch (e: any) {
-            skippedFiles.push(`${filePath} (error: ${e.message})`);
+            skippedFiles.push(`${filePath} (erro: ${e.message})`);
           }
         }
 
@@ -122,15 +122,15 @@ export default function GitCloneButton({ importChat, className }: GitCloneButton
 
         const filesMessage: Message = {
           role: 'assistant',
-          content: `Cloning the repo ${repoUrl} into ${workdir}
+          content: `Clonando o repositório ${repoUrl} em ${workdir}
 ${
   skippedFiles.length > 0
-    ? `\nSkipped files (${skippedFiles.length}):
+    ? `\nArquivos ignorados (${skippedFiles.length}):
 ${skippedFiles.map((f) => `- ${f}`).join('\n')}`
     : ''
 }
 
-<boltArtifact id="imported-files" title="Git Cloned Files" type="bundled">
+<boltArtifact id="imported-files" title="Arquivos clonados do Git" type="bundled">
 ${fileContents
   .map(
     (file) =>
@@ -150,11 +150,11 @@ ${escapeBoltTags(file.content)}
           messages.push(commandsMessage);
         }
 
-        await importChat(`Git Project:${repoUrl.split('/').slice(-1)[0]}`, messages);
+        await importChat(`Projeto Git:${repoUrl.split('/').slice(-1)[0]}`, messages);
       }
     } catch (error) {
       console.error('Error during import:', error);
-      toast.error('Failed to import repository');
+      toast.error('Não foi possível importar o repositório');
     } finally {
       setLoading(false);
     }
@@ -167,7 +167,7 @@ ${escapeBoltTags(file.content)}
           setSelectedProvider(null);
           setIsDialogOpen(true);
         }}
-        title="Clone a repo"
+        title="Clonar repositório"
         variant="default"
         size="lg"
         className={classNames(
@@ -181,7 +181,7 @@ ${escapeBoltTags(file.content)}
         )}
         disabled={!ready || loading}
       >
-        Clone a repo
+        Clonar repositório
         <div className="flex items-center gap-1 ml-2">
           <Github className="w-4 h-4" />
           <GitBranch className="w-4 h-4" />
@@ -195,7 +195,7 @@ ${escapeBoltTags(file.content)}
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary">
-                  Choose Repository Provider
+                  Escolher provedor do repositório
                 </h3>
                 <button
                   onClick={() => setIsDialogOpen(false)}
@@ -219,7 +219,7 @@ ${escapeBoltTags(file.content)}
                         GitHub
                       </div>
                       <div className="text-sm text-bolt-elements-textSecondary dark:text-bolt-elements-textSecondary">
-                        Clone from GitHub repositories
+                        Clone repositórios do GitHub
                       </div>
                     </div>
                   </div>
@@ -238,7 +238,7 @@ ${escapeBoltTags(file.content)}
                         GitLab
                       </div>
                       <div className="text-sm text-bolt-elements-textSecondary dark:text-bolt-elements-textSecondary">
-                        Clone from GitLab repositories
+                        Clone repositórios do GitLab
                       </div>
                     </div>
                   </div>
@@ -260,10 +260,10 @@ ${escapeBoltTags(file.content)}
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary">
-                    Import GitHub Repository
+                    Importar repositório do GitHub
                   </h3>
                   <p className="text-sm text-bolt-elements-textSecondary dark:text-bolt-elements-textSecondary">
-                    Clone a repository from GitHub to your workspace
+                    Clone um repositório do GitHub para o seu workspace
                   </p>
                 </div>
               </div>
@@ -296,10 +296,10 @@ ${escapeBoltTags(file.content)}
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary">
-                    Import GitLab Repository
+                    Importar repositório do GitLab
                   </h3>
                   <p className="text-sm text-bolt-elements-textSecondary dark:text-bolt-elements-textSecondary">
-                    Clone a repository from GitLab to your workspace
+                    Clone um repositório do GitLab para o seu workspace
                   </p>
                 </div>
               </div>
@@ -321,7 +321,7 @@ ${escapeBoltTags(file.content)}
         </div>
       )}
 
-      {loading && <LoadingOverlay message="Please wait while we clone the repository..." />}
+      {loading && <LoadingOverlay message="Clonando o repositório…" />}
     </>
   );
 }

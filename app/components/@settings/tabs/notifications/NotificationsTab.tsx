@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { logStore } from '~/lib/stores/logs';
 import { useStore } from '@nanostores/react';
 import { formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { classNames } from '~/utils/classNames';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
@@ -32,9 +33,9 @@ const NotificationsTab = () => {
 
   const handleClearNotifications = () => {
     const count = Object.keys(logs).length;
-    logStore.logInfo('Cleared notifications', {
+    logStore.logInfo('Notificações limpas', {
       type: 'notification_clear',
-      message: `Cleared ${count} notifications`,
+      message: `${count} notificações limpas`,
       clearedCount: count,
       component: 'notifications',
     });
@@ -42,9 +43,9 @@ const NotificationsTab = () => {
   };
 
   const handleUpdateAction = (updateUrl: string) => {
-    logStore.logInfo('Update link clicked', {
+    logStore.logInfo('Link de atualização aberto', {
       type: 'update_click',
-      message: 'User clicked update link',
+      message: 'Link de atualização aberto pelo usuário',
       updateUrl,
       component: 'notifications',
     });
@@ -52,9 +53,9 @@ const NotificationsTab = () => {
   };
 
   const handleFilterChange = (newFilter: FilterType) => {
-    logStore.logInfo('Notification filter changed', {
+    logStore.logInfo('Filtro de notificações alterado', {
       type: 'filter_change',
-      message: `Filter changed to ${newFilter}`,
+      message: `Filtro alterado para ${newFilter}`,
       previousFilter: filter,
       newFilter,
       component: 'notifications',
@@ -131,8 +132,8 @@ const NotificationsTab = () => {
         <div className="flex flex-col gap-2">
           <p className="text-sm text-gray-600 dark:text-gray-400">{details.message}</p>
           <div className="flex flex-col gap-1 text-xs text-gray-500 dark:text-gray-500">
-            <p>Current Version: {details.currentVersion}</p>
-            <p>Latest Version: {details.latestVersion}</p>
+            <p>Versão atual: {details.currentVersion}</p>
+            <p>Versão mais recente: {details.latestVersion}</p>
             <p>Branch: {details.branch}</p>
           </div>
           <button
@@ -141,15 +142,15 @@ const NotificationsTab = () => {
               'mt-2 inline-flex items-center gap-2',
               'rounded-lg px-3 py-1.5',
               'text-sm font-medium',
-              'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-              'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+              'bg-[#f7f9f9] dark:bg-[#0f1417]',
+              'border border-[#dde3e5] dark:border-[#1a2229]',
               'text-gray-900 dark:text-white',
               'hover:bg-purple-500/10 dark:hover:bg-purple-500/20',
               'transition-all duration-200',
             )}
           >
             <span className="i-ph:git-branch text-lg" />
-            View Changes
+            Ver mudanças
           </button>
         </div>
       );
@@ -159,14 +160,14 @@ const NotificationsTab = () => {
   };
 
   const filterOptions: { id: FilterType; label: string; icon: string; color: string }[] = [
-    { id: 'all', label: 'All Notifications', icon: 'i-ph:bell', color: '#9333ea' },
-    { id: 'system', label: 'System', icon: 'i-ph:gear', color: '#6b7280' },
-    { id: 'update', label: 'Updates', icon: 'i-ph:arrow-circle-up', color: '#9333ea' },
-    { id: 'error', label: 'Errors', icon: 'i-ph:warning-circle', color: '#ef4444' },
-    { id: 'warning', label: 'Warnings', icon: 'i-ph:warning', color: '#f59e0b' },
-    { id: 'info', label: 'Information', icon: 'i-ph:info', color: '#3b82f6' },
-    { id: 'provider', label: 'Providers', icon: 'i-ph:robot', color: '#10b981' },
-    { id: 'network', label: 'Network', icon: 'i-ph:wifi-high', color: '#6366f1' },
+    { id: 'all', label: 'Todas as notificações', icon: 'i-ph:bell', color: '#2a8a91' },
+    { id: 'system', label: 'Sistema', icon: 'i-ph:gear', color: '#6d7a81' },
+    { id: 'update', label: 'Atualizações', icon: 'i-ph:arrow-circle-up', color: '#2a8a91' },
+    { id: 'error', label: 'Erros', icon: 'i-ph:warning-circle', color: '#ef4444' },
+    { id: 'warning', label: 'Avisos', icon: 'i-ph:warning', color: '#f5a623' },
+    { id: 'info', label: 'Informações', icon: 'i-ph:info', color: '#2a8a91' },
+    { id: 'provider', label: 'Provedores', icon: 'i-ph:robot', color: '#10b981' },
+    { id: 'network', label: 'Rede', icon: 'i-ph:wifi-high', color: '#6366f1' },
   ];
 
   return (
@@ -179,8 +180,8 @@ const NotificationsTab = () => {
                 'flex items-center gap-2',
                 'rounded-lg px-3 py-1.5',
                 'text-sm text-gray-900 dark:text-white',
-                'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-                'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+                'bg-[#f7f9f9] dark:bg-[#0f1417]',
+                'border border-[#dde3e5] dark:border-[#1a2229]',
                 'hover:bg-purple-500/10 dark:hover:bg-purple-500/20',
                 'transition-all duration-200',
               )}
@@ -189,14 +190,14 @@ const NotificationsTab = () => {
                 className={classNames('text-lg', filterOptions.find((opt) => opt.id === filter)?.icon || 'i-ph:funnel')}
                 style={{ color: filterOptions.find((opt) => opt.id === filter)?.color }}
               />
-              {filterOptions.find((opt) => opt.id === filter)?.label || 'Filter Notifications'}
+              {filterOptions.find((opt) => opt.id === filter)?.label || 'Filtrar notificações'}
               <span className="i-ph:caret-down text-lg text-gray-500 dark:text-gray-400" />
             </button>
           </DropdownMenu.Trigger>
 
           <DropdownMenu.Portal>
             <DropdownMenu.Content
-              className="min-w-[200px] bg-white dark:bg-[#0A0A0A] rounded-lg shadow-lg py-1 z-[250] animate-in fade-in-0 zoom-in-95 border border-[#E5E5E5] dark:border-[#1A1A1A]"
+              className="min-w-[200px] bg-white dark:bg-[#0f1417] rounded-lg shadow-lg py-1 z-[250] animate-in fade-in-0 zoom-in-95 border border-[#dde3e5] dark:border-[#1a2229]"
               sideOffset={5}
               align="start"
               side="bottom"
@@ -226,14 +227,14 @@ const NotificationsTab = () => {
             'group flex items-center gap-2',
             'rounded-lg px-3 py-1.5',
             'text-sm text-gray-900 dark:text-white',
-            'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-            'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+            'bg-[#f7f9f9] dark:bg-[#0f1417]',
+            'border border-[#dde3e5] dark:border-[#1a2229]',
             'hover:bg-purple-500/10 dark:hover:bg-purple-500/20',
             'transition-all duration-200',
           )}
         >
           <span className="i-ph:trash text-lg text-gray-500 dark:text-gray-400 group-hover:text-purple-500 transition-colors" />
-          Clear All
+          Limpar tudo
         </button>
       </div>
 
@@ -245,14 +246,14 @@ const NotificationsTab = () => {
             className={classNames(
               'flex flex-col items-center justify-center gap-4',
               'rounded-lg p-8 text-center',
-              'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-              'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+              'bg-[#f7f9f9] dark:bg-[#0f1417]',
+              'border border-[#dde3e5] dark:border-[#1a2229]',
             )}
           >
             <span className="i-ph:bell-slash text-4xl text-gray-400 dark:text-gray-600" />
             <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-medium text-gray-900 dark:text-white">No Notifications</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">You're all caught up!</p>
+              <h3 className="text-sm font-medium text-gray-900 dark:text-white">Nenhuma notificação</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Nada pendente</p>
             </div>
           </motion.div>
         ) : (
@@ -266,8 +267,8 @@ const NotificationsTab = () => {
                 className={classNames(
                   'flex flex-col gap-2',
                   'rounded-lg p-4',
-                  'bg-[#FAFAFA] dark:bg-[#0A0A0A]',
-                  'border border-[#E5E5E5] dark:border-[#1A1A1A]',
+                  'bg-[#f7f9f9] dark:bg-[#0f1417]',
+                  'border border-[#dde3e5] dark:border-[#1a2229]',
                   style.bg,
                   'transition-all duration-200',
                 )}
@@ -279,13 +280,13 @@ const NotificationsTab = () => {
                       <h3 className="text-sm font-medium text-gray-900 dark:text-white">{log.message}</h3>
                       {log.details && renderNotificationDetails(log.details as NotificationDetails)}
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Category: {log.category}
+                        Categoria: {log.category}
                         {log.subCategory ? ` > ${log.subCategory}` : ''}
                       </p>
                     </div>
                   </div>
                   <time className="shrink-0 text-xs text-gray-500 dark:text-gray-400">
-                    {formatDistanceToNow(new Date(log.timestamp), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(log.timestamp), { addSuffix: true, locale: ptBR })}
                   </time>
                 </div>
               </motion.div>

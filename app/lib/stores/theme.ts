@@ -9,7 +9,7 @@ export function themeIsDark() {
   return themeStore.get() === 'dark';
 }
 
-export const DEFAULT_THEME = 'light';
+export const DEFAULT_THEME = 'dark'; // Escuro é o padrão do produto LPH.
 
 export const themeStore = atom<Theme>(initStore());
 
@@ -50,5 +50,5 @@ export function toggleTheme() {
     console.error('Error updating user profile theme:', error);
   }
 
-  logStore.logSystem(`Theme changed to ${newTheme} mode`);
+  logStore.logSystem(`Tema alterado para ${newTheme}`);
 }

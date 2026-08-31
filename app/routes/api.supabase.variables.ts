@@ -27,6 +27,6 @@ export async function action({ request }: ActionFunctionArgs) {
     return json({ apiKeys });
   } catch (error) {
     console.error('Error fetching project API keys:', error);
-    return json({ error: error instanceof Error ? error.message : 'Unknown error occurred' }, { status: 500 });
+    return json({ error: error instanceof Error ? error.message : 'Ocorreu um erro desconhecido' }, { status: 500 });
   }
 }

@@ -169,7 +169,7 @@ async function handleProxyRequest(request: Request, path: string | undefined) {
     return json(
       {
         error: 'Proxy error',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message: error instanceof Error ? error.message : 'Erro desconhecido',
         url: path ? `https://${path}` : 'Invalid URL',
       },
       { status: 500 },

@@ -170,7 +170,7 @@ export class ActionRunner {
             // Update action status
             this.#updateAction(actionId, {
               status: 'failed',
-              error: error instanceof Error ? error.message : 'Supabase action failed',
+              error: error instanceof Error ? error.message : 'A ação do Supabase falhou',
             });
 
             // Return early without re-throwing
@@ -204,7 +204,7 @@ export class ActionRunner {
 
               this.onAlert?.({
                 type: 'error',
-                title: 'Dev Server Failed',
+                title: 'Não foi possível iniciar o servidor de desenvolvimento',
                 description: err.header,
                 content: err.output,
               });
@@ -237,7 +237,7 @@ export class ActionRunner {
 
       this.onAlert?.({
         type: 'error',
-        title: 'Dev Server Failed',
+        title: 'Não foi possível iniciar o servidor de desenvolvimento',
         description: error.header,
         content: error.output,
       });
@@ -302,7 +302,7 @@ export class ActionRunner {
     logger.debug(`${action.type} Shell Response: [exit code:${resp?.exitCode}]`);
 
     if (resp?.exitCode != 0) {
-      throw new ActionCommandError('Failed To Start Application', resp?.output || 'No Output Available');
+      throw new ActionCommandError('Não foi possível iniciar a aplicação', resp?.output || 'Nenhuma saída disponível');
     }
 
     return resp;
@@ -381,8 +381,8 @@ export class ActionRunner {
     // Trigger build started alert
     this.onDeployAlert?.({
       type: 'info',
-      title: 'Building Application',
-      description: 'Building your application...',
+      title: 'Gerando o build da aplicação',
+      description: 'Gerando o build da aplicação…',
       stage: 'building',
       buildStatus: 'running',
       deployStatus: 'pending',
@@ -422,23 +422,23 @@ export class ActionRunner {
       // Trigger build failed alert
       this.onDeployAlert?.({
         type: 'error',
-        title: 'Build Failed',
-        description: 'Your application build failed',
-        content: output || 'No build output available',
+        title: 'Não foi possível concluir o build',
+        description: 'Não foi possível concluir o build da sua aplicação',
+        content: output || 'Nenhuma saída de build disponível',
         stage: 'building',
         buildStatus: 'failed',
         deployStatus: 'pending',
         source: 'netlify',
       });
 
-      throw new ActionCommandError('Build Failed', output || 'No Output Available');
+      throw new ActionCommandError('Não foi possível concluir o build', output || 'Nenhuma saída disponível');
     }
 
     // Trigger build success alert
     this.onDeployAlert?.({
       type: 'success',
-      title: 'Build Completed',
-      description: 'Your application was built successfully',
+      title: 'Build concluído',
+      description: 'O build da sua aplicação foi concluído',
       stage: 'deploying',
       buildStatus: 'complete',
       deployStatus: 'running',
@@ -542,19 +542,19 @@ export class ActionRunner {
 
     const title =
       stage === 'building'
-        ? 'Building Application'
+        ? 'Gerando o build da aplicação'
         : stage === 'deploying'
-          ? 'Deploying Application'
-          : 'Deployment Complete';
+          ? 'Publicando a aplicação'
+          : 'Deploy concluído';
 
     const description =
       status === 'failed'
-        ? `${stage === 'building' ? 'Build' : 'Deployment'} failed`
+        ? `Não foi possível concluir ${stage === 'building' ? 'o build' : 'o deploy'}`
         : status === 'running'
-          ? `${stage === 'building' ? 'Building' : 'Deploying'} your application...`
+          ? `${stage === 'building' ? 'Gerando o build da' : 'Publicando a'} sua aplicação…`
           : status === 'complete'
-            ? `${stage === 'building' ? 'Build' : 'Deployment'} completed successfully`
-            : `Preparing to ${stage === 'building' ? 'build' : 'deploy'} your application`;
+            ? `${stage === 'building' ? 'O build' : 'O deploy'} foi concluído`
+            : `Preparando ${stage === 'building' ? 'o build' : 'o deploy'} da sua aplicação`;
 
     const buildStatus =
       stage === 'building' ? status : stage === 'deploying' || stage === 'complete' ? 'complete' : 'pending';
@@ -684,50 +684,50 @@ export class ActionRunner {
     const errorPatterns = [
       {
         pattern: /cannot remove.*No such file or directory/,
-        title: 'File Not Found',
+        title: 'Arquivo não encontrado',
         getMessage: () => {
           const fileMatch = output?.match(/'([^']+)'/);
           const fileName = fileMatch ? fileMatch[1] : 'file';
 
-          return `The file '${fileName}' does not exist and cannot be removed.\n\nSuggestion: Use 'ls' to check what files exist, or use 'rm -f' to ignore missing files.`;
+          return `O arquivo '${fileName}' não existe e não pode ser removido.\n\nSugestão: use 'ls' para ver quais arquivos existem, ou 'rm -f' para ignorar arquivos ausentes.`;
         },
       },
       {
         pattern: /No such file or directory/,
-        title: 'File or Directory Not Found',
+        title: 'Arquivo ou diretório não encontrado',
         getMessage: () => {
           if (trimmedCommand.startsWith('cd ')) {
             const dirMatch = trimmedCommand.match(/cd\s+(.+)/);
             const dirName = dirMatch ? dirMatch[1] : 'directory';
 
-            return `The directory '${dirName}' does not exist.\n\nSuggestion: Use 'mkdir -p ${dirName}' to create it first, or check available directories with 'ls'.`;
+            return `O diretório '${dirName}' não existe.\n\nSugestão: use 'mkdir -p ${dirName}' para criá-lo antes, ou verifique os diretórios disponíveis com 'ls'.`;
           }
 
-          return `The specified file or directory does not exist.\n\nSuggestion: Check the path and use 'ls' to see available files.`;
+          return `O arquivo ou diretório informado não existe.\n\nSugestão: confira o caminho e use 'ls' para ver os arquivos disponíveis.`;
         },
       },
       {
         pattern: /Permission denied/,
-        title: 'Permission Denied',
+        title: 'Permissão negada',
         getMessage: () =>
-          `Permission denied for '${firstWord}'.\n\nSuggestion: The file may not be executable. Try 'chmod +x filename' first.`,
+          `Permissão negada para '${firstWord}'.\n\nSugestão: o arquivo pode não ser executável. Tente 'chmod +x nomedoarquivo' antes.`,
       },
       {
         pattern: /command not found/,
-        title: 'Command Not Found',
+        title: 'Comando não encontrado',
         getMessage: () =>
-          `The command '${firstWord}' is not available in WebContainer.\n\nSuggestion: Check available commands or use a package manager to install it.`,
+          `O comando '${firstWord}' não está disponível no WebContainer.\n\nSugestão: verifique os comandos disponíveis ou instale-o com um gerenciador de pacotes.`,
       },
       {
         pattern: /Is a directory/,
-        title: 'Target is a Directory',
+        title: 'O destino é um diretório',
         getMessage: () =>
-          `Cannot perform this operation - target is a directory.\n\nSuggestion: Use 'ls' to list directory contents or add appropriate flags.`,
+          `Não é possível executar esta operação — o destino é um diretório.\n\nSugestão: use 'ls' para listar o conteúdo do diretório ou adicione as flags adequadas.`,
       },
       {
         pattern: /File exists/,
-        title: 'File Already Exists',
-        getMessage: () => `File already exists.\n\nSuggestion: Use a different name or add '-f' flag to overwrite.`,
+        title: 'O arquivo já existe',
+        getMessage: () => `O arquivo já existe.\n\nSugestão: use outro nome ou adicione a flag '-f' para sobrescrever.`,
       },
     ];
 
@@ -745,16 +745,16 @@ export class ActionRunner {
     let suggestion = '';
 
     if (trimmedCommand.startsWith('npm ')) {
-      suggestion = '\n\nSuggestion: Try running "npm install" first or check package.json.';
+      suggestion = '\n\nSugestão: rode "npm install" antes ou confira o package.json.';
     } else if (trimmedCommand.startsWith('git ')) {
-      suggestion = "\n\nSuggestion: Check if you're in a git repository or if remote is configured.";
+      suggestion = '\n\nSugestão: confira se você está em um repositório git e se o remote está configurado.';
     } else if (trimmedCommand.match(/^(ls|cat|rm|cp|mv)/)) {
-      suggestion = '\n\nSuggestion: Check file paths and use "ls" to see available files.';
+      suggestion = '\n\nSugestão: confira os caminhos dos arquivos e use "ls" para ver os disponíveis.';
     }
 
     return {
-      title: `Command Failed (exit code: ${exitCode})`,
-      details: `Command: ${trimmedCommand}\n\nOutput: ${output || 'No output available'}${suggestion}`,
+      title: `Não foi possível executar o comando (código de saída: ${exitCode})`,
+      details: `Comando: ${trimmedCommand}\n\nSaída: ${output || 'Nenhuma saída disponível'}${suggestion}`,
     };
   }
 }

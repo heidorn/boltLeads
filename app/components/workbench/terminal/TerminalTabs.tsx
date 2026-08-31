@@ -153,7 +153,7 @@ export const TerminalTabs = memo(() => {
                       onClick={() => setActiveTerminal(index)}
                     >
                       <div className="i-ph:terminal-window-duotone text-lg" />
-                      Bolt Terminal
+                      Terminal
                     </button>
                   ) : (
                     <React.Fragment>
@@ -189,7 +189,7 @@ export const TerminalTabs = memo(() => {
             {terminalCount < MAX_TERMINALS && <IconButton icon="i-ph:plus" size="md" onClick={addTerminal} />}
             <IconButton
               icon="i-ph:arrow-clockwise"
-              title="Reset Terminal"
+              title="Redefinir terminal"
               size="md"
               onClick={() => {
                 const ref = terminalRefs.current.get(activeTerminal);
@@ -210,7 +210,7 @@ export const TerminalTabs = memo(() => {
             <IconButton
               className="ml-auto"
               icon="i-ph:caret-down"
-              title="Close"
+              title="Fechar"
               size="md"
               onClick={() => workbenchStore.toggleTerminal(false)}
             />

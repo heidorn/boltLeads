@@ -82,7 +82,7 @@ export function FilterChip({ label, value, onRemove, active = false, icon, class
               ? 'text-purple-600 dark:text-purple-400'
               : 'text-bolt-elements-textTertiary dark:text-bolt-elements-textTertiary-dark',
           )}
-          aria-label={`Remove ${label} filter`}
+          aria-label={`Remover o filtro ${label}`}
         >
           <span className="i-ph:x w-3 h-3" />
         </button>

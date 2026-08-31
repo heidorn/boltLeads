@@ -166,7 +166,7 @@ export class LocalModelHealthMonitor extends SimpleEventEmitter {
       };
     } catch (error) {
       const responseTime = Date.now() - startTime;
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
 
       const healthStatus: ModelHealthStatus = {
         provider,
@@ -261,7 +261,7 @@ export class LocalModelHealthMonitor extends SimpleEventEmitter {
       return {
         isHealthy: false,
         responseTime: 0,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Erro desconhecido',
       };
     }
   }
@@ -302,7 +302,7 @@ export class LocalModelHealthMonitor extends SimpleEventEmitter {
         availableModels: models,
       };
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
 
       // Check if this is a CORS error
       if (
@@ -358,7 +358,7 @@ export class LocalModelHealthMonitor extends SimpleEventEmitter {
       return {
         isHealthy: false,
         responseTime: 0,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Erro desconhecido',
       };
     }
   }

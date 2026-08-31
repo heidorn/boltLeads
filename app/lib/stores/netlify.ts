@@ -64,7 +64,7 @@ export async function initializeNetlifyConnection() {
     await fetchNetlifyStats(envToken);
   } catch (error) {
     console.error('Error initializing Netlify connection:', error);
-    logStore.logError('Failed to initialize Netlify connection', { error });
+    logStore.logError('Não foi possível iniciar a conexão com o Netlify', { error });
   } finally {
     isConnecting.set(false);
   }
@@ -108,8 +108,8 @@ export async function fetchNetlifyStats(token: string) {
     });
   } catch (error) {
     console.error('Netlify API Error:', error);
-    logStore.logError('Failed to fetch Netlify stats', { error });
-    toast.error('Failed to fetch Netlify statistics');
+    logStore.logError('Não foi possível carregar as estatísticas do Netlify', { error });
+    toast.error('Não foi possível carregar as estatísticas do Netlify');
   } finally {
     isFetchingStats.set(false);
   }

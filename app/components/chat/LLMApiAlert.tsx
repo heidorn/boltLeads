@@ -26,13 +26,13 @@ export default function LlmErrorAlert({ alert, clearAlert }: Props) {
   const getErrorMessage = () => {
     switch (errorType) {
       case 'authentication':
-        return `Authentication failed with ${provider}. Please check your API key.`;
+        return `Não foi possível autenticar em ${provider}. Verifique sua chave da API.`;
       case 'rate_limit':
-        return `Rate limit exceeded for ${provider}. Please wait before retrying.`;
+        return `Limite de requisições excedido em ${provider}. Aguarde antes de tentar de novo.`;
       case 'quota':
-        return `Quota exceeded for ${provider}. Please check your account limits.`;
+        return `Cota excedida em ${provider}. Verifique os limites da sua conta.`;
       default:
-        return 'An error occurred while processing your request.';
+        return 'Ocorreu um erro ao processar sua requisição.';
     }
   };
 
@@ -75,7 +75,7 @@ export default function LlmErrorAlert({ alert, clearAlert }: Props) {
 
               {description && (
                 <div className="text-xs text-bolt-elements-textSecondary p-2 bg-bolt-elements-background-depth-3 rounded mt-4 mb-4">
-                  Error Details: {description}
+                  Detalhes do erro: {description}
                 </div>
               )}
             </motion.div>
@@ -97,7 +97,7 @@ export default function LlmErrorAlert({ alert, clearAlert }: Props) {
                     'text-bolt-elements-button-secondary-text',
                   )}
                 >
-                  Dismiss
+                  Dispensar
                 </button>
               </div>
             </motion.div>

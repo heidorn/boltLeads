@@ -15,7 +15,7 @@ async function supabaseUserLoader({ request, context }: { request: Request; cont
       process.env.VITE_SUPABASE_ACCESS_TOKEN;
 
     if (!supabaseToken) {
-      return json({ error: 'Supabase token not found' }, { status: 401 });
+      return json({ error: 'Token do Supabase não encontrado' }, { status: 401 });
     }
 
     // Make server-side request to Supabase API
@@ -28,7 +28,7 @@ async function supabaseUserLoader({ request, context }: { request: Request; cont
 
     if (!response.ok) {
       if (response.status === 401) {
-        return json({ error: 'Invalid Supabase token' }, { status: 401 });
+        return json({ error: 'Token do Supabase inválido' }, { status: 401 });
       }
 
       throw new Error(`Supabase API error: ${response.status}`);
@@ -68,7 +68,7 @@ async function supabaseUserLoader({ request, context }: { request: Request; cont
     console.error('Error fetching Supabase user:', error);
     return json(
       {
-        error: 'Failed to fetch Supabase user information',
+        error: 'Não foi possível obter os dados do usuário do Supabase',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },
@@ -97,7 +97,7 @@ async function supabaseUserAction({ request, context }: { request: Request; cont
       process.env.VITE_SUPABASE_ACCESS_TOKEN;
 
     if (!supabaseToken) {
-      return json({ error: 'Supabase token not found' }, { status: 401 });
+      return json({ error: 'Token do Supabase não encontrado' }, { status: 401 });
     }
 
     if (action === 'get_projects') {
@@ -152,7 +152,7 @@ async function supabaseUserAction({ request, context }: { request: Request; cont
       const projectId = formData.get('projectId');
 
       if (!projectId) {
-        return json({ error: 'Project ID is required' }, { status: 400 });
+        return json({ error: 'O ID do projeto é obrigatório' }, { status: 400 });
       }
 
       // Fetch project API keys
@@ -180,12 +180,12 @@ async function supabaseUserAction({ request, context }: { request: Request; cont
       });
     }
 
-    return json({ error: 'Invalid action' }, { status: 400 });
+    return json({ error: 'Ação inválida' }, { status: 400 });
   } catch (error) {
     console.error('Error in Supabase user action:', error);
     return json(
       {
-        error: 'Failed to process Supabase request',
+        error: 'Não foi possível processar a requisição ao Supabase',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },

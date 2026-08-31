@@ -77,7 +77,7 @@ export async function action({ request }: ActionFunctionArgs) {
     return new Response(
       JSON.stringify({
         error: {
-          message: error instanceof Error ? error.message : 'Query execution failed',
+          message: error instanceof Error ? error.message : 'Não foi possível executar a consulta',
           stack: error instanceof Error ? error.stack : undefined,
         },
       }),

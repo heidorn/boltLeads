@@ -15,10 +15,9 @@ import Cookies from 'js-cookie';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import styles from './BaseChat.module.scss';
 import { ImportButtons } from '~/components/chat/chatExportAndImport/ImportButtons';
-import { ExamplePrompts } from '~/components/chat/ExamplePrompts';
+import { ExamplePrompts, EXAMPLE_PROMPTS } from '~/components/chat/ExamplePrompts';
 import GitCloneButton from './GitCloneButton';
 import type { ProviderInfo } from '~/types/model';
-import StarterTemplates from './StarterTemplates';
 import type { ActionAlert, SupabaseAlert, DeployAlert, LlmErrorAlertType } from '~/types/actions';
 import DeployChatAlert from '~/components/deploy/DeployAlert';
 import ChatAlert from './ChatAlert';
@@ -33,6 +32,7 @@ import { ChatBox } from './ChatBox';
 import type { DesignScheme } from '~/types/design-scheme';
 import type { ElementInfo } from '~/components/workbench/Inspector';
 import LlmErrorAlert from './LLMApiAlert';
+import { AguardandoResposta, StreamParado } from './StreamStatus';
 
 const TEXTAREA_MIN_HEIGHT = 76;
 
@@ -82,6 +82,12 @@ interface BaseChatProps {
   setSelectedElement?: (element: ElementInfo | null) => void;
   addToolResult?: ({ toolCallId, result }: { toolCallId: string; result: any }) => void;
   onWebSearchResult?: (result: string) => void;
+
+  /** Momento em que a espera pela resposta começou; null quando não se está esperando. */
+  aguardandoDesde?: number | null;
+  streamParado?: boolean;
+  onRetryStream?: () => void;
+  onDispensarStreamParado?: () => void;
 }
 
 export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
@@ -132,13 +138,26 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         throw new Error('addToolResult not implemented');
       },
       onWebSearchResult,
+      aguardandoDesde,
+      streamParado,
+      onRetryStream,
+      onDispensarStreamParado,
     },
     ref,
   ) => {
-    const TEXTAREA_MAX_HEIGHT = chatStarted ? 400 : 200;
+    /*
+     * Com a conversa aberta o campo ia a 400px — quase metade da altura útil da coluna
+     * some para escrever. 240 já segura um pedido longo sem engolir as mensagens.
+     */
+    const TEXTAREA_MAX_HEIGHT = chatStarted ? 240 : 200;
     const [apiKeys, setApiKeys] = useState<Record<string, string>>(getApiKeysFromCookies());
     const [modelList, setModelList] = useState<ModelInfo[]>([]);
-    const [isModelSettingsCollapsed, setIsModelSettingsCollapsed] = useState(false);
+
+    /*
+     * Colapsado por padrão: a caixa é superfície de composição, não de configuração.
+     * O rodapé mostra o modelo em uso e reabre o seletor com um clique.
+     */
+    const [isModelSettingsCollapsed, setIsModelSettingsCollapsed] = useState(true);
     const [isListening, setIsListening] = useState(false);
     const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
     const [transcript, setTranscript] = useState('');
@@ -146,6 +165,26 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const [progressAnnotations, setProgressAnnotations] = useState<ProgressAnnotation[]>([]);
     const expoUrl = useStore(expoUrlAtom);
     const [qrModalOpen, setQrModalOpen] = useState(false);
+    const [importAberto, setImportAberto] = useState(false);
+
+    /*
+     * Um sorteio só para os dois lugares que mostram exemplos: o primeiro vira o
+     * placeholder do campo, os três seguintes viram a lista abaixo da caixa — assim o
+     * mesmo pedido nunca aparece duas vezes na mesma tela. Sortear no servidor trocaria
+     * o texto na hidratação, então a ordem inicial é a do arquivo.
+     */
+    const [exemplos, setExemplos] = useState(EXAMPLE_PROMPTS);
+
+    useEffect(() => {
+      const embaralhados = [...EXAMPLE_PROMPTS];
+
+      for (let i = embaralhados.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [embaralhados[i], embaralhados[j]] = [embaralhados[j], embaralhados[i]];
+      }
+
+      setExemplos(embaralhados);
+    }, []);
 
     useEffect(() => {
       if (expoUrl) {
@@ -351,12 +390,13 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         <div className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
-              <div id="intro" className="mt-[16vh] max-w-2xl mx-auto text-center px-4 lg:px-0">
-                <h1 className="text-3xl lg:text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
-                  Where ideas begin
+              <div id="intro" className="mt-[12vh] max-w-prompt mx-auto text-center px-4 lg:px-0">
+                <div className="lph-slash-label mb-4 animate-fade-in">Studio</div>
+                <h1 className="font-display text-3xl lg:text-5xl font-bold tracking-[-0.02em] text-bolt-elements-textPrimary mb-4 animate-fade-in">
+                  Da ideia ao produto
                 </h1>
-                <p className="text-md lg:text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  Bring ideas to life in seconds or get help on existing projects.
+                <p className="text-md lg:text-xl mb-8 max-w-[52ch] mx-auto [text-wrap:balance] text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
+                  Descreva o que precisa. O Studio escreve, roda e publica — em minutos, não em sprints.
                 </p>
               </div>
             )}
@@ -388,10 +428,25 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 <ScrollToBottom />
               </StickToBottom.Content>
               <div
-                className={classNames('my-auto flex flex-col gap-2 w-full max-w-chat mx-auto z-prompt mb-6', {
-                  'sticky bottom-2': chatStarted,
+                className={classNames('relative my-auto flex flex-col gap-2 w-full mx-auto z-prompt', {
+                  /* Piso da coluna, não cartão flutuando: encosta no fim e não sobra margem. */
+                  'sticky bottom-0 max-w-chat': chatStarted,
+
+                  // Sem conversa há a tela inteira: a caixa manda na largura.
+                  'max-w-prompt mb-6': !chatStarted,
                 })}
               >
+                {/*
+                 * Máscara acima do piso. O degradê já existia, mas só dentro do
+                 * `ScrollToBottom` — some justamente quando se está no fim, que é onde
+                 * se passa o tempo todo, e aí o texto encostava na caixa durante o streaming.
+                 */}
+                {chatStarted && (
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute bottom-full left-0 right-0 h-8 bg-gradient-to-t from-bolt-elements-background-depth-1 to-transparent"
+                  />
+                )}
                 <div className="flex flex-col gap-2">
                   {deployAlert && (
                     <DeployChatAlert
@@ -424,6 +479,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     />
                   )}
                   {llmErrorAlert && <LlmErrorAlert alert={llmErrorAlert} clearAlert={() => clearLlmErrorAlert?.()} />}
+                  {streamParado && (
+                    <StreamParado onRetry={() => onRetryStream?.()} onDispensar={() => onDispensarStreamParado?.()} />
+                  )}
+                  {!streamParado && aguardandoDesde != null && <AguardandoResposta desde={aguardandoDesde} />}
                 </div>
                 {progressAnnotations && <ProgressCompilation data={progressAnnotations} />}
                 <ChatBox
@@ -468,27 +527,47 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   selectedElement={selectedElement}
                   setSelectedElement={setSelectedElement}
                   onWebSearchResult={onWebSearchResult}
+                  exemploDePedido={exemplos[0]?.text}
                 />
               </div>
             </StickToBottom>
             <div className="flex flex-col justify-center">
               {!chatStarted && (
-                <div className="flex justify-center gap-2">
-                  {ImportButtons(importChat)}
-                  <GitCloneButton importChat={importChat} />
+                <div className="flex flex-col items-center gap-3 mt-6">
+                  {/*
+                   * Três botões contornados competiam com a caixa logo acima. Agora são uma
+                   * linha de texto que se abre — quem já sabe que quer importar procura por isso.
+                   */}
+                  <button
+                    onClick={() => setImportAberto(!importAberto)}
+                    aria-expanded={importAberto}
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-transparent text-xs text-bolt-elements-textTertiary hover:text-bolt-elements-textSecondary transition-colors"
+                  >
+                    Começar de um repositório, pasta ou chat exportado
+                    <span className={`i-ph:caret-${importAberto ? 'up' : 'down'} text-sm`} />
+                  </button>
+                  {importAberto && (
+                    <div className="flex flex-wrap justify-center gap-2 px-4">
+                      {ImportButtons(importChat)}
+                      <GitCloneButton importChat={importChat} />
+                    </div>
+                  )}
                 </div>
               )}
               <div className="flex flex-col gap-5">
-                {!chatStarted &&
-                  ExamplePrompts((event, messageInput) => {
-                    if (isStreaming) {
-                      handleStop?.();
-                      return;
-                    }
+                {!chatStarted && (
+                  <ExamplePrompts
+                    prompts={exemplos.slice(1, 4)}
+                    sendMessage={(event, messageInput) => {
+                      if (isStreaming) {
+                        handleStop?.();
+                        return;
+                      }
 
-                    handleSendMessage?.(event, messageInput);
-                  })}
-                {!chatStarted && <StarterTemplates />}
+                      handleSendMessage?.(event, messageInput);
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -516,7 +595,7 @@ function ScrollToBottom() {
           className="sticky z-50 bottom-0 left-0 right-0 text-4xl rounded-lg px-1.5 py-0.5 flex items-center justify-center mx-auto gap-2 bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor text-bolt-elements-textPrimary text-sm"
           onClick={() => scrollToBottom()}
         >
-          Go to last message
+          Ir para a última mensagem
           <span className="i-ph:arrow-down animate-bounce" />
         </button>
       </>

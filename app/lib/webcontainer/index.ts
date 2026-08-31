@@ -49,8 +49,8 @@ if (!import.meta.env.SSR) {
             workbenchStore.actionAlert.set({
               type: 'preview',
               title,
-              description: 'message' in message ? message.message : 'Unknown error',
-              content: `Error occurred at ${message.pathname}${message.search}${message.hash}\nPort: ${message.port}\n\nStack trace:\n${cleanStackTrace(message.stack || '')}`,
+              description: 'message' in message ? message.message : 'Erro desconhecido',
+              content: `Erro em ${message.pathname}${message.search}${message.hash}\nPorta: ${message.port}\n\nStack trace:\n${cleanStackTrace(message.stack || '')}`,
               source: 'preview',
             });
           }

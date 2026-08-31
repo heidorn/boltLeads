@@ -97,12 +97,12 @@ export function useEditChatDescription({
     const characterValid = /^[a-zA-Z0-9\s\-_.,!?()[\]{}'"]+$/.test(trimmedDesc);
 
     if (!lengthValid) {
-      toast.error('Description must be between 1 and 100 characters.');
+      toast.error('A descrição deve ter entre 1 e 100 caracteres.');
       return false;
     }
 
     if (!characterValid) {
-      toast.error('Description can only contain letters, numbers, spaces, and basic punctuation.');
+      toast.error('A descrição só pode conter letras sem acento, números, espaços e pontuação básica.');
       return false;
     }
 
@@ -119,12 +119,12 @@ export function useEditChatDescription({
 
       try {
         if (!db) {
-          toast.error('Chat persistence is not available');
+          toast.error('O armazenamento do chat está indisponível');
           return;
         }
 
         if (!chatId) {
-          toast.error('Chat Id is not available');
+          toast.error('O ID do chat está indisponível');
           return;
         }
 
@@ -134,9 +134,9 @@ export function useEditChatDescription({
           descriptionStore.set(currentDescription);
         }
 
-        toast.success('Chat description updated successfully');
+        toast.success('Descrição do chat atualizada');
       } catch (error) {
-        toast.error('Failed to update chat description: ' + (error as Error).message);
+        toast.error('Não foi possível atualizar a descrição do chat: ' + (error as Error).message);
       }
 
       toggleEditMode();

@@ -527,7 +527,7 @@ function getReadOnlyTooltip(state: EditorState) {
 
   // Get the current document from the module-level reference
   const currentDoc = currentDocRef;
-  let tooltipMessage = 'Cannot edit file while AI response is being generated';
+  let tooltipMessage = 'Não é possível editar o arquivo enquanto a resposta da IA está sendo gerada';
 
   // If we have a current document, check if it's locked
   if (currentDoc?.filePath) {
@@ -535,7 +535,7 @@ function getReadOnlyTooltip(state: EditorState) {
     const { locked } = isFileLocked(currentDoc.filePath, currentChatId);
 
     if (locked) {
-      tooltipMessage = 'This file is locked and cannot be edited';
+      tooltipMessage = 'Este arquivo está bloqueado e não pode ser editado';
     }
   }
 

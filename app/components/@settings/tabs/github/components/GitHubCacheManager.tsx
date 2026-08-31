@@ -231,7 +231,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Database className="w-4 h-4 text-bolt-elements-item-contentAccent" />
-          <h3 className="text-sm font-medium text-bolt-elements-textPrimary">GitHub Cache Management</h3>
+          <h3 className="text-sm font-medium text-bolt-elements-textPrimary">Gestão do cache do GitHub</h3>
         </div>
 
         <div className="flex items-center gap-2">
@@ -246,7 +246,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
           <div className="bg-bolt-elements-background-depth-2 p-3 rounded-lg">
             <div className="flex items-center gap-2 mb-1">
               <HardDrive className="w-3 h-3 text-bolt-elements-textSecondary" />
-              <span className="text-xs font-medium text-bolt-elements-textSecondary">Total Size</span>
+              <span className="text-xs font-medium text-bolt-elements-textSecondary">Tamanho total</span>
             </div>
             <p className="text-sm font-semibold text-bolt-elements-textPrimary">
               {CacheManagerService.formatSize(cacheStats.totalSize)}
@@ -256,7 +256,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
           <div className="bg-bolt-elements-background-depth-2 p-3 rounded-lg">
             <div className="flex items-center gap-2 mb-1">
               <Database className="w-3 h-3 text-bolt-elements-textSecondary" />
-              <span className="text-xs font-medium text-bolt-elements-textSecondary">Entries</span>
+              <span className="text-xs font-medium text-bolt-elements-textSecondary">Entradas</span>
             </div>
             <p className="text-sm font-semibold text-bolt-elements-textPrimary">{cacheStats.totalEntries}</p>
           </div>
@@ -264,7 +264,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
           <div className="bg-bolt-elements-background-depth-2 p-3 rounded-lg">
             <div className="flex items-center gap-2 mb-1">
               <Clock className="w-3 h-3 text-bolt-elements-textSecondary" />
-              <span className="text-xs font-medium text-bolt-elements-textSecondary">Oldest</span>
+              <span className="text-xs font-medium text-bolt-elements-textSecondary">Mais antiga</span>
             </div>
             <p className="text-xs text-bolt-elements-textSecondary">
               {cacheStats.oldestEntry ? new Date(cacheStats.oldestEntry).toLocaleDateString() : 'N/A'}
@@ -277,7 +277,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
               <span className="text-xs font-medium text-bolt-elements-textSecondary">Status</span>
             </div>
             <p className="text-xs text-green-600 dark:text-green-400">
-              {cacheStats.totalEntries > 0 ? 'Active' : 'Empty'}
+              {cacheStats.totalEntries > 0 ? 'Ativo' : 'Vazio'}
             </p>
           </div>
         </div>
@@ -286,7 +286,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
       {cacheEntries.length > 0 && (
         <div className="space-y-2">
           <h4 className="text-xs font-medium text-bolt-elements-textSecondary">
-            Cache Entries ({cacheEntries.length})
+            Entradas do cache ({cacheEntries.length})
           </h4>
 
           <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -328,7 +328,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
           className="flex items-center gap-1"
         >
           <Clock className="w-3 h-3" />
-          <span className="text-xs">Clear Expired</span>
+          <span className="text-xs">Limpar expiradas</span>
         </Button>
 
         <Button
@@ -339,7 +339,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
           className="flex items-center gap-1"
         >
           <RefreshCw className="w-3 h-3" />
-          <span className="text-xs">Compact</span>
+          <span className="text-xs">Compactar</span>
         </Button>
 
         {cacheEntries.length > 0 && (
@@ -351,7 +351,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
             className="flex items-center gap-1 text-red-600 hover:text-red-700 border-red-200 hover:border-red-300"
           >
             <Trash2 className="w-3 h-3" />
-            <span className="text-xs">Clear All</span>
+            <span className="text-xs">Limpar tudo</span>
           </Button>
         )}
       </div>
@@ -359,7 +359,7 @@ export function GitHubCacheManager({ className = '', showStats = true }: GitHubC
       {lastClearTime && (
         <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded text-xs text-green-700 dark:text-green-400">
           <CheckCircle className="w-3 h-3" />
-          <span>Cache cleared successfully at {new Date(lastClearTime).toLocaleTimeString()}</span>
+          <span>Cache limpo às {new Date(lastClearTime).toLocaleTimeString()}</span>
         </div>
       )}
     </div>

@@ -28,34 +28,26 @@ export const links: LinksFunction = () => [
     href: '/favicon.svg',
     type: 'image/svg+xml',
   },
+  { rel: 'apple-touch-icon', href: '/lph-symbol.svg' },
   { rel: 'stylesheet', href: reactToastifyStyles },
   { rel: 'stylesheet', href: tailwindReset },
   { rel: 'stylesheet', href: globalStyles },
   { rel: 'stylesheet', href: xtermStyles },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.googleapis.com',
-  },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
-  },
+
+  /*
+   * Fontes da marca (Switzer + Inter) servidas localmente: o COEP exigido pelo
+   * WebContainer bloqueia CDNs de terceiros, e sem elas a identidade não fecha.
+   */
+  { rel: 'preload', href: '/fonts/Switzer-Variable.woff2', as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' },
+  { rel: 'stylesheet', href: '/fonts/lph-fonts.css' },
 ];
 
 const inlineThemeCode = stripIndents`
   setTutorialKitTheme();
 
   function setTutorialKitTheme() {
-    let theme = localStorage.getItem('bolt_theme');
-
-    if (!theme) {
-      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
+    // Escuro é o padrão do produto; o claro é escolha explícita do usuário.
+    let theme = localStorage.getItem('bolt_theme') || 'dark';
 
     document.querySelector('html')?.setAttribute('data-theme', theme);
   }
@@ -65,6 +57,11 @@ export const Head = createHead(() => (
   <>
     <meta charSet="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#141b1f" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Leads Per Hour" />
+    <meta property="og:image" content="/social_preview_index.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
     <Meta />
     <Links />
     <script dangerouslySetInnerHTML={{ __html: inlineThemeCode }} />

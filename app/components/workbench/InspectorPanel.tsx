@@ -66,7 +66,7 @@ export const InspectorPanel = ({ selectedElement, isVisible, onClose }: Inspecto
     <div className="fixed right-4 top-20 w-80 bg-bolt-elements-bg-depth-1 border border-bolt-elements-borderColor rounded-lg shadow-lg z-40 max-h-[calc(100vh-6rem)] overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between p-3 border-b border-bolt-elements-borderColor">
-        <h3 className="font-medium text-bolt-elements-textPrimary">Element Inspector</h3>
+        <h3 className="font-medium text-bolt-elements-textPrimary">Inspetor de elementos</h3>
         <button onClick={onClose} className="text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary">
           ✕
         </button>
@@ -123,19 +123,19 @@ export const InspectorPanel = ({ selectedElement, isVisible, onClose }: Inspecto
         {activeTab === 'box' && (
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-bolt-elements-textSecondary">Width:</span>
+              <span className="text-bolt-elements-textSecondary">Largura:</span>
               <span className="text-bolt-elements-textPrimary">{Math.round(selectedElement.rect.width)}px</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-bolt-elements-textSecondary">Height:</span>
+              <span className="text-bolt-elements-textSecondary">Altura:</span>
               <span className="text-bolt-elements-textPrimary">{Math.round(selectedElement.rect.height)}px</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-bolt-elements-textSecondary">Top:</span>
+              <span className="text-bolt-elements-textSecondary">Topo:</span>
               <span className="text-bolt-elements-textPrimary">{Math.round(selectedElement.rect.top)}px</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-bolt-elements-textSecondary">Left:</span>
+              <span className="text-bolt-elements-textSecondary">Esquerda:</span>
               <span className="text-bolt-elements-textPrimary">{Math.round(selectedElement.rect.left)}px</span>
             </div>
           </div>

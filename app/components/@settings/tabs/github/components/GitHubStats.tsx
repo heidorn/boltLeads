@@ -62,10 +62,10 @@ function GitHubStatsContent({
             {isLoading ? (
               <>
                 <div className="i-ph:spinner-gap-bold animate-spin w-4 h-4" />
-                <span className="text-bolt-elements-textSecondary">Loading GitHub stats...</span>
+                <span className="text-bolt-elements-textSecondary">Carregando as estatísticas do GitHub…</span>
               </>
             ) : (
-              <span className="text-bolt-elements-textSecondary">No stats available</span>
+              <span className="text-bolt-elements-textSecondary">Nenhuma estatística disponível</span>
             )}
           </div>
         </div>
@@ -81,8 +81,8 @@ function GitHubStatsContent({
             <div className="flex items-center gap-2">
               <div className="i-ph:chart-bar w-4 h-4 text-bolt-elements-item-contentAccent" />
               <span className="text-sm font-medium text-bolt-elements-textPrimary">
-                GitHub Stats
-                {isStale && <span className="text-bolt-elements-textTertiary ml-1">(Stale)</span>}
+                Estatísticas do GitHub
+                {isStale && <span className="text-bolt-elements-textTertiary ml-1">(desatualizadas)</span>}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -99,12 +99,12 @@ function GitHubStatsContent({
                 {isRefreshing ? (
                   <>
                     <div className="i-ph:spinner-gap w-3 h-3 animate-spin" />
-                    Refreshing...
+                    Atualizando…
                   </>
                 ) : (
                   <>
                     <div className="i-ph:arrows-clockwise w-3 h-3" />
-                    Refresh
+                    Atualizar
                   </>
                 )}
               </Button>
@@ -122,7 +122,7 @@ function GitHubStatsContent({
           <div className="space-y-4 mt-4">
             {/* Languages Section */}
             <div className="mb-6">
-              <h4 className="text-sm font-medium text-bolt-elements-textPrimary mb-3">Top Languages</h4>
+              <h4 className="text-sm font-medium text-bolt-elements-textPrimary mb-3">Linguagens mais usadas</h4>
               {stats.mostUsedLanguages && stats.mostUsedLanguages.length > 0 ? (
                 <div className="space-y-3">
                   <div className="flex flex-wrap gap-2">
@@ -130,14 +130,14 @@ function GitHubStatsContent({
                       <span
                         key={language}
                         className="px-3 py-1 text-xs rounded-full bg-bolt-elements-sidebar-buttonBackgroundDefault text-bolt-elements-sidebar-buttonText"
-                        title={`${language}: ${(bytes / 1024 / 1024).toFixed(2)}MB across ${repos} repos`}
+                        title={`${language}: ${(bytes / 1024 / 1024).toFixed(2)}MB em ${repos} repositórios`}
                       >
                         {language} ({repos})
                       </span>
                     ))}
                   </div>
                   <div className="text-xs text-bolt-elements-textSecondary">
-                    Based on actual codebase size across repositories
+                    Com base no tamanho real do código nos repositórios
                   </div>
                 </div>
               ) : (
@@ -159,46 +159,46 @@ function GitHubStatsContent({
 
             {/* GitHub Overview Summary */}
             <div className="mb-6 p-4 bg-bolt-elements-background-depth-1 rounded-lg border border-bolt-elements-borderColor">
-              <h4 className="text-sm font-medium text-bolt-elements-textPrimary mb-3">GitHub Overview</h4>
+              <h4 className="text-sm font-medium text-bolt-elements-textPrimary mb-3">Visão geral do GitHub</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-bolt-elements-textPrimary">
                     {(stats.publicRepos || 0) + (stats.privateRepos || 0)}
                   </div>
-                  <div className="text-xs text-bolt-elements-textSecondary">Total Repositories</div>
+                  <div className="text-xs text-bolt-elements-textSecondary">Total de repositórios</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-bolt-elements-textPrimary">{stats.totalBranches || 0}</div>
-                  <div className="text-xs text-bolt-elements-textSecondary">Total Branches</div>
+                  <div className="text-xs text-bolt-elements-textSecondary">Total de branches</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-bolt-elements-textPrimary">
                     {stats.organizations?.length || 0}
                   </div>
-                  <div className="text-xs text-bolt-elements-textSecondary">Organizations</div>
+                  <div className="text-xs text-bolt-elements-textSecondary">Organizações</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-bolt-elements-textPrimary">
                     {Object.keys(stats.languages).length}
                   </div>
-                  <div className="text-xs text-bolt-elements-textSecondary">Languages Used</div>
+                  <div className="text-xs text-bolt-elements-textSecondary">Linguagens usadas</div>
                 </div>
               </div>
             </div>
 
             {/* Activity Summary */}
             <div className="mb-6">
-              <h5 className="text-sm font-medium text-bolt-elements-textPrimary mb-2">Activity Summary</h5>
+              <h5 className="text-sm font-medium text-bolt-elements-textPrimary mb-2">Resumo da atividade</h5>
               <div className="grid grid-cols-4 gap-4">
                 {[
                   {
-                    label: 'Total Branches',
+                    label: 'Total de branches',
                     value: stats.totalBranches || 0,
                     icon: 'i-ph:git-branch',
                     iconColor: 'text-bolt-elements-icon-info',
                   },
                   {
-                    label: 'Contributors',
+                    label: 'Contribuidores',
                     value: stats.totalContributors || 0,
                     icon: 'i-ph:users',
                     iconColor: 'text-bolt-elements-icon-success',
@@ -210,7 +210,7 @@ function GitHubStatsContent({
                     iconColor: 'text-bolt-elements-icon-warning',
                   },
                   {
-                    label: 'Pull Requests',
+                    label: 'Pull requests',
                     value: stats.totalPullRequests || 0,
                     icon: 'i-ph:git-pull-request',
                     iconColor: 'text-bolt-elements-icon-accent',
@@ -233,7 +233,7 @@ function GitHubStatsContent({
             {/* Organizations Section */}
             {stats.organizations && stats.organizations.length > 0 && (
               <div>
-                <h5 className="text-sm font-medium text-bolt-elements-textPrimary mb-2">Organizations</h5>
+                <h5 className="text-sm font-medium text-bolt-elements-textPrimary mb-2">Organizações</h5>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {stats.organizations.map((org) => (
                     <a
@@ -280,7 +280,7 @@ function GitHubStatsContent({
             {/* Last Updated */}
             <div className="pt-2 border-t border-bolt-elements-borderColor">
               <span className="text-xs text-bolt-elements-textSecondary">
-                Last updated: {stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleString() : 'Never'}
+                Atualizado em: {stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleString() : 'Nunca'}
               </span>
             </div>
           </div>

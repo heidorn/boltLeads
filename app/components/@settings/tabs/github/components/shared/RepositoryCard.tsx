@@ -39,19 +39,19 @@ export function RepositoryCard({
 
   const formatTimeAgo = () => {
     if (daysSinceUpdate === 0) {
-      return 'Today';
+      return 'Hoje';
     }
 
     if (daysSinceUpdate === 1) {
-      return '1 day ago';
+      return 'Há 1 dia';
     }
 
     if (daysSinceUpdate < 7) {
-      return `${daysSinceUpdate} days ago`;
+      return `Há ${daysSinceUpdate} dias`;
     }
 
     if (daysSinceUpdate < 30) {
-      return `${Math.floor(daysSinceUpdate / 7)} weeks ago`;
+      return `Há ${Math.floor(daysSinceUpdate / 7)} semanas`;
     }
 
     return new Date(repository.updated_at).toLocaleDateString(undefined, {
@@ -117,18 +117,18 @@ export function RepositoryCard({
 
   const getHealthTitle = () => {
     if (repository.archived) {
-      return 'Archived';
+      return 'Arquivado';
     }
 
     if (daysSinceUpdate < 7) {
-      return 'Very Active';
+      return 'Muito ativo';
     }
 
     if (daysSinceUpdate < 30 && repository.stargazers_count > 0) {
-      return 'Healthy';
+      return 'Saudável';
     }
 
-    return 'Needs Attention';
+    return 'Requer atenção';
   };
 
   const health = showHealthScore ? calculateHealthScore() : null;
@@ -209,7 +209,7 @@ export function RepositoryCard({
       {variant === 'detailed' && (
         <div
           className={`absolute top-2 right-2 w-2 h-2 rounded-full ${getHealthIndicatorColor()}`}
-          title={`Repository Health: ${getHealthTitle()}`}
+          title={`Saúde do repositório: ${getHealthTitle()}`}
         />
       )}
 
@@ -226,12 +226,12 @@ export function RepositoryCard({
               {repository.name}
             </h5>
             {repository.fork && (
-              <span title="Forked repository">
+              <span title="Repositório fork">
                 <GitFork className="w-3 h-3 text-bolt-elements-textTertiary" />
               </span>
             )}
             {repository.archived && (
-              <span title="Archived repository">
+              <span title="Repositório arquivado">
                 <Archive className="w-3 h-3 text-bolt-elements-textTertiary" />
               </span>
             )}
@@ -246,13 +246,13 @@ export function RepositoryCard({
               {repository.forks_count.toLocaleString()}
             </span>
             {showExtendedMetrics && repository.issues_count !== undefined && (
-              <span className="flex items-center gap-1" title="Open Issues">
+              <span className="flex items-center gap-1" title="Issues abertas">
                 <Circle className="w-3.5 h-3.5 text-bolt-elements-icon-error" />
                 {repository.issues_count}
               </span>
             )}
             {showExtendedMetrics && repository.pull_requests_count !== undefined && (
-              <span className="flex items-center gap-1" title="Pull Requests">
+              <span className="flex items-center gap-1" title="Pull requests">
                 <GitPullRequest className="w-3.5 h-3.5 text-bolt-elements-icon-success" />
                 {repository.pull_requests_count}
               </span>
@@ -283,7 +283,7 @@ export function RepositoryCard({
               ))}
             {repository.archived && (
               <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400">
-                Archived
+                Arquivado
               </span>
             )}
             {repository.fork && (
@@ -296,34 +296,34 @@ export function RepositoryCard({
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 text-xs text-bolt-elements-textSecondary">
-            <span className="flex items-center gap-1" title="Default Branch">
+            <span className="flex items-center gap-1" title="Branch padrão">
               <GitBranch className="w-3.5 h-3.5" />
               {repository.default_branch}
             </span>
             {showExtendedMetrics && repository.branches_count && (
-              <span className="flex items-center gap-1" title="Total Branches">
+              <span className="flex items-center gap-1" title="Total de branches">
                 <GitFork className="w-3.5 h-3.5" />
                 {repository.branches_count}
               </span>
             )}
             {showExtendedMetrics && repository.contributors_count && (
-              <span className="flex items-center gap-1" title="Contributors">
+              <span className="flex items-center gap-1" title="Contribuidores">
                 <Users className="w-3.5 h-3.5" />
                 {repository.contributors_count}
               </span>
             )}
             {repository.size && (
-              <span className="flex items-center gap-1" title="Size">
+              <span className="flex items-center gap-1" title="Tamanho">
                 <Database className="w-3.5 h-3.5" />
                 {(repository.size / 1024).toFixed(1)}MB
               </span>
             )}
-            <span className="flex items-center gap-1" title="Last Updated">
+            <span className="flex items-center gap-1" title="Atualizado em">
               <Clock className="w-3.5 h-3.5" />
               {formatTimeAgo()}
             </span>
             {repository.topics && repository.topics.length > 0 && (
-              <span className="flex items-center gap-1" title={`Topics: ${repository.topics.join(', ')}`}>
+              <span className="flex items-center gap-1" title={`Tópicos: ${repository.topics.join(', ')}`}>
                 <Tag className="w-3.5 h-3.5" />
                 {repository.topics.length}
               </span>
@@ -335,7 +335,7 @@ export function RepositoryCard({
             {health && (
               <div
                 className="flex items-center gap-1"
-                title={`Health Score: ${health.percentage}% (${health.score}/${health.maxScore})`}
+                title={`Nota de saúde: ${health.percentage}% (${health.score}/${health.maxScore})`}
               >
                 <Heart className={`w-3.5 h-3.5 ${health.color}`} />
                 <span className={`text-xs font-medium ${health.color}`}>{health.percentage}%</span>
@@ -350,7 +350,7 @@ export function RepositoryCard({
                 )}
               >
                 <ExternalLink className="w-3.5 h-3.5" />
-                View
+                Ver
               </span>
             )}
           </div>

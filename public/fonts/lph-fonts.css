@@ -1,0 +1,27 @@
+/*
+ * Leads Per Hour — fontes institucionais servidas localmente.
+ *
+ * Local e não CDN de propósito: o Studio roda com COEP `require-corp` por causa
+ * do WebContainer, o que bloqueia recursos de terceiros. Servindo daqui, as
+ * fontes da marca carregam sempre — inclusive offline.
+ */
+
+/* Switzer — títulos, números e destaques. Variável: pesos 100–900. */
+@font-face {
+  font-family: 'Switzer';
+  src:
+    url('/fonts/Switzer-Variable.woff2') format('woff2'),
+    url('/fonts/Switzer-Variable.woff') format('woff');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Inter — corpo de texto e interface. Variável: pesos 100–900. */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

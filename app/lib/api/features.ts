@@ -14,15 +14,15 @@ export const getFeatureFlags = async (): Promise<Feature[]> => {
   return [
     {
       id: 'feature-1',
-      name: 'Dark Mode',
-      description: 'Enable dark mode for better night viewing',
+      name: 'Tema escuro',
+      description: 'Ative o tema escuro para trabalhar com pouca luz',
       viewed: true,
       releaseDate: '2024-03-15',
     },
     {
       id: 'feature-2',
-      name: 'Tab Management',
-      description: 'Customize your tab layout',
+      name: 'Organização das abas',
+      description: 'Escolha quais abas aparecem e em que ordem',
       viewed: false,
       releaseDate: '2024-03-20',
     },

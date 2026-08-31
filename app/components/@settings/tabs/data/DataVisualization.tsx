@@ -67,7 +67,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
 
         if (message.role === 'assistant') {
           const providerMatch = message.content.match(/provider:\s*([\w-]+)/i);
-          const provider = providerMatch ? providerMatch[1] : 'unknown';
+          const provider = providerMatch ? providerMatch[1] : 'Desconhecido';
           apiUsage[provider] = (apiUsage[provider] || 0) + 1;
         }
       });
@@ -171,7 +171,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
       labels: Object.keys(chatsByDate),
       datasets: [
         {
-          label: 'Chats Created',
+          label: 'Chats criados',
           data: Object.values(chatsByDate),
           backgroundColor: getChartColors(0).bg,
           borderColor: getChartColors(0).border,
@@ -183,7 +183,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
       labels: Object.keys(messagesByRole),
       datasets: [
         {
-          label: 'Messages by Role',
+          label: 'Mensagens por papel',
           data: Object.values(messagesByRole),
           backgroundColor: Object.keys(messagesByRole).map((_, i) => getChartColors(i).bg),
           borderColor: Object.keys(messagesByRole).map((_, i) => getChartColors(i).border),
@@ -195,7 +195,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
       labels: apiKeyUsage.map((item) => item.provider),
       datasets: [
         {
-          label: 'API Usage',
+          label: 'Uso da API',
           data: apiKeyUsage.map((item) => item.count),
           backgroundColor: apiKeyUsage.map((_, i) => getChartColors(i).bg),
           borderColor: apiKeyUsage.map((_, i) => getChartColors(i).border),
@@ -249,7 +249,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
       ...baseChartOptions.plugins,
       title: {
         ...baseChartOptions.plugins.title,
-        text: 'Chat History',
+        text: 'Histórico de chats',
       },
     },
     scales: {
@@ -292,7 +292,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
       ...baseChartOptions.plugins,
       title: {
         ...baseChartOptions.plugins.title,
-        text: 'Message Distribution',
+        text: 'Distribuição de mensagens',
       },
       legend: {
         ...baseChartOptions.plugins.legend,
@@ -311,9 +311,9 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
     return (
       <div className="text-center py-8">
         <div className="i-ph-chart-line-duotone w-12 h-12 mx-auto mb-4 text-bolt-elements-textTertiary opacity-80" />
-        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-2">No Data Available</h3>
+        <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-2">Nenhum dado disponível</h3>
         <p className="text-bolt-elements-textSecondary">
-          Start creating chats to see your usage statistics and data visualization.
+          Crie chats para ver as estatísticas de uso e a visualização dos dados.
         </p>
       </div>
     );
@@ -331,7 +331,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className={cardClasses}>
-          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Total Chats</h3>
+          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Total de chats</h3>
           <div className={statClasses}>
             <div className="i-ph-chats-duotone w-8 h-8 text-indigo-500 dark:text-indigo-400" />
             <span>{chats.length}</span>
@@ -339,7 +339,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         </div>
 
         <div className={cardClasses}>
-          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Total Messages</h3>
+          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Total de mensagens</h3>
           <div className={statClasses}>
             <div className="i-ph-chat-text-duotone w-8 h-8 text-pink-500 dark:text-pink-400" />
             <span>{Object.values(messagesByRole).reduce((sum, count) => sum + count, 0)}</span>
@@ -347,7 +347,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
         </div>
 
         <div className={cardClasses}>
-          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Avg. Messages/Chat</h3>
+          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-4">Média de mensagens/chat</h3>
           <div className={statClasses}>
             <div className="i-ph-chart-bar-duotone w-8 h-8 text-green-500 dark:text-green-400" />
             <span>{averageMessagesPerChat.toFixed(1)}</span>
@@ -357,14 +357,14 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className={cardClasses}>
-          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">Chat History</h3>
+          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">Histórico de chats</h3>
           <div className="h-64">
             <Bar data={chartData.history} options={chartOptions} />
           </div>
         </div>
 
         <div className={cardClasses}>
-          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">Message Distribution</h3>
+          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">Distribuição de mensagens</h3>
           <div className="h-64">
             <Pie data={chartData.roles} options={pieOptions} />
           </div>
@@ -373,7 +373,7 @@ export function DataVisualization({ chats }: DataVisualizationProps) {
 
       {apiKeyUsage.length > 0 && (
         <div className={cardClasses}>
-          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">API Usage by Provider</h3>
+          <h3 className="text-lg font-medium text-bolt-elements-textPrimary mb-6">Uso da API por provedor</h3>
           <div className="h-64">
             <Pie data={chartData.apiUsage} options={pieOptions} />
           </div>

@@ -15,7 +15,7 @@ async function netlifyUserLoader({ request, context }: { request: Request; conte
       process.env.VITE_NETLIFY_ACCESS_TOKEN;
 
     if (!netlifyToken) {
-      return json({ error: 'Netlify token not found' }, { status: 401 });
+      return json({ error: 'Token do Netlify não encontrado' }, { status: 401 });
     }
 
     // Make server-side request to Netlify API
@@ -28,7 +28,7 @@ async function netlifyUserLoader({ request, context }: { request: Request; conte
 
     if (!response.ok) {
       if (response.status === 401) {
-        return json({ error: 'Invalid Netlify token' }, { status: 401 });
+        return json({ error: 'Token do Netlify inválido' }, { status: 401 });
       }
 
       throw new Error(`Netlify API error: ${response.status}`);
@@ -53,7 +53,7 @@ async function netlifyUserLoader({ request, context }: { request: Request; conte
     console.error('Error fetching Netlify user:', error);
     return json(
       {
-        error: 'Failed to fetch Netlify user information',
+        error: 'Não foi possível obter os dados do usuário do Netlify',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },
@@ -82,7 +82,7 @@ async function netlifyUserAction({ request, context }: { request: Request; conte
       process.env.VITE_NETLIFY_ACCESS_TOKEN;
 
     if (!netlifyToken) {
-      return json({ error: 'Netlify token not found' }, { status: 401 });
+      return json({ error: 'Token do Netlify não encontrado' }, { status: 401 });
     }
 
     if (action === 'get_sites') {
@@ -123,12 +123,12 @@ async function netlifyUserAction({ request, context }: { request: Request; conte
       });
     }
 
-    return json({ error: 'Invalid action' }, { status: 400 });
+    return json({ error: 'Ação inválida' }, { status: 400 });
   } catch (error) {
     console.error('Error in Netlify user action:', error);
     return json(
       {
-        error: 'Failed to process Netlify request',
+        error: 'Não foi possível processar a requisição ao Netlify',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },

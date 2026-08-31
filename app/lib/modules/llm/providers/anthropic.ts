@@ -1,8 +1,15 @@
 import { BaseProvider } from '~/lib/modules/llm/base-provider';
 import type { ModelInfo } from '~/lib/modules/llm/types';
 import type { LanguageModelV1 } from 'ai';
+import { wrapLanguageModel } from 'ai';
 import type { IProviderSetting } from '~/types/model';
 import { createAnthropic } from '@ai-sdk/anthropic';
+
+/*
+ * Modelos que recusam `temperature`. A API responde
+ * "`temperature` is deprecated for this model" e a requisição inteira morre.
+ */
+const REJECTS_TEMPERATURE = /-5(-|$)/;
 
 export default class AnthropicProvider extends BaseProvider {
   name = 'Anthropic';
@@ -17,6 +24,23 @@ export default class AnthropicProvider extends BaseProvider {
      * Essential fallback models - only the most stable/reliable ones
      * Claude 3.5 Sonnet: 200k context, excellent for complex reasoning and coding
      */
+    {
+      name: 'claude-sonnet-5',
+      label: 'Claude Sonnet 5',
+      provider: 'Anthropic',
+      maxTokenAllowed: 200000,
+      maxCompletionTokens: 64000,
+    },
+
+    // Claude Opus 5: o mais capaz da família, para tarefas difíceis.
+    {
+      name: 'claude-opus-5',
+      label: 'Claude Opus 5',
+      provider: 'Anthropic',
+      maxTokenAllowed: 200000,
+      maxCompletionTokens: 64000,
+    },
+
     {
       name: 'claude-3-5-sonnet-20241022',
       label: 'Claude 3.5 Sonnet',
@@ -130,6 +154,28 @@ export default class AnthropicProvider extends BaseProvider {
       headers: { 'anthropic-beta': 'output-128k-2025-02-19' },
     });
 
-    return anthropic(model);
+    const instance = anthropic(model);
+
+    if (!REJECTS_TEMPERATURE.test(model)) {
+      return instance;
+    }
+
+    /*
+     * O AI SDK v4 injeta `temperature: 0` em toda chamada em que ninguém definiu
+     * o parâmetro — em `ai@4.3.16`, prepare-call-settings traz literalmente
+     * "TODO v5 remove default 0 for temperature". Não há como pedir que ele omita:
+     * `undefined` também vira 0. Então o parâmetro sai aqui, no último ponto antes
+     * da requisição.
+     */
+    return wrapLanguageModel({
+      model: instance,
+      middleware: {
+        middlewareVersion: 'v1',
+        transformParams: async ({ params }) => {
+          const { temperature: _temperature, ...rest } = params;
+          return rest;
+        },
+      },
+    });
   };
 }

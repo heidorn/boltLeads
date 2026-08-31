@@ -146,7 +146,7 @@ export default class ZaiProvider extends BaseProvider {
       return `${base64Url(header)}.${base64Url(payload)}.${signature}`;
     } catch (error) {
       console.error(`Failed to generate JWT token for ${this.name}:`, error);
-      throw new Error(`Failed to generate JWT token: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to generate JWT token: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     }
   }
 

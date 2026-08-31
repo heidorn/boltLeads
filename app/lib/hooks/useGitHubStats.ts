@@ -151,7 +151,7 @@ export function useGitHubStats(
     if (!connection?.user) {
       setState((prev) => ({
         ...prev,
-        error: 'GitHub connection not available',
+        error: 'Conexão com o GitHub indisponível',
         isLoading: false,
         isRefreshing: false,
       }));
@@ -174,18 +174,18 @@ export function useGitHubStats(
 
         if (!response.ok) {
           if (response.status === 401) {
-            throw new Error('GitHub authentication required');
+            throw new Error('Autenticação do GitHub necessária');
           }
 
           const errorData: any = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch stats from server');
+          throw new Error(errorData.error || 'Não foi possível carregar as estatísticas no servidor');
         }
 
         stats = await response.json();
       } else {
         // Use client-side API service for stats
         if (!apiService) {
-          throw new Error('GitHub API service not available');
+          throw new Error('Serviço da API do GitHub indisponível');
         }
 
         stats = await apiService.generateComprehensiveStats(connection.user);
@@ -216,12 +216,13 @@ export function useGitHubStats(
 
       // Only show success toast for manual refreshes, not auto-fetches
       if (state.isRefreshing) {
-        toast.success('GitHub stats updated successfully');
+        toast.success('Estatísticas do GitHub atualizadas');
       }
     } catch (error) {
       console.error('Error fetching GitHub stats:', error);
 
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch GitHub stats';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Não foi possível carregar as estatísticas do GitHub';
 
       setState((prev) => ({
         ...prev,
@@ -232,7 +233,7 @@ export function useGitHubStats(
 
       // Only show error toast for manual actions, not auto-fetches
       if (state.isRefreshing) {
-        toast.error(`Failed to update GitHub stats: ${errorMessage}`);
+        toast.error(`Não foi possível atualizar as estatísticas do GitHub: ${errorMessage}`);
       }
 
       throw error;
@@ -291,7 +292,7 @@ export function useGitHubRepositories(connection: GitHubConnection | null) {
 
   const fetchRepositories = useCallback(async () => {
     if (!apiService) {
-      setError('GitHub connection not available');
+      setError('Conexão com o GitHub indisponível');
       return;
     }
 
@@ -304,7 +305,7 @@ export function useGitHubRepositories(connection: GitHubConnection | null) {
     } catch (error) {
       console.error('Error fetching repositories:', error);
 
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch repositories';
+      const errorMessage = error instanceof Error ? error.message : 'Não foi possível carregar os repositórios';
       setError(errorMessage);
       throw error;
     } finally {

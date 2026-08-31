@@ -335,12 +335,12 @@ function FileContextMenu({
             const success = await workbenchStore.createFile(filePath, binaryContent);
 
             if (success) {
-              toast.success(`File ${file.name} uploaded successfully`);
+              toast.success(`Arquivo ${file.name} enviado`);
             } else {
-              toast.error(`Failed to upload file ${file.name}`);
+              toast.error(`Não foi possível enviar o arquivo ${file.name}`);
             }
           } catch (error) {
-            toast.error(`Error uploading ${file.name}`);
+            toast.error(`Não foi possível enviar ${file.name}`);
             logger.error(error);
           }
         }
@@ -356,9 +356,9 @@ function FileContextMenu({
     const success = await workbenchStore.createFile(newFilePath, '');
 
     if (success) {
-      toast.success('File created successfully');
+      toast.success('Arquivo criado');
     } else {
-      toast.error('Failed to create file');
+      toast.error('Não foi possível criar o arquivo');
     }
 
     setIsCreatingFile(false);
@@ -369,9 +369,9 @@ function FileContextMenu({
     const success = await workbenchStore.createFolder(newFolderPath);
 
     if (success) {
-      toast.success('Folder created successfully');
+      toast.success('Pasta criada');
     } else {
-      toast.error('Failed to create folder');
+      toast.error('Não foi possível criar a pasta');
     }
 
     setIsCreatingFolder(false);
@@ -379,7 +379,7 @@ function FileContextMenu({
 
   const handleDelete = async () => {
     try {
-      if (!confirm(`Are you sure you want to delete ${isFolder ? 'folder' : 'file'}: ${fileName}?`)) {
+      if (!confirm(`Excluir ${isFolder ? 'a pasta' : 'o arquivo'} ${fileName}. Essa ação não pode ser desfeita.`)) {
         return;
       }
 
@@ -392,12 +392,12 @@ function FileContextMenu({
       }
 
       if (success) {
-        toast.success(`${isFolder ? 'Folder' : 'File'} deleted successfully`);
+        toast.success(`${isFolder ? 'Pasta excluída' : 'Arquivo excluído'}`);
       } else {
-        toast.error(`Failed to delete ${isFolder ? 'folder' : 'file'}`);
+        toast.error(`Não foi possível excluir ${isFolder ? 'a pasta' : 'o arquivo'}`);
       }
     } catch (error) {
-      toast.error(`Error deleting ${isFolder ? 'folder' : 'file'}`);
+      toast.error(`Não foi possível excluir ${isFolder ? 'a pasta' : 'o arquivo'}`);
       logger.error(error);
     }
   };
@@ -412,12 +412,12 @@ function FileContextMenu({
       const success = workbenchStore.lockFile(fullPath);
 
       if (success) {
-        toast.success(`File locked successfully`);
+        toast.success(`Arquivo bloqueado`);
       } else {
-        toast.error(`Failed to lock file`);
+        toast.error(`Não foi possível bloquear o arquivo`);
       }
     } catch (error) {
-      toast.error(`Error locking file`);
+      toast.error(`Não foi possível bloquear o arquivo`);
       logger.error(error);
     }
   };
@@ -432,12 +432,12 @@ function FileContextMenu({
       const success = workbenchStore.unlockFile(fullPath);
 
       if (success) {
-        toast.success(`File unlocked successfully`);
+        toast.success(`Arquivo desbloqueado`);
       } else {
-        toast.error(`Failed to unlock file`);
+        toast.error(`Não foi possível desbloquear o arquivo`);
       }
     } catch (error) {
-      toast.error(`Error unlocking file`);
+      toast.error(`Não foi possível desbloquear o arquivo`);
       logger.error(error);
     }
   };
@@ -452,12 +452,12 @@ function FileContextMenu({
       const success = workbenchStore.lockFolder(fullPath);
 
       if (success) {
-        toast.success(`Folder locked successfully`);
+        toast.success(`Pasta bloqueada`);
       } else {
-        toast.error(`Failed to lock folder`);
+        toast.error(`Não foi possível bloquear a pasta`);
       }
     } catch (error) {
-      toast.error(`Error locking folder`);
+      toast.error(`Não foi possível bloquear a pasta`);
       logger.error(error);
     }
   };
@@ -472,12 +472,12 @@ function FileContextMenu({
       const success = workbenchStore.unlockFolder(fullPath);
 
       if (success) {
-        toast.success(`Folder unlocked successfully`);
+        toast.success(`Pasta desbloqueada`);
       } else {
-        toast.error(`Failed to unlock folder`);
+        toast.error(`Não foi possível desbloquear a pasta`);
       }
     } catch (error) {
-      toast.error(`Error unlocking folder`);
+      toast.error(`Não foi possível desbloquear a pasta`);
       logger.error(error);
     }
   };
@@ -507,19 +507,19 @@ function FileContextMenu({
               <ContextMenuItem onSelect={() => setIsCreatingFile(true)}>
                 <div className="flex items-center gap-2">
                   <div className="i-ph:file-plus" />
-                  New File
+                  Novo arquivo
                 </div>
               </ContextMenuItem>
               <ContextMenuItem onSelect={() => setIsCreatingFolder(true)}>
                 <div className="flex items-center gap-2">
                   <div className="i-ph:folder-plus" />
-                  New Folder
+                  Nova pasta
                 </div>
               </ContextMenuItem>
             </ContextMenu.Group>
             <ContextMenu.Group className="p-1">
-              <ContextMenuItem onSelect={onCopyPath}>Copy path</ContextMenuItem>
-              <ContextMenuItem onSelect={onCopyRelativePath}>Copy relative path</ContextMenuItem>
+              <ContextMenuItem onSelect={onCopyPath}>Copiar caminho</ContextMenuItem>
+              <ContextMenuItem onSelect={onCopyRelativePath}>Copiar caminho relativo</ContextMenuItem>
             </ContextMenu.Group>
             {/* Add lock/unlock options for files and folders */}
             <ContextMenu.Group className="p-1 border-t-px border-solid border-bolt-elements-borderColor">
@@ -528,13 +528,13 @@ function FileContextMenu({
                   <ContextMenuItem onSelect={handleLockFile}>
                     <div className="flex items-center gap-2">
                       <div className="i-ph:lock-simple" />
-                      Lock File
+                      Bloquear arquivo
                     </div>
                   </ContextMenuItem>
                   <ContextMenuItem onSelect={handleUnlockFile}>
                     <div className="flex items-center gap-2">
                       <div className="i-ph:lock-key-open" />
-                      Unlock File
+                      Desbloquear arquivo
                     </div>
                   </ContextMenuItem>
                 </>
@@ -543,13 +543,13 @@ function FileContextMenu({
                   <ContextMenuItem onSelect={handleLockFolder}>
                     <div className="flex items-center gap-2">
                       <div className="i-ph:lock-simple" />
-                      Lock Folder
+                      Bloquear pasta
                     </div>
                   </ContextMenuItem>
                   <ContextMenuItem onSelect={handleUnlockFolder}>
                     <div className="flex items-center gap-2">
                       <div className="i-ph:lock-key-open" />
-                      Unlock Folder
+                      Desbloquear pasta
                     </div>
                   </ContextMenuItem>
                 </>
@@ -560,7 +560,7 @@ function FileContextMenu({
               <ContextMenuItem onSelect={handleDelete}>
                 <div className="flex items-center gap-2 text-red-500">
                   <div className="i-ph:trash" />
-                  Delete {isFolder ? 'Folder' : 'File'}
+                  Excluir {isFolder ? 'pasta' : 'arquivo'}
                 </div>
               </ContextMenuItem>
             </ContextMenu.Group>
@@ -570,7 +570,7 @@ function FileContextMenu({
       {isCreatingFile && (
         <InlineInput
           depth={depth}
-          placeholder="Enter file name..."
+          placeholder="Nome do arquivo"
           onSubmit={handleCreateFile}
           onCancel={() => setIsCreatingFile(false)}
         />
@@ -578,7 +578,7 @@ function FileContextMenu({
       {isCreatingFolder && (
         <InlineInput
           depth={depth}
-          placeholder="Enter folder name..."
+          placeholder="Nome da pasta"
           onSubmit={handleCreateFolder}
           onCancel={() => setIsCreatingFolder(false)}
         />
@@ -611,7 +611,7 @@ function Folder({ folder, collapsed, selected = false, onCopyPath, onCopyRelativ
           {isLocked && (
             <span
               className={classNames('shrink-0', 'i-ph:lock-simple scale-80 text-red-500')}
-              title={'Folder is locked'}
+              title={'Pasta bloqueada'}
             />
           )}
         </div>
@@ -713,7 +713,7 @@ function File({
             {locked && (
               <span
                 className={classNames('shrink-0', 'i-ph:lock-simple scale-80 text-red-500')}
-                title={'File is locked'}
+                title={'Arquivo bloqueado'}
               />
             )}
             {unsavedChanges && <span className="i-ph:circle-fill scale-68 shrink-0 text-orange-500" />}

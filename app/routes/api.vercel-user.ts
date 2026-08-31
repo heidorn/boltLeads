@@ -24,7 +24,7 @@ async function vercelUserLoader({ request, context }: { request: Request; contex
     }
 
     if (!vercelToken) {
-      return json({ error: 'Vercel token not found' }, { status: 401 });
+      return json({ error: 'Token do Vercel não encontrado' }, { status: 401 });
     }
 
     // Make server-side request to Vercel API
@@ -37,7 +37,7 @@ async function vercelUserLoader({ request, context }: { request: Request; contex
 
     if (!response.ok) {
       if (response.status === 401) {
-        return json({ error: 'Invalid Vercel token' }, { status: 401 });
+        return json({ error: 'Token do Vercel inválido' }, { status: 401 });
       }
 
       throw new Error(`Vercel API error: ${response.status}`);
@@ -64,7 +64,7 @@ async function vercelUserLoader({ request, context }: { request: Request; contex
     console.error('Error fetching Vercel user:', error);
     return json(
       {
-        error: 'Failed to fetch Vercel user information',
+        error: 'Não foi possível obter os dados do usuário do Vercel',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },
@@ -102,7 +102,7 @@ async function vercelUserAction({ request, context }: { request: Request; contex
     }
 
     if (!vercelToken) {
-      return json({ error: 'Vercel token not found' }, { status: 401 });
+      return json({ error: 'Token do Vercel não encontrado' }, { status: 401 });
     }
 
     if (action === 'get_projects') {
@@ -142,12 +142,12 @@ async function vercelUserAction({ request, context }: { request: Request; contex
       });
     }
 
-    return json({ error: 'Invalid action' }, { status: 400 });
+    return json({ error: 'Ação inválida' }, { status: 400 });
   } catch (error) {
     console.error('Error in Vercel user action:', error);
     return json(
       {
-        error: 'Failed to process Vercel request',
+        error: 'Não foi possível processar a requisição ao Vercel',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },

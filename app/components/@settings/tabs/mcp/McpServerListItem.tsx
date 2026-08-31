@@ -32,11 +32,11 @@ export default function McpServerListItem({ toolName, toolSchema }: McpToolProps
           {toolName}
         </h3>
 
-        <p className="text-bolt-elements-textSecondary">{toolSchema.description || 'No description available'}</p>
+        <p className="text-bolt-elements-textSecondary">{toolSchema.description || 'Sem descrição disponível'}</p>
 
         {Object.keys(parameters).length > 0 && (
           <div className="mt-2.5">
-            <h4 className="text-bolt-elements-textSecondary font-semibold mb-1.5">Parameters:</h4>
+            <h4 className="text-bolt-elements-textSecondary font-semibold mb-1.5">Parâmetros:</h4>
             <ul className="ml-1 space-y-2">
               {Object.entries(parameters).map(([paramName, paramDetails]) => (
                 <li key={paramName} className="break-words">

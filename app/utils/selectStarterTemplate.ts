@@ -184,8 +184,8 @@ export async function getTemplates(templateName: string, title?: string) {
   }
 
   const assistantMessage = `
-Bolt is initializing your project with the required files using the ${template.name} template.
-<boltArtifact id="imported-files" title="${title || 'Create initial files'}" type="bundled">
+O Studio está preparando o projeto com os arquivos do template ${template.name}.
+<boltArtifact id="imported-files" title="${title || 'Criar arquivos iniciais'}" type="bundled">
 ${filesToImport.files
   .map(
     (file) =>

@@ -434,7 +434,7 @@ export const ModelSelector = ({
     return (
       <div className="mb-2 p-4 rounded-lg border border-bolt-elements-borderColor bg-bolt-elements-prompt-background text-bolt-elements-textPrimary">
         <p className="text-center">
-          No providers are currently enabled. Please enable at least one provider in the settings to start using the
+          Nenhum provedor está ativo no momento. Ative pelo menos um provedor nas configurações para começar a usar o
           chat.
         </p>
       </div>
@@ -480,14 +480,14 @@ export const ModelSelector = ({
                   )}
                   title={
                     localProviderStatus[provider.name] === 'connected'
-                      ? `${provider.name} is running`
+                      ? `${provider.name} em execução`
                       : localProviderStatus[provider.name] === 'disconnected'
-                        ? `${provider.name} is not reachable`
-                        : 'Checking...'
+                        ? `${provider.name} inacessível`
+                        : 'Verificando…'
                   }
                 />
               )}
-              {provider?.name || 'Select provider'}
+              {provider?.name || 'Selecionar provedor'}
             </div>
             <div
               className={classNames(
@@ -511,7 +511,7 @@ export const ModelSelector = ({
                   type="text"
                   value={providerSearchQuery}
                   onChange={(e) => setProviderSearchQuery(e.target.value)}
-                  placeholder="Search providers... (⌘K to clear)"
+                  placeholder="Buscar provedores… (⌘K para limpar)"
                   className={classNames(
                     'w-full pl-8 pr-8 py-1.5 rounded-md text-sm',
                     'bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor',
@@ -521,7 +521,7 @@ export const ModelSelector = ({
                   )}
                   onClick={(e) => e.stopPropagation()}
                   role="searchbox"
-                  aria-label="Search providers"
+                  aria-label="Buscar provedores"
                 />
                 <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
                   <span className="i-ph:magnifying-glass text-bolt-elements-textTertiary" />
@@ -534,7 +534,7 @@ export const ModelSelector = ({
                       clearProviderSearch();
                     }}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-bolt-elements-background-depth-3 transition-colors"
-                    aria-label="Clear search"
+                    aria-label="Limpar busca"
                   >
                     <span className="i-ph:x text-bolt-elements-textTertiary text-xs" />
                   </button>
@@ -562,12 +562,12 @@ export const ModelSelector = ({
                 <div className="px-3 py-3 text-sm">
                   <div className="text-bolt-elements-textTertiary mb-1">
                     {debouncedProviderSearchQuery
-                      ? `No providers match "${debouncedProviderSearchQuery}"`
-                      : 'No providers found'}
+                      ? `Nenhum provedor corresponde a "${debouncedProviderSearchQuery}"`
+                      : 'Nenhum provedor encontrado'}
                   </div>
                   {debouncedProviderSearchQuery && (
                     <div className="text-xs text-bolt-elements-textTertiary">
-                      Try searching for provider names like "OpenAI", "Anthropic", or "Google"
+                      Tente buscar por nomes de provedores como "OpenAI", "Anthropic" ou "Google"
                     </div>
                   )}
                 </div>
@@ -658,7 +658,7 @@ export const ModelSelector = ({
           tabIndex={0}
         >
           <div className="flex items-center justify-between">
-            <div className="truncate">{modelList.find((m) => m.name === model)?.label || 'Select model'}</div>
+            <div className="truncate">{modelList.find((m) => m.name === model)?.label || 'Selecionar modelo'}</div>
             <div
               className={classNames(
                 'i-ph:caret-down w-4 h-4 text-bolt-elements-textSecondary opacity-75',
@@ -693,11 +693,12 @@ export const ModelSelector = ({
                     )}
                   >
                     <span className="i-ph:gift text-xs" />
-                    Free models only
+                    Somente modelos gratuitos
                   </button>
                   {showFreeModelsOnly && (
                     <span className="text-xs text-bolt-elements-textTertiary">
-                      {filteredModels.length} free model{filteredModels.length !== 1 ? 's' : ''}
+                      {filteredModels.length} modelo{filteredModels.length !== 1 ? 's' : ''} gratuito
+                      {filteredModels.length !== 1 ? 's' : ''}
                     </span>
                   )}
                 </div>
@@ -706,8 +707,9 @@ export const ModelSelector = ({
               {/* Search Result Count */}
               {debouncedModelSearchQuery && filteredModels.length > 0 && (
                 <div className="text-xs text-bolt-elements-textTertiary px-1">
-                  {filteredModels.length} model{filteredModels.length !== 1 ? 's' : ''} found
-                  {filteredModels.length > 5 && ' (showing best matches)'}
+                  {filteredModels.length} modelo{filteredModels.length !== 1 ? 's' : ''} encontrado
+                  {filteredModels.length !== 1 ? 's' : ''}
+                  {filteredModels.length > 5 && ' (mostrando as melhores correspondências)'}
                 </div>
               )}
 
@@ -718,7 +720,7 @@ export const ModelSelector = ({
                   type="text"
                   value={modelSearchQuery}
                   onChange={(e) => setModelSearchQuery(e.target.value)}
-                  placeholder="Search models... (⌘K to clear)"
+                  placeholder="Buscar modelos… (⌘K para limpar)"
                   className={classNames(
                     'w-full pl-8 pr-8 py-1.5 rounded-md text-sm',
                     'bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor',
@@ -728,7 +730,7 @@ export const ModelSelector = ({
                   )}
                   onClick={(e) => e.stopPropagation()}
                   role="searchbox"
-                  aria-label="Search models"
+                  aria-label="Buscar modelos"
                 />
                 <div className="absolute left-2.5 top-1/2 -translate-y-1/2">
                   <span className="i-ph:magnifying-glass text-bolt-elements-textTertiary" />
@@ -741,7 +743,7 @@ export const ModelSelector = ({
                       clearModelSearch();
                     }}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-bolt-elements-background-depth-3 transition-colors"
-                    aria-label="Clear search"
+                    aria-label="Limpar busca"
                   >
                     <span className="i-ph:x text-bolt-elements-textTertiary text-xs" />
                   </button>
@@ -769,35 +771,35 @@ export const ModelSelector = ({
                 <div className="px-3 py-3 text-sm">
                   <div className="flex items-center gap-2 text-bolt-elements-textTertiary">
                     <span className="i-ph:spinner animate-spin" />
-                    Loading models...
+                    Carregando modelos…
                   </div>
                 </div>
               ) : filteredModels.length === 0 ? (
                 <div className="px-3 py-3 text-sm">
                   <div className="text-bolt-elements-textTertiary mb-1">
                     {debouncedModelSearchQuery
-                      ? `No models match "${debouncedModelSearchQuery}"${showFreeModelsOnly ? ' (free only)' : ''}`
+                      ? `Nenhum modelo corresponde a "${debouncedModelSearchQuery}"${showFreeModelsOnly ? ' (somente gratuitos)' : ''}`
                       : showFreeModelsOnly
-                        ? 'No free models available'
+                        ? 'Nenhum modelo gratuito disponível'
                         : provider?.name && LOCAL_PROVIDERS.includes(provider.name)
-                          ? `No models found — is ${provider.name} running?`
-                          : 'No models available'}
+                          ? `Nenhum modelo encontrado — ${provider.name} está em execução?`
+                          : 'Nenhum modelo disponível'}
                   </div>
                   {!debouncedModelSearchQuery && provider?.name && LOCAL_PROVIDERS.includes(provider.name) && (
                     <div className="text-xs text-bolt-elements-textTertiary mt-1">
-                      Make sure {provider.name} is running and has at least one model loaded.
-                      {provider.name === 'Ollama' && ' Try: ollama pull llama3.2'}
-                      {provider.name === 'LMStudio' && ' Load a model in LM Studio first.'}
+                      Confirme que {provider.name} está em execução e tem pelo menos um modelo carregado.
+                      {provider.name === 'Ollama' && ' Tente: ollama pull llama3.2'}
+                      {provider.name === 'LMStudio' && ' Carregue um modelo no LM Studio primeiro.'}
                     </div>
                   )}
                   {debouncedModelSearchQuery && (
                     <div className="text-xs text-bolt-elements-textTertiary">
-                      Try searching for model names, context sizes (e.g., "128k", "1M"), or capabilities
+                      Tente buscar por nomes de modelos, tamanhos de contexto (por exemplo, "128k", "1M") ou recursos
                     </div>
                   )}
                   {showFreeModelsOnly && !debouncedModelSearchQuery && (
                     <div className="text-xs text-bolt-elements-textTertiary">
-                      Try disabling the "Free models only" filter to see all available models
+                      Desative o filtro "Somente modelos gratuitos" para ver todos os modelos disponíveis
                     </div>
                   )}
                 </div>
@@ -842,17 +844,17 @@ export const ModelSelector = ({
                           </span>
                           {debouncedModelSearchQuery && (modelOption as any).searchScore > 70 && (
                             <span className="text-xs text-green-500 font-medium">
-                              {(modelOption as any).searchScore.toFixed(0)}% match
+                              {(modelOption as any).searchScore.toFixed(0)}% de correspondência
                             </span>
                           )}
                         </div>
                       </div>
                       <div className="flex items-center gap-1 ml-2">
                         {isModelLikelyFree(modelOption, provider?.name) && (
-                          <span className="i-ph:gift text-xs text-purple-400" title="Free model" />
+                          <span className="i-ph:gift text-xs text-purple-400" title="Modelo gratuito" />
                         )}
                         {model === modelOption.name && (
-                          <span className="i-ph:check text-xs text-green-500" title="Selected" />
+                          <span className="i-ph:check text-xs text-green-500" title="Selecionado" />
                         )}
                       </div>
                     </div>

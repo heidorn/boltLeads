@@ -51,7 +51,7 @@ export class ImportExportService {
       };
     } catch (error) {
       console.error('Error exporting chats:', error);
-      throw new Error(`Failed to export chats: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to export chats: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     }
   }
 

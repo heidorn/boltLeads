@@ -70,12 +70,12 @@ function ProviderCard({
 
               {provider.settings.enabled && (
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-bolt-elements-textPrimary">API Endpoint</label>
+                  <label className="text-sm font-medium text-bolt-elements-textPrimary">Endpoint da API</label>
                   {isEditing ? (
                     <input
                       type="text"
                       defaultValue={provider.settings.baseUrl}
-                      placeholder={`Enter ${provider.name} base URL`}
+                      placeholder={`Informe a URL base de ${provider.name}`}
                       className="w-full px-4 py-3 rounded-lg text-sm bg-bolt-elements-background-depth-4 border border-purple-500/30 text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-200 shadow-sm"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
@@ -98,7 +98,9 @@ function ProviderCard({
                     >
                       <div className="flex items-center gap-3 text-bolt-elements-textSecondary group-hover:text-bolt-elements-textPrimary">
                         <Link className="w-4 h-4 group-hover:text-purple-500 transition-colors" />
-                        <span className="font-mono">{provider.settings.baseUrl || 'Click to set base URL'}</span>
+                        <span className="font-mono">
+                          {provider.settings.baseUrl || 'Clique para definir a URL base'}
+                        </span>
                       </div>
                     </button>
                   )}
@@ -109,7 +111,7 @@ function ProviderCard({
           <Switch
             checked={provider.settings.enabled}
             onCheckedChange={onToggle}
-            aria-label={`Toggle ${provider.name} provider`}
+            aria-label={`Alternar o provedor ${provider.name}`}
           />
         </div>
       </CardContent>

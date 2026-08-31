@@ -7,6 +7,13 @@ export interface StreamRecoveryOptions {
   timeout?: number;
   onTimeout?: () => void;
   onRecovery?: () => void;
+
+  /**
+   * Chamado quando as tentativas acabam e o stream é considerado morto.
+   * Sem isto, o gerente apagava o próprio relógio e ia embora em silêncio —
+   * a interface ficava em "Gerando a resposta" para sempre.
+   */
+  onGiveUp?: () => void;
 }
 
 export class StreamRecoveryManager {
@@ -53,6 +60,7 @@ export class StreamRecoveryManager {
     if (this._retryCount >= (this._options.maxRetries || 3)) {
       logger.error('Max retries reached for stream recovery');
       this.stop();
+      this._options.onGiveUp?.();
 
       return;
     }

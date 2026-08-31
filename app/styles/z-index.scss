@@ -24,6 +24,14 @@ $zIndexMax: 999;
   z-index: 3;
 }
 
+/*
+ * A divisória fica sobre a faixa de padding do workbench, que vem depois no DOM.
+ * Sem um degrau aqui, o painel ganhava o hit-test e a divisória não pegava o mouse.
+ */
+.z-chat-resize {
+  z-index: 4;
+}
+
 .z-file-tree-breadcrumb {
   z-index: $zIndexMax - 1;
 }

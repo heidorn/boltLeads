@@ -18,7 +18,7 @@ async function githubUserLoader({ request, context }: { request: Request; contex
       process.env.VITE_GITHUB_ACCESS_TOKEN;
 
     if (!githubToken) {
-      return json({ error: 'GitHub token not found' }, { status: 401 });
+      return json({ error: 'Token do GitHub não encontrado' }, { status: 401 });
     }
 
     // Make server-side request to GitHub API
@@ -32,7 +32,7 @@ async function githubUserLoader({ request, context }: { request: Request; contex
 
     if (!response.ok) {
       if (response.status === 401) {
-        return json({ error: 'Invalid GitHub token' }, { status: 401 });
+        return json({ error: 'Token do GitHub inválido' }, { status: 401 });
       }
 
       throw new Error(`GitHub API error: ${response.status}`);
@@ -57,7 +57,7 @@ async function githubUserLoader({ request, context }: { request: Request; contex
     console.error('Error fetching GitHub user:', error);
     return json(
       {
-        error: 'Failed to fetch GitHub user information',
+        error: 'Não foi possível obter os dados do usuário do GitHub',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },
@@ -108,7 +108,7 @@ async function githubUserAction({ request, context }: { request: Request; contex
       process.env.VITE_GITHUB_ACCESS_TOKEN;
 
     if (!githubToken) {
-      return json({ error: 'GitHub token not found' }, { status: 401 });
+      return json({ error: 'Token do GitHub não encontrado' }, { status: 401 });
     }
 
     if (action === 'get_repos') {
@@ -158,7 +158,7 @@ async function githubUserAction({ request, context }: { request: Request; contex
 
     if (action === 'get_branches') {
       if (!repoFullName) {
-        return json({ error: 'Repository name is required' }, { status: 400 });
+        return json({ error: 'O nome do repositório é obrigatório' }, { status: 400 });
       }
 
       // Fetch repository branches
@@ -204,7 +204,7 @@ async function githubUserAction({ request, context }: { request: Request; contex
 
     if (action === 'search_repos') {
       if (!searchQuery) {
-        return json({ error: 'Search query is required' }, { status: 400 });
+        return json({ error: 'O termo de busca é obrigatório' }, { status: 400 });
       }
 
       // Search repositories using GitHub API
@@ -268,12 +268,12 @@ async function githubUserAction({ request, context }: { request: Request; contex
       });
     }
 
-    return json({ error: 'Invalid action' }, { status: 400 });
+    return json({ error: 'Ação inválida' }, { status: 400 });
   } catch (error) {
     console.error('Error in GitHub user action:', error);
     return json(
       {
-        error: 'Failed to process GitHub request',
+        error: 'Não foi possível processar a requisição ao GitHub',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },

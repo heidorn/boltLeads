@@ -22,7 +22,7 @@ const ThoughtBox = ({ title, children }: PropsWithChildren<{ title: string }>) =
         <div className="i-ph:brain-thin text-2xl" />
         <div className="div">
           <span> {title}</span>{' '}
-          {!isExpanded && <span className="text-bolt-elements-textTertiary"> - Click to expand</span>}
+          {!isExpanded && <span className="text-bolt-elements-textTertiary"> - Clique para expandir</span>}
         </div>
       </div>
       <div

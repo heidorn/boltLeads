@@ -16,12 +16,12 @@ export function useVercelDeploy() {
 
   const handleVercelDeploy = async () => {
     if (!vercelConn.user || !vercelConn.token) {
-      toast.error('Please connect to Vercel first in the settings tab!');
+      toast.error('Conecte sua conta do Vercel em Configurações');
       return false;
     }
 
     if (!currentChatId) {
-      toast.error('No active chat found');
+      toast.error('Nenhum chat ativo');
       return false;
     }
 
@@ -31,7 +31,7 @@ export function useVercelDeploy() {
       const artifact = workbenchStore.firstArtifact;
 
       if (!artifact) {
-        throw new Error('No active project found');
+        throw new Error('Nenhum projeto ativo');
       }
 
       // Create a deployment artifact for visual feedback
@@ -39,7 +39,7 @@ export function useVercelDeploy() {
       workbenchStore.addArtifact({
         id: deploymentId,
         messageId: deploymentId,
-        title: 'Vercel Deployment',
+        title: 'Deploy no Vercel',
         type: 'standalone',
       });
 
@@ -73,7 +73,7 @@ export function useVercelDeploy() {
           error: formatBuildFailureOutput(buildOutput?.output),
           source: 'vercel',
         });
-        throw new Error('Build failed');
+        throw new Error('Não foi possível concluir o build');
       }
 
       // Notify that build succeeded and deployment is starting
@@ -107,7 +107,7 @@ export function useVercelDeploy() {
       }
 
       if (!buildPathExists) {
-        throw new Error('Could not find build output directory. Please check your build configuration.');
+        throw new Error('Não foi possível encontrar o diretório de saída do build. Verifique a configuração do build.');
       }
 
       // Get all files recursively
@@ -200,10 +200,10 @@ export function useVercelDeploy() {
 
         // Notify that deployment failed
         deployArtifact.runner.handleDeployAction('deploying', 'failed', {
-          error: data.error || 'Invalid deployment response',
+          error: data.error || 'Resposta de deploy inválida',
           source: 'vercel',
         });
-        throw new Error(data.error || 'Invalid deployment response');
+        throw new Error(data.error || 'Resposta de deploy inválida');
       }
 
       if (data.project) {
@@ -217,12 +217,12 @@ export function useVercelDeploy() {
       });
 
       // Show success toast notification
-      toast.success(`🚀 Vercel deployment completed successfully!`);
+      toast.success(`Deploy no Vercel concluído`);
 
       return true;
     } catch (err) {
       console.error('Vercel deploy error:', err);
-      toast.error(err instanceof Error ? err.message : 'Vercel deployment failed');
+      toast.error(err instanceof Error ? err.message : 'Não foi possível concluir o deploy no Vercel');
 
       return false;
     } finally {

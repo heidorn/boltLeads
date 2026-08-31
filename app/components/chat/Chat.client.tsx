@@ -161,7 +161,7 @@ export const ChatImpl = memo(
 
         if (usage) {
           console.log('Token usage:', usage);
-          logStore.logProvider('Chat response completed', {
+          logStore.logProvider('Resposta do chat concluída', {
             component: 'Chat',
             action: 'response',
             model,
@@ -223,7 +223,7 @@ export const ChatImpl = memo(
       chatStore.setKey('aborted', true);
       workbenchStore.abortAllActions();
 
-      logStore.logProvider('Chat response aborted', {
+      logStore.logProvider('Resposta do chat interrompida', {
         component: 'Chat',
         action: 'abort',
         model,
@@ -239,7 +239,7 @@ export const ChatImpl = memo(
         setFakeLoading(false);
 
         let errorInfo = {
-          message: 'An unexpected error occurred',
+          message: 'Ocorreu um erro inesperado',
           isRetryable: true,
           statusCode: 500,
           provider: provider.name,
@@ -262,20 +262,20 @@ export const ChatImpl = memo(
         }
 
         let errorType: LlmErrorAlertType['errorType'] = 'unknown';
-        let title = 'Request Failed';
+        let title = 'Não foi possível concluir a requisição';
 
         if (errorInfo.statusCode === 401 || errorInfo.message.toLowerCase().includes('api key')) {
           errorType = 'authentication';
-          title = 'Authentication Error';
+          title = 'Erro de autenticação';
         } else if (errorInfo.statusCode === 429 || errorInfo.message.toLowerCase().includes('rate limit')) {
           errorType = 'rate_limit';
-          title = 'Rate Limit Exceeded';
+          title = 'Limite de requisições excedido';
         } else if (errorInfo.message.toLowerCase().includes('quota')) {
           errorType = 'quota';
-          title = 'Quota Exceeded';
+          title = 'Cota excedida';
         } else if (errorInfo.statusCode >= 500) {
           errorType = 'network';
-          title = 'Server Error';
+          title = 'Erro no servidor';
         }
 
         logStore.logError(`${context} request failed`, error, {
@@ -323,9 +323,28 @@ export const ChatImpl = memo(
         return;
       }
 
-      await Promise.all([
-        animate('#examples', { opacity: 0, display: 'none' }, { duration: 0.1 }),
-        animate('#intro', { opacity: 0, flex: 1 }, { duration: 0.2, ease: cubicEasingFn }),
+      /*
+       * A troca de tela não pode depender da animação terminar.
+       *
+       * `animate()` promete resolver quando o alvo chega ao fim, mas se o
+       * componente re-renderiza no meio — e re-renderiza, porque logo em
+       * seguida vêm `setFakeLoading`, a seleção de template e o streaming — o
+       * framer perde o alvo e a promessa nunca resolve. O `#intro` parava com
+       * `opacity: 0.77`, `chatStarted` continuava `false`, e o usuário via a
+       * home com "Gerando a resposta" solto no meio: sem a própria mensagem,
+       * sem workbench, como se nada estivesse acontecendo.
+       *
+       * Com o limite de tempo, a animação continua sendo o caminho normal e
+       * deixa de ser o único.
+       */
+      const REDE_DE_SEGURANCA_MS = 400;
+
+      await Promise.race([
+        Promise.all([
+          animate('#examples', { opacity: 0, display: 'none' }, { duration: 0.1 }),
+          animate('#intro', { opacity: 0, flex: 1 }, { duration: 0.2, ease: cubicEasingFn }),
+        ]).catch(() => undefined),
+        new Promise((resolve) => setTimeout(resolve, REDE_DE_SEGURANCA_MS)),
       ]);
 
       chatStore.setKey('started', true);
@@ -422,9 +441,11 @@ export const ChatImpl = memo(
           if (template !== 'blank') {
             const temResp = await getTemplates(template, title).catch((e) => {
               if (e.message.includes('rate limit')) {
-                toast.warning('Rate limit exceeded. Skipping starter template\n Continuing with blank template');
+                toast.warning(
+                  'Limite de requisições excedido. Ignorando o template inicial\n Seguindo com um projeto em branco',
+                );
               } else {
-                toast.warning('Failed to import starter template\n Continuing with blank template');
+                toast.warning('Não foi possível importar o template inicial\n Seguindo com um projeto em branco');
               }
 
               return null;
@@ -608,9 +629,71 @@ export const ChatImpl = memo(
       [input, handleInputChange],
     );
 
+    /*
+     * Entre o template e a primeira letra da resposta a tela não dizia nada, e um
+     * stream cortado no meio deixava a mesma imagem parada. Daqui saem as duas coisas
+     * que faltavam: quanto tempo já passou, e o aviso de que parou de chegar dado.
+     */
+    const streaming = isLoading || fakeLoading;
+    const ultimaMensagem = messages[messages.length - 1];
+    const assistenteJaEscreveu =
+      ultimaMensagem?.role === 'assistant' && (parsedMessages[messages.length - 1] || '').trim().length > 0;
+    const aguardandoResposta = streaming && !assistenteJaEscreveu;
+
+    const [esperaDesde, setEsperaDesde] = useState<number | null>(null);
+    const [ultimoDado, setUltimoDado] = useState(() => Date.now());
+    const [streamParado, setStreamParado] = useState(false);
+
+    useEffect(() => {
+      setEsperaDesde(aguardandoResposta ? (anterior) => anterior ?? Date.now() : null);
+    }, [aguardandoResposta]);
+
+    /*
+     * Sinal de vida medido pelo conteúdo, não pela referência: o `useChat` devolve um
+     * array novo a cada render, então observar `messages` direto reiniciava o vigia o
+     * tempo todo e ele nunca disparava.
+     */
+    const sinalDeVida = `${messages.length}:${(ultimaMensagem?.content || '').length}:${chatData?.length ?? 0}`;
+
+    useEffect(() => {
+      setUltimoDado(Date.now());
+      setStreamParado(false);
+    }, [sinalDeVida]);
+
+    useEffect(() => {
+      if (!streaming) {
+        setStreamParado(false);
+        return undefined;
+      }
+
+      /*
+       * Dois minutos sem um único byte. O raciocínio do modelo já leva um minuto em
+       * pedidos grandes, então um limite curto acusaria vida como se fosse morte.
+       */
+      const LIMITE_SEM_DADOS = 120_000;
+      const verificar = () => setStreamParado(Date.now() - ultimoDado > LIMITE_SEM_DADOS);
+      const timer = setInterval(verificar, 5000);
+
+      // Em aba oculta o intervalo quase não roda; ao voltar, verifica na hora.
+      document.addEventListener('visibilitychange', verificar);
+
+      return () => {
+        clearInterval(timer);
+        document.removeEventListener('visibilitychange', verificar);
+      };
+    }, [streaming, ultimoDado]);
+
     return (
       <BaseChat
         ref={animationScope}
+        aguardandoDesde={aguardandoResposta ? esperaDesde : null}
+        streamParado={streamParado}
+        onRetryStream={() => {
+          setStreamParado(false);
+          setUltimoDado(Date.now());
+          reload();
+        }}
+        onDispensarStreamParado={() => setStreamParado(false)}
         textareaRef={textareaRef}
         input={input}
         showChat={showChat}

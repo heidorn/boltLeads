@@ -59,10 +59,10 @@ export async function initializeGitHubConnection() {
     // Fetch initial stats
     await fetchGitHubStatsViaAPI();
 
-    logStore.logSystem('GitHub connection initialized successfully');
+    logStore.logSystem('Conexão com o GitHub iniciada');
   } catch (error) {
     console.error('Error initializing GitHub connection:', error);
-    logStore.logError('Failed to initialize GitHub connection', { error });
+    logStore.logError('Não foi possível iniciar a conexão com o GitHub', { error });
   } finally {
     isConnecting.set(false);
   }
@@ -115,10 +115,10 @@ export async function fetchGitHubStatsViaAPI() {
       },
     });
 
-    logStore.logSystem('GitHub stats fetched successfully');
+    logStore.logSystem('Estatísticas do GitHub obtidas');
   } catch (error) {
     console.error('GitHub API Error:', error);
-    logStore.logError('Failed to fetch GitHub stats', { error });
+    logStore.logError('Não foi possível carregar as estatísticas do GitHub', { error });
   } finally {
     isFetchingStats.set(false);
   }

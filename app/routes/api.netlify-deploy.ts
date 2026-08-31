@@ -30,7 +30,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const { siteId, files, token, chatId } = (await request.json()) as DeployRequestBody & { token: string };
 
     if (!token) {
-      return json({ error: 'Not connected to Netlify' }, { status: 401 });
+      return json({ error: 'Não conectado ao Netlify' }, { status: 401 });
     }
 
     let targetSiteId = siteId;
@@ -54,7 +54,7 @@ export async function action({ request }: ActionFunctionArgs) {
       if (!createSiteResponse.ok) {
         const errorDetail = await readNetlifyError(createSiteResponse);
         return json(
-          { error: `Failed to create site${errorDetail ? `: ${errorDetail}` : ''}` },
+          { error: `Não foi possível criar o site${errorDetail ? `: ${errorDetail}` : ''}` },
           { status: createSiteResponse.status },
         );
       }
@@ -107,7 +107,7 @@ export async function action({ request }: ActionFunctionArgs) {
         if (!createSiteResponse.ok) {
           const errorDetail = await readNetlifyError(createSiteResponse);
           return json(
-            { error: `Failed to create site${errorDetail ? `: ${errorDetail}` : ''}` },
+            { error: `Não foi possível criar o site${errorDetail ? `: ${errorDetail}` : ''}` },
             { status: createSiteResponse.status },
           );
         }
@@ -153,7 +153,7 @@ export async function action({ request }: ActionFunctionArgs) {
     if (!deployResponse.ok) {
       const errorDetail = await readNetlifyError(deployResponse);
       return json(
-        { error: `Failed to create deployment${errorDetail ? `: ${errorDetail}` : ''}` },
+        { error: `Não foi possível criar o deploy${errorDetail ? `: ${errorDetail}` : ''}` },
         { status: deployResponse.status },
       );
     }
@@ -174,7 +174,7 @@ export async function action({ request }: ActionFunctionArgs) {
       if (!statusResponse.ok) {
         const errorDetail = await readNetlifyError(statusResponse);
         return json(
-          { error: `Failed to check deployment status${errorDetail ? `: ${errorDetail}` : ''}` },
+          { error: `Não foi possível verificar o status do deploy${errorDetail ? `: ${errorDetail}` : ''}` },
           { status: statusResponse.status },
         );
       }
@@ -222,7 +222,7 @@ export async function action({ request }: ActionFunctionArgs) {
           }
 
           if (!uploadSuccess) {
-            return json({ error: `Failed to upload file ${filePath}` }, { status: 500 });
+            return json({ error: `Não foi possível enviar o arquivo ${filePath}` }, { status: 500 });
           }
         }
 
@@ -243,7 +243,7 @@ export async function action({ request }: ActionFunctionArgs) {
       }
 
       if (status.state === 'error') {
-        return json({ error: status.error_message || 'Deploy preparation failed' }, { status: 500 });
+        return json({ error: status.error_message || 'Não foi possível preparar o deploy' }, { status: 500 });
       }
 
       retryCount++;
@@ -251,7 +251,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     if (retryCount >= maxRetries) {
-      return json({ error: 'Deploy preparation timed out' }, { status: 500 });
+      return json({ error: 'A preparação do deploy excedeu o tempo limite' }, { status: 500 });
     }
 
     // Make sure we're returning the deploy ID and site info
@@ -265,6 +265,6 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   } catch (error) {
     console.error('Deploy error:', error);
-    return json({ error: 'Deployment failed' }, { status: 500 });
+    return json({ error: 'Não foi possível concluir o deploy' }, { status: 500 });
   }
 }

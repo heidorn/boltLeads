@@ -206,7 +206,7 @@ export async function loader({ request, context }: { request: Request; context: 
   const repo = url.searchParams.get('repo');
 
   if (!repo) {
-    return json({ error: 'Repository name is required' }, { status: 400 });
+    return json({ error: 'O nome do repositório é obrigatório' }, { status: 400 });
   }
 
   try {
@@ -233,7 +233,7 @@ export async function loader({ request, context }: { request: Request; context: 
 
     return json(
       {
-        error: 'Failed to fetch template files',
+        error: 'Não foi possível obter os arquivos do template',
         details: error instanceof Error ? error.message : String(error),
       },
       { status: 500 },

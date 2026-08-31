@@ -224,7 +224,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       success: true,
       issueNumber: issue.data.number,
       issueUrl: issue.data.html_url,
-      message: 'Bug report submitted successfully!',
+      message: 'Relatório de bug enviado',
     });
   } catch (error) {
     console.error('Error creating bug report:', error);

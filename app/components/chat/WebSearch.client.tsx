@@ -13,6 +13,9 @@ interface WebSearchData {
   description: string;
   content: string;
   sourceUrl: string;
+
+  /** Logo, paleta e fontes do site, quando foi possível identificá-las. */
+  identitySummary?: string;
 }
 
 interface WebSearchResponse {
@@ -22,17 +25,32 @@ interface WebSearchResponse {
 }
 
 function formatSearchResult(data: WebSearchData): string {
-  const parts: string[] = [`[Web content from ${data.sourceUrl}]`];
+  const parts: string[] = [`[Conteúdo de ${data.sourceUrl}]`];
 
   if (data.title) {
-    parts.push(`Title: ${data.title}`);
+    parts.push(`Título: ${data.title}`);
   }
 
   if (data.description) {
-    parts.push(`Description: ${data.description}`);
+    parts.push(`Descrição: ${data.description}`);
   }
 
-  parts.push('', data.content);
+  /*
+   * A identidade vem antes do texto e com instrução explícita: sem isso o
+   * modelo lê o conteúdo, ignora a marca e inventa uma aparência genérica.
+   */
+  if (data.identitySummary) {
+    parts.push(
+      '',
+      '[Identidade visual do site — use estes valores reais em vez de inventar]',
+      data.identitySummary,
+      '',
+      'Ao recriar ou se inspirar neste site: use a logo pela URL acima (<img src="…">),',
+      'aplique as cores da marca nos elementos principais e as fontes indicadas.',
+    );
+  }
+
+  parts.push('', '[Conteúdo da página]', data.content);
 
   return parts.join('\n');
 }
@@ -85,15 +103,15 @@ export function WebSearch({ onSearchResult, disabled = false }: WebSearchProps) 
       const result = (await response.json()) as WebSearchResponse;
 
       if (!response.ok || !result.success || !result.data) {
-        throw new Error(result.error || 'Failed to fetch URL content');
+        throw new Error(result.error || 'Não foi possível obter o conteúdo da URL');
       }
 
       onSearchResult(formatSearchResult(result.data));
-      toast.success('URL content fetched');
+      toast.success('Conteúdo da URL obtido');
       setUrl('');
       setIsOpen(false);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to fetch URL');
+      toast.error(error instanceof Error ? error.message : 'Não foi possível obter a URL');
     } finally {
       setIsSearching(false);
     }
@@ -102,7 +120,7 @@ export function WebSearch({ onSearchResult, disabled = false }: WebSearchProps) 
   return (
     <div ref={containerRef} className="relative">
       <IconButton
-        title="Fetch URL content"
+        title="Obter conteúdo da URL"
         disabled={disabled || isSearching}
         onClick={() => setIsOpen(!isOpen)}
         className="transition-all"
@@ -154,7 +172,7 @@ export function WebSearch({ onSearchResult, disabled = false }: WebSearchProps) 
               'disabled:opacity-50 disabled:cursor-not-allowed',
             )}
           >
-            {isSearching ? 'Fetching...' : 'Fetch'}
+            {isSearching ? 'Obtendo…' : 'Obter'}
           </button>
         </div>
       )}

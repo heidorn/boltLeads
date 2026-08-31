@@ -20,7 +20,7 @@ export const action: ActionFunction = async ({ request }) => {
       const errorText = await projectsResponse.text();
       console.error('Projects fetch failed:', errorText);
 
-      return json({ error: 'Failed to fetch projects' }, { status: 401 });
+      return json({ error: 'Não foi possível obter os projetos' }, { status: 401 });
     }
 
     const projects = (await projectsResponse.json()) as SupabaseProject[];
@@ -48,7 +48,7 @@ export const action: ActionFunction = async ({ request }) => {
     console.error('Supabase API error:', error);
     return json(
       {
-        error: error instanceof Error ? error.message : 'Authentication failed',
+        error: error instanceof Error ? error.message : 'Não foi possível autenticar',
       },
       { status: 401 },
     );

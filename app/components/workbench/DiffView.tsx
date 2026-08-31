@@ -40,7 +40,7 @@ const FullscreenButton = memo(({ onClick, isFullscreen }: FullscreenButtonProps)
   <button
     onClick={onClick}
     className="ml-4 p-1 rounded hover:bg-bolt-elements-background-depth-3 text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary transition-colors"
-    title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+    title={isFullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
   >
     <div className={isFullscreen ? 'i-ph:corners-in' : 'i-ph:corners-out'} />
   </button>
@@ -335,10 +335,12 @@ const renderContentWarning = (type: 'binary' | 'error') => (
     <div className="text-center text-bolt-elements-textTertiary">
       <div className={`i-ph:${type === 'binary' ? 'file-x' : 'warning-circle'} text-4xl text-red-400 mb-2 mx-auto`} />
       <p className="font-medium text-bolt-elements-textPrimary">
-        {type === 'binary' ? 'Binary file detected' : 'Error processing file'}
+        {type === 'binary' ? 'Arquivo binário' : 'Não foi possível processar o arquivo'}
       </p>
       <p className="text-sm mt-1">
-        {type === 'binary' ? 'Diff view is not available for binary files' : 'Could not generate diff preview'}
+        {type === 'binary'
+          ? 'A comparação não está disponível para arquivos binários'
+          : 'Não foi possível gerar a comparação'}
       </p>
     </div>
   </div>
@@ -359,12 +361,12 @@ const NoChangesView = memo(
     <div className="h-full flex flex-col items-center justify-center p-4">
       <div className="text-center text-bolt-elements-textTertiary">
         <div className="i-ph:files text-4xl text-green-400 mb-2 mx-auto" />
-        <p className="font-medium text-bolt-elements-textPrimary">Files are identical</p>
-        <p className="text-sm mt-1">Both versions match exactly</p>
+        <p className="font-medium text-bolt-elements-textPrimary">Os arquivos são idênticos</p>
+        <p className="text-sm mt-1">As duas versões são exatamente iguais</p>
       </div>
       <div className="mt-4 w-full max-w-2xl bg-bolt-elements-background-depth-1 rounded-lg border border-bolt-elements-borderColor overflow-hidden">
         <div className="p-2 text-xs font-bold text-bolt-elements-textTertiary border-b border-bolt-elements-borderColor">
-          Current Content
+          Conteúdo atual
         </div>
         <div className="overflow-auto max-h-96">
           {beforeCode.split('\n').map((line, index) => (
@@ -528,11 +530,11 @@ const FileInfo = memo(
                   {deletions > 0 && <span className="text-red-700 dark:text-red-500">-{deletions}</span>}
                 </div>
               )}
-              <span className="text-yellow-600 dark:text-yellow-400">Modified</span>
+              <span className="text-yellow-600 dark:text-yellow-400">Modificado</span>
               <span className="text-bolt-elements-textTertiary text-xs">{new Date().toLocaleTimeString()}</span>
             </>
           ) : (
-            <span className="text-green-700 dark:text-green-400">No Changes</span>
+            <span className="text-green-700 dark:text-green-400">Sem alterações</span>
           )}
           <FullscreenButton onClick={onToggleFullscreen} isFullscreen={isFullscreen} />
         </span>
@@ -619,7 +621,7 @@ const InlineDiffComparison = memo(({ beforeCode, afterCode, filename, language }
   if (!highlighter) {
     return (
       <div className="h-full flex items-center justify-center">
-        <div className="text-bolt-elements-textTertiary">Loading diff...</div>
+        <div className="text-bolt-elements-textTertiary">Carregando comparação…</div>
       </div>
     );
   }
@@ -756,7 +758,7 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
   if (!selectedFile || !currentDocument) {
     return (
       <div className="flex w-full h-full justify-center items-center bg-bolt-elements-background-depth-1 text-bolt-elements-textPrimary">
-        Select a file to view differences
+        Selecione um arquivo para ver as diferenças
       </div>
     );
   }
@@ -788,7 +790,7 @@ export const DiffView = memo(({ fileHistory, setFileHistory }: DiffViewProps) =>
       <div className="flex w-full h-full justify-center items-center bg-bolt-elements-background-depth-1 text-red-400">
         <div className="text-center">
           <div className="i-ph:warning-circle text-4xl mb-2" />
-          <p>Failed to render diff view</p>
+          <p>Não foi possível exibir a comparação</p>
         </div>
       </div>
     );

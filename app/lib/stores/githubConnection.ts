@@ -99,9 +99,9 @@ export const githubConnectionStore = {
       // Update atom
       githubConnectionAtom.set(connection);
 
-      logStore.logInfo('Connected to GitHub', {
+      logStore.logInfo('Conectado ao GitHub', {
         type: 'system',
-        message: `Connected to GitHub as ${user.login}`,
+        message: `Conectado ao GitHub como ${user.login}`,
       });
 
       // Fetch stats in background
@@ -110,10 +110,13 @@ export const githubConnectionStore = {
       });
     } catch (error) {
       console.error('Failed to connect to GitHub:', error);
-      logStore.logError(`GitHub authentication failed: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        type: 'system',
-        message: 'GitHub authentication failed',
-      });
+      logStore.logError(
+        `Não foi possível autenticar no GitHub: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+        {
+          type: 'system',
+          message: 'Não foi possível autenticar no GitHub',
+        },
+      );
       throw error;
     } finally {
       isGitHubConnecting.set(false);
@@ -140,9 +143,9 @@ export const githubConnectionStore = {
     // Clear API service cache
     gitHubApiService.clearCache();
 
-    logStore.logInfo('Disconnected from GitHub', {
+    logStore.logInfo('Desconectado do GitHub', {
       type: 'system',
-      message: 'Disconnected from GitHub',
+      message: 'Desconectado do GitHub',
     });
   },
 
@@ -175,18 +178,18 @@ export const githubConnectionStore = {
       // Update atom
       githubConnectionAtom.set(updatedConnection);
 
-      logStore.logInfo('GitHub stats refreshed', {
+      logStore.logInfo('Estatísticas do GitHub atualizadas', {
         type: 'system',
-        message: 'Successfully refreshed GitHub statistics',
+        message: 'Estatísticas do GitHub atualizadas',
       });
     } catch (error) {
       console.error('Failed to fetch GitHub stats:', error);
 
       // If the error is due to expired token, disconnect
       if (error instanceof Error && error.message.includes('401')) {
-        logStore.logError('GitHub token has expired', {
+        logStore.logError('O token do GitHub expirou', {
           type: 'system',
-          message: 'GitHub token has expired. Please reconnect your account.',
+          message: 'O token do GitHub expirou. Conecte sua conta de novo.',
         });
         this.disconnect();
       }

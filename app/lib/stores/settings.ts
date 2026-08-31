@@ -36,7 +36,7 @@ export const shortcutsStore = map<Shortcuts>({
     altKey: true,
     shiftKey: true,
     action: () => toggleTheme(),
-    description: 'Toggle theme',
+    description: 'Alternar tema',
     isPreventDefault: true,
   },
   toggleTerminal: {
@@ -45,7 +45,7 @@ export const shortcutsStore = map<Shortcuts>({
     action: () => {
       // This will be handled by the terminal component
     },
-    description: 'Toggle terminal',
+    description: 'Alternar terminal',
     isPreventDefault: true,
   },
 });

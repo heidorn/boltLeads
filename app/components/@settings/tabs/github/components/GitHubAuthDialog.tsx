@@ -54,7 +54,7 @@ export function GitHubAuthDialog({ isOpen, onClose, onSuccess }: GitHubAuthDialo
           >
             <div className="p-6 space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-bolt-elements-textPrimary">Connect to GitHub</h2>
+                <h2 className="text-lg font-semibold text-bolt-elements-textPrimary">Conectar ao GitHub</h2>
                 <button
                   onClick={handleClose}
                   className="p-1 rounded-md hover:bg-bolt-elements-item-backgroundActive/10"
@@ -66,14 +66,15 @@ export function GitHubAuthDialog({ isOpen, onClose, onSuccess }: GitHubAuthDialo
               <div className="text-xs text-bolt-elements-textSecondary bg-bolt-elements-background-depth-1 p-3 rounded-lg">
                 <p className="flex items-center gap-1 mb-1">
                   <span className="i-ph:lightbulb w-3.5 h-3.5 text-bolt-elements-icon-success" />
-                  <span className="font-medium">Tip:</span> You need a GitHub token to deploy repositories.
+                  <span className="font-medium">Dica:</span> você precisa de um token do GitHub para fazer deploy de
+                  repositórios.
                 </p>
-                <p>Required scopes: repo, read:org, read:user</p>
+                <p>Escopos obrigatórios: repo, read:org, read:user</p>
               </div>
 
               <form onSubmit={handleConnect} className="space-y-4">
                 <div>
-                  <label className="block text-sm text-bolt-elements-textSecondary mb-2">Token Type</label>
+                  <label className="block text-sm text-bolt-elements-textSecondary mb-2">Tipo de token</label>
                   <select
                     value={tokenType}
                     onChange={(e) => setTokenType(e.target.value as 'classic' | 'fine-grained')}
@@ -87,23 +88,23 @@ export function GitHubAuthDialog({ isOpen, onClose, onSuccess }: GitHubAuthDialo
                       'disabled:opacity-50',
                     )}
                   >
-                    <option value="classic">Personal Access Token (Classic)</option>
-                    <option value="fine-grained">Fine-grained Token</option>
+                    <option value="classic">Token de acesso pessoal (clássico)</option>
+                    <option value="fine-grained">Token com permissões granulares</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-sm text-bolt-elements-textSecondary mb-2">
-                    {tokenType === 'classic' ? 'Personal Access Token' : 'Fine-grained Token'}
+                    {tokenType === 'classic' ? 'Token de acesso pessoal' : 'Token com permissões granulares'}
                   </label>
                   <input
                     type="password"
                     value={token}
                     onChange={(e) => setToken(e.target.value)}
                     disabled={isConnecting}
-                    placeholder={`Enter your GitHub ${
-                      tokenType === 'classic' ? 'personal access token' : 'fine-grained token'
-                    }`}
+                    placeholder={`Informe seu ${
+                      tokenType === 'classic' ? 'token de acesso pessoal' : 'token com permissões granulares'
+                    } do GitHub`}
                     className={classNames(
                       'w-full px-3 py-2 rounded-lg text-sm',
                       'bg-bolt-elements-background-depth-1',
@@ -120,7 +121,7 @@ export function GitHubAuthDialog({ isOpen, onClose, onSuccess }: GitHubAuthDialo
                       rel="noopener noreferrer"
                       className="text-bolt-elements-borderColorActive hover:underline inline-flex items-center gap-1"
                     >
-                      Get your token
+                      Obter seu token
                       <div className="i-ph:arrow-square-out w-4 h-4" />
                     </a>
                   </div>
@@ -138,27 +139,27 @@ export function GitHubAuthDialog({ isOpen, onClose, onSuccess }: GitHubAuthDialo
                     onClick={handleClose}
                     className="px-4 py-2 text-sm text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                   <button
                     type="submit"
                     disabled={isConnecting || !token.trim()}
                     className={classNames(
                       'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
-                      'bg-[#303030] text-white',
-                      'hover:bg-[#5E41D0] hover:text-white',
+                      'bg-[#26313a] text-white',
+                      'hover:bg-[#f2552c] hover:text-white',
                       'disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200',
                     )}
                   >
                     {isConnecting ? (
                       <>
                         <div className="i-ph:spinner-gap animate-spin" />
-                        Connecting...
+                        Conectando…
                       </>
                     ) : (
                       <>
                         <div className="i-ph:plug-charging w-4 h-4" />
-                        Connect
+                        Conectar
                       </>
                     )}
                   </button>

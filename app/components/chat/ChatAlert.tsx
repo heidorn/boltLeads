@@ -12,10 +12,10 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
   const { description, content, source } = alert;
 
   const isPreview = source === 'preview';
-  const title = isPreview ? 'Preview Error' : 'Terminal Error';
+  const title = isPreview ? 'Erro na prévia' : 'Erro no terminal';
   const message = isPreview
-    ? 'We encountered an error while running the preview. Would you like Bolt to analyze and help resolve this issue?'
-    : 'We encountered an error while running terminal commands. Would you like Bolt to analyze and help resolve this issue?';
+    ? 'Ocorreu um erro ao executar a prévia. Quer que o Studio analise e ajude a resolver?'
+    : 'Ocorreu um erro ao executar comandos no terminal. Quer que o Studio analise e ajude a resolver?';
 
   return (
     <AnimatePresence>
@@ -55,7 +55,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
               <p>{message}</p>
               {description && (
                 <div className="text-xs text-bolt-elements-textSecondary p-2 bg-bolt-elements-background-depth-3 rounded mt-4 mb-4">
-                  Error: {description}
+                  Erro: {description}
                 </div>
               )}
             </motion.div>
@@ -71,7 +71,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
                 <button
                   onClick={() =>
                     postMessage(
-                      `*Fix this ${isPreview ? 'preview' : 'terminal'} error* \n\`\`\`${isPreview ? 'js' : 'sh'}\n${content}\n\`\`\`\n`,
+                      `*Corrija este erro ${isPreview ? 'da prévia' : 'do terminal'}* \n\`\`\`${isPreview ? 'js' : 'sh'}\n${content}\n\`\`\`\n`,
                     )
                   }
                   className={classNames(
@@ -84,7 +84,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
                   )}
                 >
                   <div className="i-ph:chat-circle-duotone"></div>
-                  Ask Bolt
+                  Perguntar ao Studio
                 </button>
                 <button
                   onClick={clearAlert}
@@ -96,7 +96,7 @@ export default function ChatAlert({ alert, clearAlert, postMessage }: Props) {
                     'text-bolt-elements-button-secondary-text',
                   )}
                 >
-                  Dismiss
+                  Dispensar
                 </button>
               </div>
             </motion.div>

@@ -33,14 +33,16 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           size="sm"
           onClick={onBack}
           className="bg-transparent hover:bg-transparent text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary transition-all duration-200 p-2"
-          aria-label="Back to Dashboard"
+          aria-label="Voltar ao dashboard"
         >
           <ArrowLeft className="w-4 h-4" />
         </Button>
         <div>
-          <h2 className="text-xl font-semibold text-bolt-elements-textPrimary">Local Provider Setup Guide</h2>
+          <h2 className="text-xl font-semibold text-bolt-elements-textPrimary">
+            Guia de configuração de provedores locais
+          </h2>
           <p className="text-sm text-bolt-elements-textSecondary">
-            Complete setup instructions for running AI models locally
+            Instruções completas para rodar modelos de IA localmente
           </p>
         </div>
       </div>
@@ -53,8 +55,8 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <Shield className="w-5 h-5 text-blue-500" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">System Requirements</h3>
-              <p className="text-sm text-bolt-elements-textSecondary">Recommended hardware for optimal performance</p>
+              <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">Requisitos de sistema</h3>
+              <p className="text-sm text-bolt-elements-textSecondary">Hardware recomendado para o melhor desempenho</p>
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-4 text-sm">
@@ -63,21 +65,21 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                 <Cpu className="w-4 h-4 text-green-500" />
                 <span className="font-medium text-bolt-elements-textPrimary">CPU</span>
               </div>
-              <p className="text-bolt-elements-textSecondary">8+ cores, modern architecture</p>
+              <p className="text-bolt-elements-textSecondary">8+ núcleos, arquitetura moderna</p>
             </div>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Database className="w-4 h-4 text-blue-500" />
                 <span className="font-medium text-bolt-elements-textPrimary">RAM</span>
               </div>
-              <p className="text-bolt-elements-textSecondary">16GB minimum, 32GB+ recommended</p>
+              <p className="text-bolt-elements-textSecondary">16GB no mínimo, 32GB+ recomendado</p>
             </div>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Monitor className="w-4 h-4 text-purple-500" />
                 <span className="font-medium text-bolt-elements-textPrimary">GPU</span>
               </div>
-              <p className="text-bolt-elements-textSecondary">NVIDIA RTX 30xx+ or AMD RX 6000+</p>
+              <p className="text-bolt-elements-textSecondary">NVIDIA RTX 30xx+ ou AMD RX 6000+</p>
             </div>
           </div>
         </CardContent>
@@ -91,13 +93,13 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <Server className="w-6 h-6 text-purple-500" />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-bolt-elements-textPrimary">Ollama Setup</h3>
+              <h3 className="text-xl font-semibold text-bolt-elements-textPrimary">Configuração do Ollama</h3>
               <p className="text-sm text-bolt-elements-textSecondary">
-                Most popular choice for running open-source models locally with desktop app
+                Escolha mais popular para rodar modelos de código aberto localmente, com aplicativo de desktop
               </p>
             </div>
             <span className="px-3 py-1 bg-purple-500/10 text-purple-500 text-xs font-medium rounded-full">
-              Recommended
+              Recomendado
             </span>
           </div>
         </CardHeader>
@@ -106,17 +108,17 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="space-y-4">
             <h4 className="font-medium text-bolt-elements-textPrimary flex items-center gap-2">
               <Download className="w-4 h-4" />
-              1. Choose Installation Method
+              1. Escolha o método de instalação
             </h4>
 
             {/* Desktop App - New and Recommended */}
             <div className="p-4 rounded-lg bg-green-500/5 border border-green-500/20">
               <div className="flex items-center gap-2 mb-3">
                 <Monitor className="w-5 h-5 text-green-500" />
-                <h5 className="font-medium text-green-500">🆕 Desktop App (Recommended)</h5>
+                <h5 className="font-medium text-green-500">Aplicativo de desktop (recomendado)</h5>
               </div>
               <p className="text-sm text-bolt-elements-textSecondary mb-3">
-                New user-friendly desktop application with built-in model management and web interface.
+                Novo aplicativo de desktop simples de usar, com gerenciamento de modelos e interface web integrados.
               </p>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="p-3 rounded-lg bg-bolt-elements-background-depth-3">
@@ -137,7 +139,7 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                       className="flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 flex-shrink-0" />
-                      <span className="flex-1 text-center font-medium">Download Desktop App</span>
+                      <span className="flex-1 text-center font-medium">Baixar aplicativo de desktop</span>
                       <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 flex-shrink-0" />
                     </a>
                   </Button>
@@ -160,7 +162,7 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                       className="flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 flex-shrink-0" />
-                      <span className="flex-1 text-center font-medium">Download Desktop App</span>
+                      <span className="flex-1 text-center font-medium">Baixar aplicativo de desktop</span>
                       <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 flex-shrink-0" />
                     </a>
                   </Button>
@@ -169,10 +171,10 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <div className="mt-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-1">
                   <Globe className="w-4 h-4 text-blue-500" />
-                  <span className="font-medium text-blue-500 text-sm">Built-in Web Interface</span>
+                  <span className="font-medium text-blue-500 text-sm">Interface web integrada</span>
                 </div>
                 <p className="text-xs text-bolt-elements-textSecondary">
-                  Desktop app includes a web interface at{' '}
+                  O aplicativo de desktop inclui uma interface web em{' '}
                   <code className="bg-bolt-elements-background-depth-4 px-1 rounded">http://localhost:11434</code>
                 </p>
               </div>
@@ -182,7 +184,7 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
             <div className="p-4 rounded-lg bg-bolt-elements-background-depth-3">
               <div className="flex items-center gap-2 mb-3">
                 <Terminal className="w-5 h-5 text-bolt-elements-textPrimary" />
-                <h5 className="font-medium text-bolt-elements-textPrimary">Command Line (Advanced)</h5>
+                <h5 className="font-medium text-bolt-elements-textPrimary">Linha de comando (avançado)</h5>
               </div>
               <div className="grid md:grid-cols-3 gap-4">
                 <div className="p-3 rounded-lg bg-bolt-elements-background-depth-4">
@@ -220,16 +222,16 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="space-y-4">
             <h4 className="font-medium text-bolt-elements-textPrimary flex items-center gap-2">
               <Package className="w-4 h-4" />
-              2. Download Latest Models
+              2. Baixe os modelos mais recentes
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="p-4 rounded-lg bg-bolt-elements-background-depth-3">
                 <h5 className="font-medium text-bolt-elements-textPrimary mb-3 flex items-center gap-2">
                   <Code className="w-4 h-4 text-green-500" />
-                  Code & Development
+                  Código e desenvolvimento
                 </h5>
                 <div className="space-y-2 text-xs bg-bolt-elements-background-depth-4 p-3 rounded font-mono text-bolt-elements-textPrimary">
-                  <div># Latest Llama 3.2 for coding</div>
+                  <div># Llama 3.2 mais recente para programar</div>
                   <div>ollama pull llama3.2:3b</div>
                   <div>ollama pull codellama:13b</div>
                   <div>ollama pull deepseek-coder-v2</div>
@@ -239,10 +241,10 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <div className="p-4 rounded-lg bg-bolt-elements-background-depth-3">
                 <h5 className="font-medium text-bolt-elements-textPrimary mb-3 flex items-center gap-2">
                   <Terminal className="w-4 h-4 text-blue-500" />
-                  General Purpose & Chat
+                  Uso geral e chat
                 </h5>
                 <div className="space-y-2 text-xs bg-bolt-elements-background-depth-4 p-3 rounded font-mono text-bolt-elements-textPrimary">
-                  <div># Latest general models</div>
+                  <div># Modelos gerais mais recentes</div>
                   <div>ollama pull llama3.2:3b</div>
                   <div>ollama pull mistral:7b</div>
                   <div>ollama pull phi3.5:3.8b</div>
@@ -254,25 +256,25 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <div className="p-4 rounded-lg bg-purple-500/5 border border-purple-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="w-4 h-4 text-purple-500" />
-                  <span className="font-medium text-purple-500">Performance Optimized</span>
+                  <span className="font-medium text-purple-500">Otimizados para desempenho</span>
                 </div>
                 <ul className="text-xs text-bolt-elements-textSecondary space-y-1">
-                  <li>• Llama 3.2: 3B - Fastest, 8GB RAM</li>
-                  <li>• Phi-3.5: 3.8B - Great balance</li>
-                  <li>• Qwen2.5: 7B - Excellent quality</li>
-                  <li>• Mistral: 7B - Popular choice</li>
+                  <li>• Llama 3.2: 3B - o mais rápido, 8GB de RAM</li>
+                  <li>• Phi-3.5: 3.8B - ótimo equilíbrio</li>
+                  <li>• Qwen2.5: 7B - qualidade excelente</li>
+                  <li>• Mistral: 7B - escolha popular</li>
                 </ul>
               </div>
               <div className="p-4 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertCircle className="w-4 h-4 text-yellow-500" />
-                  <span className="font-medium text-yellow-500">Pro Tips</span>
+                  <span className="font-medium text-yellow-500">Dicas</span>
                 </div>
                 <ul className="text-xs text-bolt-elements-textSecondary space-y-1">
-                  <li>• Start with 3B-7B models for best performance</li>
-                  <li>• Use quantized versions for faster loading</li>
-                  <li>• Desktop app auto-manages model storage</li>
-                  <li>• Web UI available at localhost:11434</li>
+                  <li>• Comece com modelos de 3B-7B para melhor desempenho</li>
+                  <li>• Use versões quantizadas para carregar mais rápido</li>
+                  <li>• O aplicativo de desktop gerencia sozinho o armazenamento dos modelos</li>
+                  <li>• Interface web disponível em localhost:11434</li>
                 </ul>
               </div>
             </div>
@@ -282,26 +284,26 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="space-y-4">
             <h4 className="font-medium text-bolt-elements-textPrimary flex items-center gap-2">
               <Monitor className="w-4 h-4" />
-              3. Desktop App Features
+              3. Recursos do aplicativo de desktop
             </h4>
             <div className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/20">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <h5 className="font-medium text-blue-500 mb-3">🖥️ User Interface</h5>
+                  <h5 className="font-medium text-blue-500 mb-3">Interface</h5>
                   <ul className="text-sm text-bolt-elements-textSecondary space-y-1">
-                    <li>• Model library browser</li>
-                    <li>• One-click model downloads</li>
-                    <li>• Built-in chat interface</li>
-                    <li>• System resource monitoring</li>
+                    <li>• Navegador da biblioteca de modelos</li>
+                    <li>• Baixar modelos com um clique</li>
+                    <li>• Interface de chat integrada</li>
+                    <li>• Monitoramento dos recursos do sistema</li>
                   </ul>
                 </div>
                 <div>
-                  <h5 className="font-medium text-blue-500 mb-3">🔧 Management Tools</h5>
+                  <h5 className="font-medium text-blue-500 mb-3">Ferramentas de gerenciamento</h5>
                   <ul className="text-sm text-bolt-elements-textSecondary space-y-1">
-                    <li>• Automatic updates</li>
-                    <li>• Model size optimization</li>
-                    <li>• GPU acceleration detection</li>
-                    <li>• Cross-platform compatibility</li>
+                    <li>• Atualizações automáticas</li>
+                    <li>• Otimização do tamanho dos modelos</li>
+                    <li>• Detecção de aceleração por GPU</li>
+                    <li>• Compatibilidade entre plataformas</li>
                   </ul>
                 </div>
               </div>
@@ -312,32 +314,32 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="space-y-4">
             <h4 className="font-medium text-bolt-elements-textPrimary flex items-center gap-2">
               <Settings className="w-4 h-4" />
-              4. Troubleshooting & Commands
+              4. Solução de problemas e comandos
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="p-4 rounded-lg bg-red-500/5 border border-red-500/20">
-                <h5 className="font-medium text-red-500 mb-2">Common Issues</h5>
+                <h5 className="font-medium text-red-500 mb-2">Problemas comuns</h5>
                 <ul className="text-xs text-bolt-elements-textSecondary space-y-1">
-                  <li>• Desktop app not starting: Restart system</li>
-                  <li>• GPU not detected: Update drivers</li>
-                  <li>• Port 11434 blocked: Change port in settings</li>
-                  <li>• Models not loading: Check available disk space</li>
-                  <li>• Slow performance: Use smaller models or enable GPU</li>
+                  <li>• O aplicativo de desktop não inicia: reinicie o sistema</li>
+                  <li>• GPU não detectada: atualize os drivers</li>
+                  <li>• Porta 11434 bloqueada: mude a porta nas configurações</li>
+                  <li>• Modelos não carregam: verifique o espaço em disco</li>
+                  <li>• Desempenho lento: use modelos menores ou ative a GPU</li>
                 </ul>
               </div>
               <div className="p-4 rounded-lg bg-green-500/5 border border-green-500/20">
-                <h5 className="font-medium text-green-500 mb-2">Useful Commands</h5>
+                <h5 className="font-medium text-green-500 mb-2">Comandos úteis</h5>
                 <div className="text-xs bg-bolt-elements-background-depth-4 p-3 rounded font-mono text-bolt-elements-textPrimary space-y-1">
-                  <div># Check installed models</div>
+                  <div># Ver os modelos instalados</div>
                   <div>ollama list</div>
                   <div></div>
-                  <div># Remove unused models</div>
+                  <div># Remover modelos não usados</div>
                   <div>ollama rm model_name</div>
                   <div></div>
-                  <div># Check GPU usage</div>
+                  <div># Ver o uso da GPU</div>
                   <div>ollama ps</div>
                   <div></div>
-                  <div># View logs</div>
+                  <div># Ver os logs</div>
                   <div>ollama logs</div>
                 </div>
               </div>
@@ -354,9 +356,9 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <Monitor className="w-6 h-6 text-blue-500" />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-bolt-elements-textPrimary">LM Studio Setup</h3>
+              <h3 className="text-xl font-semibold text-bolt-elements-textPrimary">Configuração do LM Studio</h3>
               <p className="text-sm text-bolt-elements-textSecondary">
-                User-friendly GUI for running local models with excellent model management
+                Interface gráfica simples de usar para rodar modelos locais, com ótimo gerenciamento de modelos
               </p>
             </div>
           </div>
@@ -366,11 +368,11 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="space-y-4">
             <h4 className="font-medium text-bolt-elements-textPrimary flex items-center gap-2">
               <Download className="w-4 h-4" />
-              1. Download & Install
+              1. Baixe e instale
             </h4>
             <div className="p-4 rounded-lg bg-bolt-elements-background-depth-3">
               <p className="text-sm text-bolt-elements-textSecondary mb-3">
-                Download LM Studio for Windows, macOS, or Linux from the official website.
+                Baixe o LM Studio para Windows, macOS ou Linux no site oficial.
               </p>
               <Button
                 variant="outline"
@@ -385,7 +387,7 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                   className="flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4 group-hover:scale-110 group-hover:rotate-12 transition-all duration-300 flex-shrink-0" />
-                  <span className="flex-1 text-center font-medium">Download LM Studio</span>
+                  <span className="flex-1 text-center font-medium">Baixar o LM Studio</span>
                   <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 flex-shrink-0" />
                 </a>
               </Button>
@@ -396,34 +398,34 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="space-y-4">
             <h4 className="font-medium text-bolt-elements-textPrimary flex items-center gap-2">
               <Settings className="w-4 h-4" />
-              2. Configure Local Server
+              2. Configure o servidor local
             </h4>
             <div className="space-y-3">
               <div className="p-4 rounded-lg bg-bolt-elements-background-depth-3">
-                <h5 className="font-medium text-bolt-elements-textPrimary mb-2">Start Local Server</h5>
+                <h5 className="font-medium text-bolt-elements-textPrimary mb-2">Inicie o servidor local</h5>
                 <ol className="text-xs text-bolt-elements-textSecondary space-y-1 list-decimal list-inside">
-                  <li>Download a model from the "My Models" tab</li>
-                  <li>Go to "Local Server" tab</li>
-                  <li>Select your downloaded model</li>
-                  <li>Set port to 1234 (default)</li>
-                  <li>Click "Start Server"</li>
+                  <li>Baixe um modelo na aba "My Models"</li>
+                  <li>Vá até a aba "Local Server"</li>
+                  <li>Selecione o modelo que você baixou</li>
+                  <li>Defina a porta como 1234 (padrão)</li>
+                  <li>Clique em "Start Server"</li>
                 </ol>
               </div>
 
               <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20">
                 <div className="flex items-center gap-2 mb-2">
                   <AlertCircle className="w-4 h-4 text-red-500" />
-                  <span className="font-medium text-red-500">Critical: Enable CORS</span>
+                  <span className="font-medium text-red-500">Importante: ative o CORS</span>
                 </div>
                 <div className="space-y-2">
                   <p className="text-xs text-bolt-elements-textSecondary">
-                    To work with Bolt DIY, you MUST enable CORS in LM Studio:
+                    Para funcionar com o Studio, é obrigatório ativar o CORS no LM Studio:
                   </p>
                   <ol className="text-xs text-bolt-elements-textSecondary space-y-1 list-decimal list-inside ml-2">
-                    <li>In Server Settings, check "Enable CORS"</li>
-                    <li>Set Network Interface to "0.0.0.0" for external access</li>
+                    <li>Em "Server Settings", marque "Enable CORS"</li>
+                    <li>Defina "Network Interface" como "0.0.0.0" para acesso externo</li>
                     <li>
-                      Alternatively, use CLI:{' '}
+                      Ou use a CLI:{' '}
                       <code className="bg-bolt-elements-background-depth-4 px-1 rounded">lms server start --cors</code>
                     </li>
                   </ol>
@@ -436,14 +438,14 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
             <div className="flex items-center gap-2 mb-2">
               <CheckCircle className="w-4 h-4 text-blue-500" />
-              <span className="font-medium text-blue-500">LM Studio Advantages</span>
+              <span className="font-medium text-blue-500">Vantagens do LM Studio</span>
             </div>
             <ul className="text-xs text-bolt-elements-textSecondary space-y-1 list-disc list-inside">
-              <li>Built-in model downloader with search</li>
-              <li>Easy model switching and management</li>
-              <li>Built-in chat interface for testing</li>
-              <li>GGUF format support (most compatible)</li>
-              <li>Regular updates with new features</li>
+              <li>Download de modelos integrado, com busca</li>
+              <li>Troca e gerenciamento de modelos sem complicação</li>
+              <li>Interface de chat integrada para testes</li>
+              <li>Suporte ao formato GGUF (o mais compatível)</li>
+              <li>Atualizações frequentes com novos recursos</li>
             </ul>
           </div>
         </CardContent>
@@ -457,9 +459,9 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <Globe className="w-6 h-6 text-green-500" />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-bolt-elements-textPrimary">LocalAI Setup</h3>
+              <h3 className="text-xl font-semibold text-bolt-elements-textPrimary">Configuração do LocalAI</h3>
               <p className="text-sm text-bolt-elements-textSecondary">
-                Self-hosted OpenAI-compatible API server with extensive model support
+                Servidor de API auto-hospedado compatível com a OpenAI e com amplo suporte a modelos
               </p>
             </div>
           </div>
@@ -469,18 +471,18 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="space-y-4">
             <h4 className="font-medium text-bolt-elements-textPrimary flex items-center gap-2">
               <Download className="w-4 h-4" />
-              Installation Options
+              Opções de instalação
             </h4>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="p-4 rounded-lg bg-bolt-elements-background-depth-3">
-                <h5 className="font-medium text-bolt-elements-textPrimary mb-2">Quick Install</h5>
+                <h5 className="font-medium text-bolt-elements-textPrimary mb-2">Instalação rápida</h5>
                 <div className="text-xs bg-bolt-elements-background-depth-4 p-3 rounded font-mono text-bolt-elements-textPrimary space-y-1">
-                  <div># One-line install</div>
+                  <div># Instalação em uma linha</div>
                   <div>curl https://localai.io/install.sh | sh</div>
                 </div>
               </div>
               <div className="p-4 rounded-lg bg-bolt-elements-background-depth-3">
-                <h5 className="font-medium text-bolt-elements-textPrimary mb-2">Docker (Recommended)</h5>
+                <h5 className="font-medium text-bolt-elements-textPrimary mb-2">Docker (recomendado)</h5>
                 <div className="text-xs bg-bolt-elements-background-depth-4 p-3 rounded font-mono text-bolt-elements-textPrimary space-y-1">
                   <div>docker run -p 8080:8080</div>
                   <div>quay.io/go-skynet/local-ai:latest</div>
@@ -493,14 +495,14 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="space-y-4">
             <h4 className="font-medium text-bolt-elements-textPrimary flex items-center gap-2">
               <Settings className="w-4 h-4" />
-              Configuration
+              Configuração
             </h4>
             <div className="p-4 rounded-lg bg-bolt-elements-background-depth-3">
               <p className="text-sm text-bolt-elements-textSecondary mb-3">
-                LocalAI supports many model formats and provides a full OpenAI-compatible API.
+                O LocalAI aceita muitos formatos de modelo e oferece uma API completa compatível com a OpenAI.
               </p>
               <div className="text-xs bg-bolt-elements-background-depth-4 p-3 rounded font-mono text-bolt-elements-textPrimary space-y-1">
-                <div># Example configuration</div>
+                <div># Exemplo de configuração</div>
                 <div>models:</div>
                 <div>- name: llama3.1</div>
                 <div>backend: llama</div>
@@ -514,14 +516,14 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
           <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
             <div className="flex items-center gap-2 mb-2">
               <CheckCircle className="w-4 h-4 text-green-500" />
-              <span className="font-medium text-green-500">LocalAI Advantages</span>
+              <span className="font-medium text-green-500">Vantagens do LocalAI</span>
             </div>
             <ul className="text-xs text-bolt-elements-textSecondary space-y-1 list-disc list-inside">
-              <li>Full OpenAI API compatibility</li>
-              <li>Supports multiple model formats</li>
-              <li>Docker deployment option</li>
-              <li>Built-in model gallery</li>
-              <li>REST API for model management</li>
+              <li>Compatibilidade total com a API da OpenAI</li>
+              <li>Aceita vários formatos de modelo</li>
+              <li>Opção de deploy com Docker</li>
+              <li>Galeria de modelos integrada</li>
+              <li>API REST para gerenciar modelos</li>
             </ul>
           </div>
         </CardContent>
@@ -535,52 +537,52 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <Activity className="w-5 h-5 text-purple-500" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">Performance Optimization</h3>
-              <p className="text-sm text-bolt-elements-textSecondary">Tips to improve local AI performance</p>
+              <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">Otimização de desempenho</h3>
+              <p className="text-sm text-bolt-elements-textSecondary">Dicas para melhorar o desempenho da IA local</p>
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-3">
-              <h4 className="font-medium text-bolt-elements-textPrimary">Hardware Optimizations</h4>
+              <h4 className="font-medium text-bolt-elements-textPrimary">Otimizações de hardware</h4>
               <ul className="text-sm text-bolt-elements-textSecondary space-y-2">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Use NVIDIA GPU with CUDA for 5-10x speedup</span>
+                  <span>Use GPU NVIDIA com CUDA para ganhar de 5 a 10 vezes em velocidade</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Increase RAM for larger context windows</span>
+                  <span>Aumente a RAM para janelas de contexto maiores</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Use SSD storage for faster model loading</span>
+                  <span>Use armazenamento SSD para carregar os modelos mais rápido</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                  <span>Close other applications to free up RAM</span>
+                  <span>Feche outros aplicativos para liberar RAM</span>
                 </li>
               </ul>
             </div>
             <div className="space-y-3">
-              <h4 className="font-medium text-bolt-elements-textPrimary">Software Optimizations</h4>
+              <h4 className="font-medium text-bolt-elements-textPrimary">Otimizações de software</h4>
               <ul className="text-sm text-bolt-elements-textSecondary space-y-2">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                  <span>Use smaller models for faster responses</span>
+                  <span>Use modelos menores para respostas mais rápidas</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                  <span>Enable quantization (4-bit, 8-bit models)</span>
+                  <span>Ative a quantização (modelos de 4 e 8 bits)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                  <span>Reduce context length for chat applications</span>
+                  <span>Reduza o tamanho do contexto em aplicações de chat</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                  <span>Use streaming responses for better UX</span>
+                  <span>Use respostas em streaming para uma experiência melhor</span>
                 </li>
               </ul>
             </div>
@@ -596,9 +598,9 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
               <Wifi className="w-6 h-6 text-orange-500" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-bolt-elements-textPrimary">Alternative Options</h3>
+              <h3 className="text-xl font-semibold text-bolt-elements-textPrimary">Outras opções</h3>
               <p className="text-sm text-bolt-elements-textSecondary">
-                Other local AI solutions and cloud alternatives
+                Outras soluções de IA local e alternativas em nuvem
               </p>
             </div>
           </div>
@@ -606,7 +608,7 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
         <CardContent className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
-              <h4 className="font-medium text-bolt-elements-textPrimary">Other Local Solutions</h4>
+              <h4 className="font-medium text-bolt-elements-textPrimary">Outras soluções locais</h4>
               <div className="space-y-3">
                 <div className="p-3 rounded-lg bg-bolt-elements-background-depth-3">
                   <div className="flex items-center gap-2 mb-1">
@@ -614,7 +616,7 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                     <span className="font-medium text-bolt-elements-textPrimary">Jan.ai</span>
                   </div>
                   <p className="text-xs text-bolt-elements-textSecondary">
-                    Modern interface with built-in model marketplace
+                    Interface moderna com loja de modelos integrada
                   </p>
                 </div>
                 <div className="p-3 rounded-lg bg-bolt-elements-background-depth-3">
@@ -623,7 +625,7 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                     <span className="font-medium text-bolt-elements-textPrimary">Oobabooga</span>
                   </div>
                   <p className="text-xs text-bolt-elements-textSecondary">
-                    Advanced text generation web UI with extensions
+                    Interface web avançada de geração de texto, com extensões
                   </p>
                 </div>
                 <div className="p-3 rounded-lg bg-bolt-elements-background-depth-3">
@@ -631,33 +633,39 @@ function SetupGuide({ onBack }: { onBack: () => void }) {
                     <Cable className="w-4 h-4 text-purple-500" />
                     <span className="font-medium text-bolt-elements-textPrimary">KoboldAI</span>
                   </div>
-                  <p className="text-xs text-bolt-elements-textSecondary">Focus on creative writing and storytelling</p>
+                  <p className="text-xs text-bolt-elements-textSecondary">Foco em escrita criativa e narrativa</p>
                 </div>
               </div>
             </div>
             <div className="space-y-4">
-              <h4 className="font-medium text-bolt-elements-textPrimary">Cloud Alternatives</h4>
+              <h4 className="font-medium text-bolt-elements-textPrimary">Alternativas em nuvem</h4>
               <div className="space-y-3">
                 <div className="p-3 rounded-lg bg-bolt-elements-background-depth-3">
                   <div className="flex items-center gap-2 mb-1">
                     <Globe className="w-4 h-4 text-orange-500" />
                     <span className="font-medium text-bolt-elements-textPrimary">OpenRouter</span>
                   </div>
-                  <p className="text-xs text-bolt-elements-textSecondary">Access to 100+ models through unified API</p>
+                  <p className="text-xs text-bolt-elements-textSecondary">
+                    Acesso a mais de 100 modelos por uma API única
+                  </p>
                 </div>
                 <div className="p-3 rounded-lg bg-bolt-elements-background-depth-3">
                   <div className="flex items-center gap-2 mb-1">
                     <Server className="w-4 h-4 text-red-500" />
                     <span className="font-medium text-bolt-elements-textPrimary">Together AI</span>
                   </div>
-                  <p className="text-xs text-bolt-elements-textSecondary">Fast inference with open-source models</p>
+                  <p className="text-xs text-bolt-elements-textSecondary">
+                    Inferência rápida com modelos de código aberto
+                  </p>
                 </div>
                 <div className="p-3 rounded-lg bg-bolt-elements-background-depth-3">
                   <div className="flex items-center gap-2 mb-1">
                     <Activity className="w-4 h-4 text-pink-500" />
                     <span className="font-medium text-bolt-elements-textPrimary">Groq</span>
                   </div>
-                  <p className="text-xs text-bolt-elements-textSecondary">Ultra-fast LPU inference for Llama models</p>
+                  <p className="text-xs text-bolt-elements-textSecondary">
+                    Inferência LPU ultrarrápida para modelos Llama
+                  </p>
                 </div>
               </div>
             </div>

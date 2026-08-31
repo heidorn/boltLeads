@@ -1,8 +1,12 @@
 import { json } from '@remix-run/cloudflare';
 import type { ActionFunctionArgs } from '@remix-run/cloudflare';
 import { isAllowedUrl } from '~/utils/url';
+import { buildSiteIdentity, extractInlineCss, extractStylesheetUrls, formatSiteIdentity } from '~/utils/site-identity';
 
 const MAX_CONTENT_LENGTH = 8000;
+
+// Por folha de estilo. O suficiente para a paleta sem estourar o contexto.
+const MAX_CSS_LENGTH = 200_000;
 
 const FETCH_HEADERS = {
   'User-Agent':
@@ -30,12 +34,14 @@ function extractMetaDescription(html: string): string {
 }
 
 function extractTextContent(html: string): string {
+  /*
+   * `header`, `nav` e `footer` ficam: é neles que aparecem o nome da marca, o
+   * menu e as chamadas do rodapé. Removê-los custava justamente a estrutura que
+   * alguém quer reproduzir ao pedir "um site como o X".
+   */
   return html
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ')
     .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ')
-    .replace(/<nav\b[^<]*(?:(?!<\/nav>)<[^<]*)*<\/nav>/gi, ' ')
-    .replace(/<header\b[^<]*(?:(?!<\/header>)<[^<]*)*<\/header>/gi, ' ')
-    .replace(/<footer\b[^<]*(?:(?!<\/footer>)<[^<]*)*<\/footer>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
@@ -83,6 +89,37 @@ export async function action({ request }: ActionFunctionArgs) {
     const description = extractMetaDescription(html);
     const content = extractTextContent(html);
 
+    /*
+     * A paleta quase nunca está inline: mora nas folhas externas. Buscamos
+     * algumas em paralelo, com timeout curto — se falharem, seguimos só com o
+     * CSS inline em vez de derrubar a extração inteira.
+     */
+    let css = extractInlineCss(html);
+
+    const folhas = extractStylesheetUrls(html, url).filter(isAllowedUrl);
+
+    if (folhas.length) {
+      const baixadas = await Promise.allSettled(
+        folhas.map(async (href) => {
+          const r = await fetch(href, { headers: FETCH_HEADERS, signal: AbortSignal.timeout(6_000) });
+
+          if (!r.ok) {
+            throw new Error(String(r.status));
+          }
+
+          return (await r.text()).slice(0, MAX_CSS_LENGTH);
+        }),
+      );
+
+      for (const resultado of baixadas) {
+        if (resultado.status === 'fulfilled') {
+          css += '\n' + resultado.value;
+        }
+      }
+    }
+
+    const identity = buildSiteIdentity(html, css, url);
+
     return json({
       success: true,
       data: {
@@ -90,6 +127,8 @@ export async function action({ request }: ActionFunctionArgs) {
         description,
         content: content.length > MAX_CONTENT_LENGTH ? content.slice(0, MAX_CONTENT_LENGTH) + '...' : content,
         sourceUrl: url,
+        identity,
+        identitySummary: formatSiteIdentity(identity),
       },
     });
   } catch (error) {
@@ -99,6 +138,6 @@ export async function action({ request }: ActionFunctionArgs) {
 
     console.error('Web search error:', error);
 
-    return json({ error: error instanceof Error ? error.message : 'Failed to fetch URL' }, { status: 500 });
+    return json({ error: error instanceof Error ? error.message : 'Não foi possível acessar a URL' }, { status: 500 });
   }
 }

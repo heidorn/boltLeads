@@ -177,19 +177,19 @@ export const ControlPanel = ({ open, onClose }: ControlPanelProps) => {
   const getStatusMessage = (tabId: TabType): string => {
     switch (tabId) {
       case 'features':
-        return `${unviewedFeatures.length} new feature${unviewedFeatures.length === 1 ? '' : 's'} to explore`;
+        return `${unviewedFeatures.length} ${unviewedFeatures.length === 1 ? 'novo recurso' : 'novos recursos'} para explorar`;
       case 'notifications':
-        return `${unreadNotifications.length} unread notification${unreadNotifications.length === 1 ? '' : 's'}`;
+        return `${unreadNotifications.length} ${unreadNotifications.length === 1 ? 'notificação não lida' : 'notificações não lidas'}`;
       case 'github':
       case 'gitlab':
       case 'supabase':
       case 'vercel':
       case 'netlify':
         return currentIssue === 'disconnected'
-          ? 'Connection lost'
+          ? 'Conexão perdida'
           : currentIssue === 'high-latency'
-            ? 'High latency detected'
-            : 'Connection issues detected';
+            ? 'Latência alta detectada'
+            : 'Problemas de conexão detectados';
       default:
         return '';
     }
@@ -261,7 +261,7 @@ export const ControlPanel = ({ open, onClose }: ControlPanelProps) => {
                       </button>
                     )}
                     <DialogTitle className="text-xl font-semibold text-gray-900 dark:text-white">
-                      {showTabManagement ? 'Tab Management' : activeTab ? TAB_LABELS[activeTab] : 'Control Panel'}
+                      {showTabManagement ? 'Organizar abas' : activeTab ? TAB_LABELS[activeTab] : 'Configurações'}
                     </DialogTitle>
                   </div>
 
@@ -289,8 +289,8 @@ export const ControlPanel = ({ open, onClose }: ControlPanelProps) => {
                     'hover:overflow-y-auto',
                     'scrollbar scrollbar-w-2',
                     'scrollbar-track-transparent',
-                    'scrollbar-thumb-[#E5E5E5] hover:scrollbar-thumb-[#CCCCCC]',
-                    'dark:scrollbar-thumb-[#333333] dark:hover:scrollbar-thumb-[#444444]',
+                    'scrollbar-thumb-[#dde3e5] hover:scrollbar-thumb-[#CCCCCC]',
+                    'dark:scrollbar-thumb-[#2a353d] dark:hover:scrollbar-thumb-[#444444]',
                     'will-change-scroll',
                     'touch-auto',
                   )}

@@ -11,7 +11,7 @@ interface LoadingStateProps {
 }
 
 export function LoadingState({
-  message = 'Loading...',
+  message = 'Carregando…',
   size = 'md',
   className,
   showProgress = false,
@@ -85,10 +85,6 @@ interface ServiceLoadingProps {
 
 export function ServiceLoading({ serviceName, operation, progress }: ServiceLoadingProps) {
   return (
-    <LoadingState
-      message={`${operation} ${serviceName}...`}
-      showProgress={progress !== undefined}
-      progress={progress}
-    />
+    <LoadingState message={`${operation} ${serviceName}…`} showProgress={progress !== undefined} progress={progress} />
   );
 }

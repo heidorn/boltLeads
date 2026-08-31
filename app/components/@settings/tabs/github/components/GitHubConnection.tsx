@@ -47,7 +47,7 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
       <div className="flex items-center justify-center p-8">
         <div className="flex items-center gap-2">
           <div className="i-ph:spinner-gap-bold animate-spin w-4 h-4" />
-          <span className="text-bolt-elements-textSecondary">Loading connection...</span>
+          <span className="text-bolt-elements-textSecondary">Carregando a conexão…</span>
         </div>
       </div>
     );
@@ -65,14 +65,14 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
           <div className="text-xs text-bolt-elements-textSecondary bg-bolt-elements-background-depth-1 dark:bg-bolt-elements-background-depth-1 p-3 rounded-lg mb-4">
             <p className="flex items-center gap-1 mb-1">
               <span className="i-ph:lightbulb w-3.5 h-3.5 text-bolt-elements-icon-success dark:text-bolt-elements-icon-success" />
-              <span className="font-medium">Tip:</span> You can also set the{' '}
+              <span className="font-medium">Dica:</span> você também pode definir a variável de ambiente{' '}
               <code className="px-1 py-0.5 bg-bolt-elements-background-depth-2 dark:bg-bolt-elements-background-depth-2 rounded">
                 VITE_GITHUB_ACCESS_TOKEN
               </code>{' '}
-              environment variable to connect automatically.
+              para conectar automaticamente.
             </p>
             <p>
-              For fine-grained tokens, also set{' '}
+              Para tokens com permissões granulares, defina também{' '}
               <code className="px-1 py-0.5 bg-bolt-elements-background-depth-2 dark:bg-bolt-elements-background-depth-2 rounded">
                 VITE_GITHUB_TOKEN_TYPE=fine-grained
               </code>
@@ -84,7 +84,7 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm text-bolt-elements-textSecondary dark:text-bolt-elements-textSecondary mb-2">
-                Token Type
+                Tipo de token
               </label>
               <select
                 value={tokenType}
@@ -99,27 +99,27 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                   'disabled:opacity-50',
                 )}
               >
-                <option value="classic">Personal Access Token (Classic)</option>
-                <option value="fine-grained">Fine-grained Token</option>
+                <option value="classic">Token de acesso pessoal (clássico)</option>
+                <option value="fine-grained">Token com permissões granulares</option>
               </select>
             </div>
 
             <div>
               <label className="block text-sm text-bolt-elements-textSecondary dark:text-bolt-elements-textSecondary mb-2">
-                {tokenType === 'classic' ? 'Personal Access Token' : 'Fine-grained Token'}
+                {tokenType === 'classic' ? 'Token de acesso pessoal' : 'Token com permissões granulares'}
               </label>
               <input
                 type="password"
                 value={token}
                 onChange={(e) => setToken(e.target.value)}
                 disabled={isConnecting || isConnected}
-                placeholder={`Enter your GitHub ${
-                  tokenType === 'classic' ? 'personal access token' : 'fine-grained token'
-                }`}
+                placeholder={`Informe seu ${
+                  tokenType === 'classic' ? 'token de acesso pessoal' : 'token com permissões granulares'
+                } do GitHub`}
                 className={classNames(
                   'w-full px-3 py-2 rounded-lg text-sm',
-                  'bg-[#F8F8F8] dark:bg-[#1A1A1A]',
-                  'border border-[#E5E5E5] dark:border-[#333333]',
+                  'bg-[#f2f4f5] dark:bg-[#1a2229]',
+                  'border border-[#dde3e5] dark:border-[#2a353d]',
                   'text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary',
                   'focus:outline-none focus:ring-1 focus:ring-bolt-elements-borderColorActive',
                   'disabled:opacity-50',
@@ -132,13 +132,15 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                   rel="noopener noreferrer"
                   className="text-bolt-elements-borderColorActive hover:underline inline-flex items-center gap-1"
                 >
-                  Get your token
+                  Obter seu token
                   <div className="i-ph:arrow-square-out w-4 h-4" />
                 </a>
                 <span className="mx-2">•</span>
                 <span>
-                  Required scopes:{' '}
-                  {tokenType === 'classic' ? 'repo, read:org, read:user' : 'Repository access, Organization access'}
+                  Escopos obrigatórios:{' '}
+                  {tokenType === 'classic'
+                    ? 'repo, read:org, read:user'
+                    : 'acesso a repositórios, acesso à organização'}
                 </span>
               </div>
             </div>
@@ -157,8 +159,8 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                 disabled={isConnecting || !token.trim()}
                 className={classNames(
                   'px-4 py-2 rounded-lg text-sm flex items-center gap-2',
-                  'bg-[#303030] text-white',
-                  'hover:bg-[#5E41D0] hover:text-white',
+                  'bg-[#26313a] text-white',
+                  'hover:bg-[#f2552c] hover:text-white',
                   'disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200',
                   'transform active:scale-95',
                 )}
@@ -166,12 +168,12 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                 {isConnecting ? (
                   <>
                     <div className="i-ph:spinner-gap animate-spin" />
-                    Connecting...
+                    Conectando…
                   </>
                 ) : (
                   <>
                     <div className="i-ph:plug-charging w-4 h-4" />
-                    Connect
+                    Conectar
                   </>
                 )}
               </button>
@@ -188,11 +190,11 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                     )}
                   >
                     <div className="i-ph:plug w-4 h-4" />
-                    Disconnect
+                    Desconectar
                   </button>
                   <span className="text-sm text-bolt-elements-textSecondary flex items-center gap-1">
                     <div className="i-ph:check-circle w-4 h-4 text-green-500" />
-                    Connected to GitHub
+                    Conectado ao GitHub
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -213,12 +215,12 @@ export function GitHubConnection({ connectionTest, onTestConnection }: GitHubCon
                     {connectionTest?.status === 'testing' ? (
                       <>
                         <div className="i-ph:spinner-gap w-4 h-4 animate-spin" />
-                        Testing...
+                        Testando…
                       </>
                     ) : (
                       <>
                         <div className="i-ph:plug-charging w-4 h-4" />
-                        Test Connection
+                        Testar conexão
                       </>
                     )}
                   </Button>

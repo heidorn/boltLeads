@@ -80,7 +80,7 @@ export function useSupabaseConnection() {
       const data = (await response.json()) as any;
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to connect');
+        throw new Error(data.error || 'Não foi possível conectar');
       }
 
       updateSupabaseConnection({
@@ -89,15 +89,15 @@ export function useSupabaseConnection() {
         stats: data.stats,
       });
 
-      toast.success('Successfully connected to Supabase');
+      toast.success('Conectado ao Supabase');
 
       setIsProjectsExpanded(true);
 
       return true;
     } catch (error) {
       console.error('Connection error:', error);
-      logStore.logError('Failed to authenticate with Supabase', { error });
-      toast.error(error instanceof Error ? error.message : 'Failed to connect to Supabase');
+      logStore.logError('Não foi possível autenticar no Supabase', { error });
+      toast.error(error instanceof Error ? error.message : 'Não foi possível conectar ao Supabase');
       updateSupabaseConnection({ user: null, token: '' });
 
       return false;
@@ -108,7 +108,7 @@ export function useSupabaseConnection() {
 
   const handleDisconnect = () => {
     updateSupabaseConnection({ user: null, token: '' });
-    toast.success('Disconnected from Supabase');
+    toast.success('Desconectado do Supabase');
     setIsDropdownOpen(false);
   };
 
@@ -128,13 +128,13 @@ export function useSupabaseConnection() {
     if (projectId && currentState.token) {
       try {
         await fetchProjectApiKeys(projectId, currentState.token);
-        toast.success('Project selected successfully');
+        toast.success('Projeto selecionado');
       } catch (error) {
         console.error('Failed to fetch API keys:', error);
-        toast.error('Selected project but failed to fetch API keys');
+        toast.error('Projeto selecionado, mas não foi possível obter as chaves da API');
       }
     } else {
-      toast.success('Project selected successfully');
+      toast.success('Projeto selecionado');
     }
 
     setIsDropdownOpen(false);

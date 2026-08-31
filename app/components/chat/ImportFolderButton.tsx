@@ -27,29 +27,31 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
 
     if (filteredFiles.length === 0) {
       const error = new Error('No valid files found');
-      logStore.logError('File import failed - no valid files', error, { folderName: 'Unknown Folder' });
-      toast.error('No files found in the selected folder');
+      logStore.logError('Não foi possível importar os arquivos — nenhum arquivo válido', error, {
+        folderName: 'Pasta desconhecida',
+      });
+      toast.error('Nenhum arquivo encontrado na pasta selecionada');
 
       return;
     }
 
     if (filteredFiles.length > MAX_FILES) {
       const error = new Error(`Too many files: ${filteredFiles.length}`);
-      logStore.logError('File import failed - too many files', error, {
+      logStore.logError('Não foi possível importar os arquivos — arquivos demais', error, {
         fileCount: filteredFiles.length,
         maxFiles: MAX_FILES,
       });
       toast.error(
-        `This folder contains ${filteredFiles.length.toLocaleString()} files. This product is not yet optimized for very large projects. Please select a folder with fewer than ${MAX_FILES.toLocaleString()} files.`,
+        `Esta pasta contém ${filteredFiles.length.toLocaleString()} arquivos. O Studio ainda não é otimizado para projetos muito grandes. Selecione uma pasta com menos de ${MAX_FILES.toLocaleString()} arquivos.`,
       );
 
       return;
     }
 
-    const folderName = filteredFiles[0]?.webkitRelativePath.split('/')[0] || 'Unknown Folder';
+    const folderName = filteredFiles[0]?.webkitRelativePath.split('/')[0] || 'Pasta desconhecida';
     setIsLoading(true);
 
-    const loadingToast = toast.loading(`Importing ${folderName}...`);
+    const loadingToast = toast.loading(`Importando ${folderName}…`);
 
     try {
       const fileChecks = await Promise.all(
@@ -66,18 +68,18 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
 
       if (textFiles.length === 0) {
         const error = new Error('No text files found');
-        logStore.logError('File import failed - no text files', error, { folderName });
-        toast.error('No text files found in the selected folder');
+        logStore.logError('Não foi possível importar os arquivos — nenhum arquivo de texto', error, { folderName });
+        toast.error('Nenhum arquivo de texto encontrado na pasta selecionada');
 
         return;
       }
 
       if (binaryFilePaths.length > 0) {
-        logStore.logWarning(`Skipping binary files during import`, {
+        logStore.logWarning(`Ignorando arquivos binários durante a importação`, {
           folderName,
           binaryCount: binaryFilePaths.length,
         });
-        toast.info(`Skipping ${binaryFilePaths.length} binary files`);
+        toast.info(`Ignorando ${binaryFilePaths.length} arquivos binários`);
       }
 
       const messages = await createChatFromFolder(textFiles, binaryFilePaths, folderName);
@@ -86,16 +88,16 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
         await importChat(folderName, [...messages]);
       }
 
-      logStore.logSystem('Folder imported successfully', {
+      logStore.logSystem('Pasta importada', {
         folderName,
         textFileCount: textFiles.length,
         binaryFileCount: binaryFilePaths.length,
       });
-      toast.success('Folder imported successfully');
+      toast.success('Pasta importada');
     } catch (error) {
-      logStore.logError('Failed to import folder', error, { folderName });
+      logStore.logError('Não foi possível importar a pasta', error, { folderName });
       console.error('Failed to import folder:', error);
-      toast.error('Failed to import folder');
+      toast.error('Não foi possível importar a pasta');
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);
@@ -119,7 +121,7 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
           const input = document.getElementById('folder-import');
           input?.click();
         }}
-        title="Import Folder"
+        title="Importar pasta"
         variant="default"
         size="lg"
         className={classNames(
@@ -134,7 +136,7 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
         disabled={isLoading}
       >
         <span className="i-ph:upload-simple w-4 h-4" />
-        {isLoading ? 'Importing...' : 'Import Folder'}
+        {isLoading ? 'Importando…' : 'Importar pasta'}
       </Button>
     </>
   );

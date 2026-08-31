@@ -243,7 +243,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
 
       const errorResponse = {
         error: true,
-        message: error instanceof Error ? error.message : 'An unexpected error occurred',
+        message: error instanceof Error ? error.message : 'Ocorreu um erro inesperado',
         statusCode: (error as any).statusCode || 500,
         isRetryable: (error as any).isRetryable !== false,
         provider: (error as any).provider || 'unknown',
@@ -253,7 +253,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
         return new Response(
           JSON.stringify({
             ...errorResponse,
-            message: 'Invalid or missing API key',
+            message: 'Chave da API inválida ou ausente',
             statusCode: 401,
             isRetryable: false,
           }),
@@ -276,7 +276,7 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
         return new Response(
           JSON.stringify({
             ...errorResponse,
-            message: `Token limit error: ${error.message}. Try reducing your request size or using a model with higher token limits.`,
+            message: `Erro de limite de tokens: ${error.message}. Reduza o tamanho da requisição ou use um modelo com limite maior.`,
             statusCode: 400,
             isRetryable: false,
           }),

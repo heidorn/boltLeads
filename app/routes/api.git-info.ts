@@ -61,7 +61,7 @@ export async function loader() {
         branch: 'error',
         commit: 'error',
         isDirty: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Erro desconhecido',
       },
       { status: 500 },
     );

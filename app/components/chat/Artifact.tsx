@@ -70,11 +70,11 @@ export const Artifact = memo(({ artifactId }: ArtifactProps) => {
     artifact?.type === 'bundled'
       ? allActionFinished
         ? artifact.id === 'restored-project-setup'
-          ? 'Project Restored' // Title when restore is complete
-          : 'Project Created' // Title when initial creation is complete
+          ? 'Projeto restaurado' // Title when restore is complete
+          : 'Projeto criado' // Title when initial creation is complete
         : artifact.id === 'restored-project-setup'
-          ? 'Restoring Project...' // Title during restore
-          : 'Creating Project...' // Title during initial creation
+          ? 'Restaurando o projeto…' // Title during restore
+          : 'Criando o projeto…' // Title during initial creation
       : artifact?.title; // Fallback to original title for non-bundled or if artifact is missing
 
   return (
@@ -94,7 +94,7 @@ export const Artifact = memo(({ artifactId }: ArtifactProps) => {
                 {dynamicTitle}
               </div>
               <div className="w-full w-full text-bolt-elements-textSecondary text-xs mt-0.5">
-                Click to open Workbench
+                Clique para abrir o editor
               </div>
             </div>
           </button>
@@ -129,9 +129,9 @@ export const Artifact = memo(({ artifactId }: ArtifactProps) => {
               {/* This status text remains the same */}
               {allActionFinished
                 ? artifact.id === 'restored-project-setup'
-                  ? 'Restore files from snapshot'
-                  : 'Initial files created'
-                : 'Creating initial files'}
+                  ? 'Arquivos restaurados a partir do snapshot'
+                  : 'Arquivos iniciais criados'
+                : 'Criando os arquivos iniciais'}
             </div>
           </div>
         )}
@@ -232,7 +232,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                 </div>
                 {type === 'file' ? (
                   <div>
-                    Create{' '}
+                    Criar{' '}
                     <code
                       className="bg-bolt-elements-artifacts-inlineCode-background text-bolt-elements-artifacts-inlineCode-text px-1.5 py-1 rounded-md text-bolt-elements-item-contentAccent hover:underline cursor-pointer"
                       onClick={() => openArtifactInWorkbench(action.filePath)}
@@ -242,7 +242,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                   </div>
                 ) : type === 'shell' ? (
                   <div className="flex items-center w-full min-h-[28px]">
-                    <span className="flex-1">Run command</span>
+                    <span className="flex-1">Executar comando</span>
                   </div>
                 ) : type === 'start' ? (
                   <a
@@ -252,7 +252,7 @@ const ActionList = memo(({ actions }: ActionListProps) => {
                     }}
                     className="flex items-center w-full min-h-[28px]"
                   >
-                    <span className="flex-1">Start Application</span>
+                    <span className="flex-1">Iniciar a aplicação</span>
                   </a>
                 ) : null}
               </div>

@@ -32,7 +32,7 @@ export const TabTile: React.FC<TabTileProps> = ({
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
           <div className={classNames('min-h-[160px] list-none', className || '')}>
-            <div className="relative h-full rounded-xl border border-[#E5E5E5] dark:border-[#333333] p-0.5">
+            <div className="relative h-full rounded-xl border border-[#dde3e5] dark:border-[#2a353d] p-0.5">
               <GlowingEffect
                 blur={0}
                 borderWidth={1}
@@ -49,7 +49,7 @@ export const TabTile: React.FC<TabTileProps> = ({
                   'relative flex flex-col items-center justify-center h-full p-4 rounded-lg',
                   'bg-white dark:bg-[#141414]',
                   'group cursor-pointer',
-                  'hover:bg-purple-50 dark:hover:bg-[#1a1a1a]',
+                  'hover:bg-purple-50 dark:hover:bg-[#1a2229]',
                   'transition-colors duration-100 ease-out',
                   isActive ? 'bg-purple-500/5 dark:bg-purple-500/10' : '',
                   isLoading ? 'cursor-wait opacity-70 pointer-events-none' : '',

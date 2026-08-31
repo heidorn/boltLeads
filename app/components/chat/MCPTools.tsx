@@ -29,7 +29,9 @@ export function McpTools() {
     try {
       await checkServersAvailabilities();
     } catch (e) {
-      setError(`Failed to check server availability: ${e instanceof Error ? e.message : String(e)}`);
+      setError(
+        `Não foi possível verificar a disponibilidade dos servidores: ${e instanceof Error ? e.message : String(e)}`,
+      );
     } finally {
       setIsCheckingServers(false);
     }
@@ -50,7 +52,7 @@ export function McpTools() {
       <div className="flex">
         <IconButton
           onClick={() => setIsDialogOpen(!isDialogOpen)}
-          title="MCP Tools Available"
+          title="Ferramentas MCP disponíveis"
           disabled={!isInitialized}
           className="transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
@@ -68,7 +70,7 @@ export function McpTools() {
             <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
               <DialogTitle>
                 <div className="i-bolt:mcp text-xl"></div>
-                MCP tools
+                Ferramentas MCP
               </DialogTitle>
 
               <div className="space-y-4">
@@ -91,7 +93,7 @@ export function McpTools() {
                       ) : (
                         <div className="i-ph:arrow-counter-clockwise w-3 h-3" />
                       )}
-                      Check availability
+                      Verificar disponibilidade
                     </button>
                   </div>
                   {serverEntries.length > 0 ? (
@@ -104,8 +106,8 @@ export function McpTools() {
                     />
                   ) : (
                     <div className="py-4 text-center text-bolt-elements-textSecondary">
-                      <p>No MCP servers configured</p>
-                      <p className="text-xs mt-1">Configure servers in Settings → MCP Servers</p>
+                      <p>Nenhum servidor MCP configurado</p>
+                      <p className="text-xs mt-1">Configure servidores em Configurações &gt; Servidores MCP</p>
                     </div>
                   )}
                 </div>
@@ -116,7 +118,7 @@ export function McpTools() {
               <div className="flex justify-end gap-2 mt-6">
                 <div className="flex gap-2">
                   <DialogClose asChild>
-                    <DialogButton type="secondary">Close</DialogButton>
+                    <DialogButton type="secondary">Fechar</DialogButton>
                   </DialogClose>
                 </div>
               </div>

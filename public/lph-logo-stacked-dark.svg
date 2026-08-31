@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Blocado_x5F_Escuro" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1080 1080">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Gradiente_sem_nome_69);
+      }
+
+      .cls-2 {
+        font-family: 'AspektaVariable_500.000wght_0ital', 'Aspekta Variable';
+        font-size: 94.03px;
+        font-variation-settings: 'wght' 500, 'wdth' 0;
+        letter-spacing: -.02em;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        font-family: 'AspektaVariable_600.000wght_0ital', 'Aspekta Variable';
+        font-size: 38.25px;
+        font-variation-settings: 'wght' 600, 'wdth' 0;
+        letter-spacing: -.02em;
+      }
+    </style>
+    <linearGradient id="Gradiente_sem_nome_69" data-name="Gradiente sem nome 69" x1="345.91" y1="491.38" x2="449.3" y2="594.76" gradientUnits="userSpaceOnUse">
+      <stop offset=".04" stop-color="#e06c3b"/>
+      <stop offset=".42" stop-color="#e05e3b"/>
+      <stop offset="1" stop-color="#e04131"/>
+    </linearGradient>
+  </defs>
+  <g id="Assinatura">
+    <g id="Assinatura-2" data-name="Assinatura">
+      <g>
+        <text class="cls-2" transform="translate(491.03 555.99)"><tspan x="0" y="0">Leads</tspan></text>
+        <text class="cls-4" transform="translate(492.77 595.85)"><tspan x="0" y="0">PER / HOUR</tspan></text>
+      </g>
+    </g>
+    <g>
+      <path class="cls-1" d="M354.82,487.25l7.28-.58c22.97-1.85,46.06-1.85,69.03,0l7.27.58c6.92.56,12.42,6.04,12.99,12.96l.53,6.37c1.94,23.57,1.94,47.27,0,70.84l-.54,6.53c-.56,6.85-5.96,12.3-12.8,12.95l-1.71.16c-26.77,2.51-53.72,2.51-80.5,0l-1.72-.16c-6.84-.64-12.24-6.1-12.8-12.95l-.55-6.65c-1.93-23.49-1.93-47.1,0-70.6l.53-6.49c.57-6.92,6.07-12.41,12.99-12.97Z"/>
+      <path class="cls-3" d="M394.91,510.61h17.7c1.01,0,1.65,1.1,1.15,1.98h0s-10.08,18.33-10.08,18.33c-.15.28-.4.49-.69.6l-12.02,4.55,10.11-.24,17.7.03c1.02,0,1.65,1.1,1.14,1.98l-20.27,35.11c-.24.41-.67.66-1.15.66h-18.05c-1.02,0-1.66-1.11-1.14-1.99l9.97-17.08c.14-.24.35-.43.61-.54l11.99-5.26h-10.01s-17.43-.04-17.43-.04c-1.02,0-1.65-1.1-1.14-1.98l20.46-35.44c.24-.41.67-.66,1.15-.66Z"/>
+    </g>
+  </g>
+</svg>

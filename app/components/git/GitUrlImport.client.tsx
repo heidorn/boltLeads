@@ -74,8 +74,8 @@ export function GitUrlImport() {
 
           const filesMessage: Message = {
             role: 'assistant',
-            content: `Cloning the repo ${repoUrl} into ${workdir}
-<boltArtifact id="imported-files" title="Git Cloned Files"  type="bundled">
+            content: `Clonando o repositório ${repoUrl} em ${workdir}
+<boltArtifact id="imported-files" title="Arquivos clonados do Git"  type="bundled">
 ${fileContents
   .map(
     (file) =>
@@ -95,16 +95,16 @@ ${escapeBoltTags(file.content)}
             messages.push({
               role: 'user',
               id: generateId(),
-              content: 'Setup the codebase and Start the application',
+              content: 'Configure o projeto e inicie a aplicação',
             });
             messages.push(commandsMessage);
           }
 
-          await importChat(`Git Project:${repoUrl.split('/').slice(-1)[0]}`, messages, { gitUrl: repoUrl });
+          await importChat(`Projeto Git:${repoUrl.split('/').slice(-1)[0]}`, messages, { gitUrl: repoUrl });
         }
       } catch (error) {
         console.error('Error during import:', error);
-        toast.error('Failed to import repository');
+        toast.error('Não foi possível importar o repositório');
         setLoading(false);
         window.location.href = '/';
 
@@ -127,7 +127,7 @@ ${escapeBoltTags(file.content)}
 
     importRepo(url).catch((error) => {
       console.error('Error importing repo:', error);
-      toast.error('Failed to import repository');
+      toast.error('Não foi possível importar o repositório');
       setLoading(false);
       window.location.href = '/';
     });
@@ -139,7 +139,7 @@ ${escapeBoltTags(file.content)}
       {() => (
         <>
           <Chat />
-          {loading && <LoadingOverlay message="Please wait while we clone the repository..." />}
+          {loading && <LoadingOverlay message="Clonando o repositório…" />}
         </>
       )}
     </ClientOnly>

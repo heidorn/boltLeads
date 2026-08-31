@@ -37,7 +37,7 @@ async function performTextSearch(
       const previewLines = apiMatch.preview.text.split('\n');
 
       apiMatch.ranges.forEach((range: { startLineNumber: number; startColumn: any; endColumn: any }) => {
-        let previewLineText = '(Preview line not found)';
+        let previewLineText = '(Linha de prévia não encontrada)';
         let lineIndexInPreview = -1;
 
         if (apiMatch.preview.matches.length > 0) {
@@ -48,7 +48,7 @@ async function performTextSearch(
         if (lineIndexInPreview >= 0 && lineIndexInPreview < previewLines.length) {
           previewLineText = previewLines[lineIndexInPreview];
         } else {
-          previewLineText = previewLines[0] ?? '(Preview unavailable)';
+          previewLineText = previewLines[0] ?? '(Prévia indisponível)';
         }
 
         displayMatches.push({
@@ -186,7 +186,7 @@ export function Search() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search"
+            placeholder="Buscar"
             className="w-full px-2 py-1 rounded-md bg-bolt-elements-background-depth-3 text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary focus:outline-none transition-all"
           />
         </div>
@@ -196,11 +196,11 @@ export function Search() {
       <div className="flex-1 overflow-auto py-2">
         {isSearching && (
           <div className="flex items-center justify-center h-32 text-bolt-elements-textTertiary">
-            <div className="i-ph:circle-notch animate-spin mr-2" /> Searching...
+            <div className="i-ph:circle-notch animate-spin mr-2" /> Buscando…
           </div>
         )}
         {!isSearching && hasSearched && searchResults.length === 0 && searchQuery.trim() !== '' && (
-          <div className="flex items-center justify-center h-32 text-gray-500">No results found.</div>
+          <div className="flex items-center justify-center h-32 text-gray-500">Nada encontrado</div>
         )}
         {!isSearching &&
           Object.keys(groupedResults).map((file) => (

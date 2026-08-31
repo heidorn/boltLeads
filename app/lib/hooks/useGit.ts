@@ -104,10 +104,10 @@ export function useGit() {
 
             console.log('Repository requires authentication:', baseUrl);
 
-            if (confirm('This repository requires authentication. Would you like to enter your GitHub credentials?')) {
+            if (confirm('Este repositório exige autenticação. Deseja informar suas credenciais do GitHub?')) {
               auth = {
-                username: prompt('Enter username') || '',
-                password: prompt('Enter password or personal access token') || '',
+                username: prompt('Informe o nome de usuário') || '',
+                password: prompt('Informe a senha ou o token de acesso pessoal') || '',
               };
               return auth;
             } else {
@@ -117,7 +117,7 @@ export function useGit() {
           onAuthFailure: (baseUrl, _auth) => {
             console.error(`Authentication failed for ${baseUrl}`);
             toast.error(
-              `Authentication failed for ${baseUrl.split('/')[2]}. Please check your credentials and try again.`,
+              `Não foi possível autenticar em ${baseUrl.split('/')[2]}. Verifique suas credenciais e tente de novo.`,
             );
             throw new Error(
               `Authentication failed for ${baseUrl.split('/')[2]}. Please check your credentials and try again.`,
@@ -144,14 +144,14 @@ export function useGit() {
 
         // Check for common error patterns
         if (errorMessage.includes('Authentication failed')) {
-          toast.error(`Authentication failed. Please check your GitHub credentials and try again.`);
+          toast.error(`Não foi possível autenticar. Verifique suas credenciais do GitHub e tente de novo.`);
           throw error;
         } else if (
           errorMessage.includes('ENOTFOUND') ||
           errorMessage.includes('ETIMEDOUT') ||
           errorMessage.includes('ECONNREFUSED')
         ) {
-          toast.error(`Network error while connecting to repository. Please check your internet connection.`);
+          toast.error(`Erro de rede ao conectar ao repositório. Verifique sua conexão com a internet.`);
 
           // Retry for network errors, up to 3 times
           if (retryCount < 3) {
@@ -162,15 +162,17 @@ export function useGit() {
             `Failed to connect to repository after multiple attempts. Please check your internet connection.`,
           );
         } else if (errorMessage.includes('404')) {
-          toast.error(`Repository not found. Please check the URL and make sure the repository exists.`);
+          toast.error(`Repositório não encontrado. Verifique a URL e confirme que o repositório existe.`);
           throw new Error(`Repository not found. Please check the URL and make sure the repository exists.`);
         } else if (errorMessage.includes('401')) {
-          toast.error(`Unauthorized access to repository. Please connect your GitHub account with proper permissions.`);
+          toast.error(
+            `Acesso não autorizado ao repositório. Conecte sua conta do GitHub com as permissões necessárias.`,
+          );
           throw new Error(
             `Unauthorized access to repository. Please connect your GitHub account with proper permissions.`,
           );
         } else {
-          toast.error(`Failed to clone repository: ${errorMessage}`);
+          toast.error(`Não foi possível clonar o repositório: ${errorMessage}`);
           throw error;
         }
       }

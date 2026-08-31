@@ -22,7 +22,7 @@ export function RepositoryStats({ stats, className, compact = false }: Repositor
     <div className={classNames('space-y-3', className)}>
       {!compact && (
         <p className="text-sm font-medium text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary-dark">
-          Repository Statistics:
+          Estatísticas do repositório:
         </p>
       )}
 
@@ -30,14 +30,14 @@ export function RepositoryStats({ stats, className, compact = false }: Repositor
         {totalFiles !== undefined && (
           <div className="flex items-center gap-2 text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary-dark">
             <span className="i-ph:files text-purple-500 w-4 h-4" />
-            <span className={compact ? 'text-xs' : 'text-sm'}>Total Files: {totalFiles.toLocaleString()}</span>
+            <span className={compact ? 'text-xs' : 'text-sm'}>Total de arquivos: {totalFiles.toLocaleString()}</span>
           </div>
         )}
 
         {totalSize !== undefined && (
           <div className="flex items-center gap-2 text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary-dark">
             <span className="i-ph:database text-purple-500 w-4 h-4" />
-            <span className={compact ? 'text-xs' : 'text-sm'}>Total Size: {formatSize(totalSize)}</span>
+            <span className={compact ? 'text-xs' : 'text-sm'}>Tamanho total: {formatSize(totalSize)}</span>
           </div>
         )}
       </div>
@@ -46,7 +46,7 @@ export function RepositoryStats({ stats, className, compact = false }: Repositor
         <div className={compact ? 'pt-1' : 'pt-2'}>
           <div className="flex items-center gap-2 text-bolt-elements-textPrimary dark:text-bolt-elements-textPrimary-dark mb-2">
             <span className="i-ph:code text-purple-500 w-4 h-4" />
-            <span className={compact ? 'text-xs' : 'text-sm'}>Languages:</span>
+            <span className={compact ? 'text-xs' : 'text-sm'}>Linguagens:</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {Object.entries(languages)
@@ -59,7 +59,7 @@ export function RepositoryStats({ stats, className, compact = false }: Repositor
               ))}
             {Object.keys(languages).length > (compact ? 3 : 5) && (
               <Badge variant="subtle" size={compact ? 'sm' : 'md'}>
-                +{Object.keys(languages).length - (compact ? 3 : 5)} more
+                +{Object.keys(languages).length - (compact ? 3 : 5)} outras
               </Badge>
             )}
           </div>
@@ -76,7 +76,7 @@ export function RepositoryStats({ stats, className, compact = false }: Repositor
             )}
             {hasDependencies && (
               <Badge variant="primary" size={compact ? 'sm' : 'md'} icon="i-ph:tree-structure w-3.5 h-3.5">
-                Dependencies
+                Dependências
               </Badge>
             )}
           </div>

@@ -96,7 +96,7 @@ export const EditorPanel = memo(
                             'h-full bg-transparent hover:bg-bolt-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary data-[state=active]:text-bolt-elements-textPrimary',
                           )}
                         >
-                          Files
+                          Arquivos
                         </Tabs.Trigger>
                         <Tabs.Trigger
                           value="search"
@@ -104,7 +104,7 @@ export const EditorPanel = memo(
                             'h-full bg-transparent hover:bg-bolt-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary data-[state=active]:text-bolt-elements-textPrimary',
                           )}
                         >
-                          Search
+                          Buscar
                         </Tabs.Trigger>
                         <Tabs.Trigger
                           value="locks"
@@ -112,7 +112,7 @@ export const EditorPanel = memo(
                             'h-full bg-transparent hover:bg-bolt-elements-background-depth-3 py-0.5 px-2 rounded-lg text-sm font-medium text-bolt-elements-textTertiary hover:text-bolt-elements-textPrimary data-[state=active]:text-bolt-elements-textPrimary',
                           )}
                         >
-                          Locks
+                          Bloqueios
                         </Tabs.Trigger>
                       </Tabs.List>
                     </div>
@@ -152,11 +152,11 @@ export const EditorPanel = memo(
                       <div className="flex gap-1 ml-auto -mr-1.5">
                         <PanelHeaderButton onClick={onFileSave}>
                           <div className="i-ph:floppy-disk-duotone" />
-                          Save
+                          Salvar
                         </PanelHeaderButton>
                         <PanelHeaderButton onClick={onFileReset}>
                           <div className="i-ph:clock-counter-clockwise-duotone" />
-                          Reset
+                          Redefinir
                         </PanelHeaderButton>
                       </div>
                     )}

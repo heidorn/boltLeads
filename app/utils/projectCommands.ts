@@ -80,7 +80,7 @@ export async function detectProjectCommands(files: FileContent[]): Promise<Proje
           type: 'Node.js',
           setupCommand,
           startCommand: `npm run ${availableCommand}`,
-          followupMessage: `Found "${availableCommand}" script in package.json. Running "npm run ${availableCommand}" after installation.`,
+          followupMessage: `Script "${availableCommand}" encontrado no package.json. Rodando "npm run ${availableCommand}" após a instalação.`,
         };
       }
 
@@ -88,7 +88,7 @@ export async function detectProjectCommands(files: FileContent[]): Promise<Proje
         type: 'Node.js',
         setupCommand,
         followupMessage:
-          'Would you like me to inspect package.json to determine the available scripts for running this project?',
+          'Quer que eu analise o package.json para descobrir os scripts disponíveis para rodar este projeto?',
       };
     } catch (error) {
       console.error('Error parsing package.json:', error);
@@ -129,7 +129,7 @@ export function createCommandsMessage(commands: ProjectCommands): Message | null
     role: 'assistant',
     content: `
 ${commands.followupMessage ? `\n\n${commands.followupMessage}` : ''}
-<boltArtifact id="project-setup" title="Project Setup">
+<boltArtifact id="project-setup" title="Configuração do projeto">
 ${commandString}
 </boltArtifact>`,
     id: generateId(),

@@ -93,7 +93,7 @@ class GitLabConnectionStore {
         }),
       );
 
-      logStore.logInfo('Connected to GitLab', {
+      logStore.logInfo('Conectado ao GitLab', {
         type: 'system',
         message: `Connected to GitLab as ${user.username}`,
       });
@@ -102,14 +102,17 @@ class GitLabConnectionStore {
     } catch (error) {
       console.error('Failed to connect to GitLab:', error);
 
-      logStore.logError(`GitLab authentication failed: ${error instanceof Error ? error.message : 'Unknown error'}`, {
-        type: 'system',
-        message: 'GitLab authentication failed',
-      });
+      logStore.logError(
+        `Não foi possível autenticar no GitLab: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
+        {
+          type: 'system',
+          message: 'Não foi possível autenticar no GitLab',
+        },
+      );
 
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Erro desconhecido',
       };
     }
   }
@@ -157,7 +160,7 @@ class GitLabConnectionStore {
       console.error('Error fetching GitLab stats:', error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : 'Erro desconhecido',
       };
     }
   }
@@ -179,9 +182,9 @@ class GitLabConnectionStore {
       tokenType: 'personal-access-token',
     });
 
-    logStore.logInfo('Disconnected from GitLab', {
+    logStore.logInfo('Desconectado do GitLab', {
       type: 'system',
-      message: 'Disconnected from GitLab',
+      message: 'Desconectado do GitLab',
     });
   }
 
@@ -258,9 +261,9 @@ class GitLabConnectionStore {
         }),
       );
 
-      logStore.logInfo('Auto-connected to GitLab', {
+      logStore.logInfo('Conectado automaticamente ao GitLab', {
         type: 'system',
-        message: `Auto-connected to GitLab as ${user.username}`,
+        message: `Conectado automaticamente ao GitLab como ${user.username}`,
       });
 
       return { success: true };
@@ -268,15 +271,15 @@ class GitLabConnectionStore {
       console.error('Failed to auto-connect to GitLab:', error);
 
       // Log more detailed error information
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       console.error('GitLab auto-connect error details:', {
         token: envToken.substring(0, 10) + '...', // Log first 10 chars for debugging
         error: errorMessage,
       });
 
-      logStore.logError(`GitLab auto-connection failed: ${errorMessage}`, {
+      logStore.logError(`Não foi possível conectar automaticamente ao GitLab: ${errorMessage}`, {
         type: 'system',
-        message: 'GitLab auto-connection failed',
+        message: 'Não foi possível conectar automaticamente ao GitLab',
       });
 
       return {

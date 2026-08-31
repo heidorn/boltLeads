@@ -201,6 +201,16 @@ export class LLMManager {
   }
 
   getDefaultProvider(): BaseProvider {
+    /*
+     * Anthropic é o provedor padrão do Studio — é o par coerente com o
+     * DEFAULT_MODEL. Sem ele registrado, cai no primeiro disponível.
+     */
+    const preferred = this._providers.get('Anthropic');
+
+    if (preferred) {
+      return preferred;
+    }
+
     const firstProvider = this._providers.values().next().value;
 
     if (!firstProvider) {

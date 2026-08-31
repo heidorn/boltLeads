@@ -1,39 +1,40 @@
-import { AnimatePresence, cubicBezier, motion } from 'framer-motion';
+import { classNames } from '~/utils/classNames';
 
 interface SendButtonProps {
-  show: boolean;
+  /** Há algo para enviar: texto digitado ou arquivo anexado. */
+  canSend: boolean;
   isStreaming?: boolean;
   disabled?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  onImagesSelected?: (images: File[]) => void;
 }
 
-const customEasingFn = cubicBezier(0.4, 0, 0.2, 1);
+/*
+ * Fica ancorado no rodapé da caixa, sempre no mesmo lugar.
+ * Antes era `absolute` no canto superior direito do campo e só existia quando havia
+ * texto: a ação principal aparecia do nada, e longe de todas as outras.
+ */
+export const SendButton = ({ canSend, isStreaming, disabled, onClick }: SendButtonProps) => {
+  const inactive = disabled || (!canSend && !isStreaming);
 
-export const SendButton = ({ show, isStreaming, disabled, onClick }: SendButtonProps) => {
   return (
-    <AnimatePresence>
-      {show ? (
-        <motion.button
-          className="absolute flex justify-center items-center top-[18px] right-[22px] p-1 bg-accent-500 hover:brightness-94 color-white rounded-md w-[34px] h-[34px] transition-theme disabled:opacity-50 disabled:cursor-not-allowed"
-          transition={{ ease: customEasingFn, duration: 0.17 }}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 10 }}
-          disabled={disabled}
-          onClick={(event) => {
-            event.preventDefault();
+    <button
+      type="button"
+      className={classNames(
+        'flex justify-center items-center shrink-0 w-[34px] h-[34px] rounded-md bg-accent-500 text-white transition-all duration-150',
+        inactive ? 'opacity-40 cursor-not-allowed' : 'hover:bg-accent-600',
+      )}
+      disabled={inactive}
+      aria-label={isStreaming ? 'Parar a geração' : 'Enviar mensagem'}
+      title={isStreaming ? 'Parar' : 'Enviar'}
+      onClick={(event) => {
+        event.preventDefault();
 
-            if (!disabled) {
-              onClick?.(event);
-            }
-          }}
-        >
-          <div className="text-lg">
-            {!isStreaming ? <div className="i-ph:arrow-right"></div> : <div className="i-ph:stop-circle-bold"></div>}
-          </div>
-        </motion.button>
-      ) : null}
-    </AnimatePresence>
+        if (!inactive) {
+          onClick?.(event);
+        }
+      }}
+    >
+      <div className={classNames('text-lg', isStreaming ? 'i-ph:stop-circle-bold' : 'i-ph:arrow-right')} />
+    </button>
   );
 };

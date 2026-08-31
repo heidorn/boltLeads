@@ -23,7 +23,7 @@ const logger = createScopedLogger('mcp-service');
 export const stdioServerConfigSchema = z
   .object({
     type: z.enum(['stdio']).optional(),
-    command: z.string().min(1, 'Command cannot be empty'),
+    command: z.string().min(1, 'O comando não pode ficar vazio'),
     args: z.array(z.string()).optional(),
     cwd: z.string().optional(),
     env: z.record(z.string()).optional(),
@@ -37,7 +37,7 @@ export type STDIOServerConfig = z.infer<typeof stdioServerConfigSchema>;
 export const sseServerConfigSchema = z
   .object({
     type: z.enum(['sse']).optional(),
-    url: z.string().url('URL must be a valid URL format'),
+    url: z.string().url('A URL precisa estar em um formato válido'),
     headers: z.record(z.string()).optional(),
   })
   .transform((data) => ({
@@ -49,7 +49,7 @@ export type SSEServerConfig = z.infer<typeof sseServerConfigSchema>;
 export const streamableHTTPServerConfigSchema = z
   .object({
     type: z.enum(['streamable-http']).optional(),
-    url: z.string().url('URL must be a valid URL format'),
+    url: z.string().url('A URL precisa estar em um formato válido'),
     headers: z.record(z.string()).optional(),
   })
   .transform((data) => ({
@@ -124,7 +124,7 @@ export class MCPService {
     const hasUrlField = config.url !== undefined;
 
     if (hasStdioField && hasUrlField) {
-      throw new Error(`cannot have "command" and "url" defined for the same server.`);
+      throw new Error(`não é possível definir "command" e "url" para o mesmo servidor.`);
     }
 
     if (!config.type && hasStdioField) {
@@ -132,20 +132,20 @@ export class MCPService {
     }
 
     if (hasUrlField && !config.type) {
-      throw new Error(`missing "type" field, only "sse" and "streamable-http" are valid options.`);
+      throw new Error(`campo "type" ausente, só "sse" e "streamable-http" são válidos.`);
     }
 
     if (!['stdio', 'sse', 'streamable-http'].includes(config.type)) {
-      throw new Error(`provided "type" is invalid, only "stdio", "sse" or "streamable-http" are valid options.`);
+      throw new Error(`o "type" informado é inválido, só "stdio", "sse" ou "streamable-http" são válidos.`);
     }
 
     // Check for type/field mismatch
     if (config.type === 'stdio' && !hasStdioField) {
-      throw new Error(`missing "command" field.`);
+      throw new Error(`campo "command" ausente.`);
     }
 
     if (['sse', 'streamable-http'].includes(config.type) && !hasUrlField) {
-      throw new Error(`missing "url" field.`);
+      throw new Error(`campo "url" ausente.`);
     }
 
     try {
@@ -257,7 +257,7 @@ export class MCPService {
           logger.error(`Failed to get tools from server ${serverName}:`, error);
           this._mcpToolsPerServer[serverName] = {
             status: 'unavailable',
-            error: 'could not retrieve tools from server',
+            error: 'não foi possível obter as ferramentas do servidor',
             client,
             config,
           };
@@ -306,7 +306,7 @@ export class MCPService {
           logger.error(`Failed to get tools from server ${serverName}:`, error);
           this._mcpToolsPerServer[serverName] = {
             status: 'unavailable',
-            error: 'could not retrieve tools from server',
+            error: 'não foi possível obter as ferramentas do servidor',
             client,
             config: server.config,
           };
@@ -317,7 +317,7 @@ export class MCPService {
         logger.error(`Failed to connect to server ${serverName}:`, error);
         this._mcpToolsPerServer[serverName] = {
           status: 'unavailable',
-          error: 'could not connect to server',
+          error: 'não foi possível conectar ao servidor',
           client,
           config: server.config,
         };
@@ -359,7 +359,7 @@ export class MCPService {
     const { toolCallId, toolName } = toolCall;
 
     if (this.isValidToolName(toolName)) {
-      const { description = 'No description available' } = this.toolsWithoutExecute[toolName];
+      const { description = 'Sem descrição disponível' } = this.toolsWithoutExecute[toolName];
       const serverName = this._toolNamesToServerNames.get(toolName);
 
       if (serverName) {

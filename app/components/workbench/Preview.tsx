@@ -199,7 +199,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
         onMouseOut={(e) =>
           (e.currentTarget.style.background = 'var(--bolt-elements-background-depth-3, rgba(0,0,0,.15))')
         }
-        title="Drag to resize width"
+        title="Arraste para ajustar a largura"
       >
         <GripIcon />
       </div>
@@ -442,7 +442,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
             <html>
             <head>
               <meta charset="utf-8">
-              <title>${size.name} Preview</title>
+              <title>${size.name} — prévia</title>
               <style>
                 body {
                   margin: 0;
@@ -518,7 +518,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
             </head>
             <body>
               <div class="device-container">
-                <div class="device-name">${size.name} ${isLandscape ? '(Landscape)' : '(Portrait)'}</div>
+                <div class="device-name">${size.name} ${isLandscape ? '(paisagem)' : '(retrato)'}</div>
                 <div class="device-frame">
                   <iframe src="${previewUrl}" sandbox="allow-scripts allow-forms allow-popups allow-modals allow-storage-access-by-user-activation allow-same-origin" allow="cross-origin-isolated"></iframe>
                 </div>
@@ -685,7 +685,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
             previews={previews}
           />
           <input
-            title="URL Path"
+            title="Caminho da URL"
             ref={inputRef}
             className="w-full bg-transparent outline-none"
             type="text"
@@ -718,10 +718,12 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
           <IconButton
             icon="i-ph:devices"
             onClick={toggleDeviceMode}
-            title={isDeviceModeOn ? 'Switch to Responsive Mode' : 'Switch to Device Mode'}
+            title={isDeviceModeOn ? 'Mudar para modo responsivo' : 'Mudar para modo dispositivo'}
           />
 
-          {expoUrl && <IconButton icon="i-ph:qr-code" onClick={() => setIsExpoQrModalOpen(true)} title="Show QR" />}
+          {expoUrl && (
+            <IconButton icon="i-ph:qr-code" onClick={() => setIsExpoQrModalOpen(true)} title="Mostrar QR code" />
+          )}
 
           <ExpoQrModal open={isExpoQrModalOpen} onClose={() => setIsExpoQrModalOpen(false)} />
 
@@ -730,12 +732,12 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
               <IconButton
                 icon="i-ph:device-rotate"
                 onClick={() => setIsLandscape(!isLandscape)}
-                title={isLandscape ? 'Switch to Portrait' : 'Switch to Landscape'}
+                title={isLandscape ? 'Mudar para retrato' : 'Mudar para paisagem'}
               />
               <IconButton
                 icon={showDeviceFrameInPreview ? 'i-ph:device-mobile' : 'i-ph:device-mobile-slash'}
                 onClick={() => setShowDeviceFrameInPreview(!showDeviceFrameInPreview)}
-                title={showDeviceFrameInPreview ? 'Hide Device Frame' : 'Show Device Frame'}
+                title={showDeviceFrameInPreview ? 'Ocultar moldura do dispositivo' : 'Mostrar moldura do dispositivo'}
               />
             </>
           )}
@@ -745,19 +747,19 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
             className={
               isInspectorMode ? 'bg-bolt-elements-background-depth-3 !text-bolt-elements-item-contentAccent' : ''
             }
-            title={isInspectorMode ? 'Disable Element Inspector' : 'Enable Element Inspector'}
+            title={isInspectorMode ? 'Desativar inspetor de elementos' : 'Ativar inspetor de elementos'}
           />
           <IconButton
             icon={isFullscreen ? 'i-ph:arrows-in' : 'i-ph:arrows-out'}
             onClick={toggleFullscreen}
-            title={isFullscreen ? 'Exit Full Screen' : 'Full Screen'}
+            title={isFullscreen ? 'Sair da tela cheia' : 'Tela cheia'}
           />
 
           <div className="flex items-center relative">
             <IconButton
               icon="i-ph:list"
               onClick={() => setIsWindowSizeDropdownOpen(!isWindowSizeDropdownOpen)}
-              title="New Window Options"
+              title="Opções de nova janela"
             />
 
             {isWindowSizeDropdownOpen && (
@@ -766,7 +768,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
                 <div className="absolute right-0 top-full mt-2 z-50 min-w-[240px] max-h-[400px] overflow-y-auto bg-white dark:bg-black rounded-xl shadow-2xl border border-[#E5E7EB] dark:border-[rgba(255,255,255,0.1)] overflow-hidden">
                   <div className="p-3 border-b border-[#E5E7EB] dark:border-[rgba(255,255,255,0.1)]">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-[#111827] dark:text-gray-300">Window Options</span>
+                      <span className="text-sm font-medium text-[#111827] dark:text-gray-300">Opções de janela</span>
                     </div>
                     <div className="flex flex-col gap-2">
                       <button
@@ -775,7 +777,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
                           openInNewTab();
                         }}
                       >
-                        <span>Open in new tab</span>
+                        <span>Abrir em nova aba</span>
                         <div className="i-ph:arrow-square-out h-5 w-4" />
                       </button>
                       <button
@@ -806,14 +808,14 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
                           );
                         }}
                       >
-                        <span>Open in new window</span>
+                        <span>Abrir em nova janela</span>
                         <div className="i-ph:browser h-5 w-4" />
                       </button>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-bolt-elements-textTertiary">Show Device Frame</span>
+                        <span className="text-xs text-bolt-elements-textTertiary">Mostrar moldura do dispositivo</span>
                         <button
                           className={`w-10 h-5 rounded-full transition-colors duration-200 ${
-                            showDeviceFrame ? 'bg-[#6D28D9]' : 'bg-gray-300 dark:bg-gray-700'
+                            showDeviceFrame ? 'bg-accent-500' : 'bg-gray-300 dark:bg-gray-700'
                           } relative`}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -828,10 +830,10 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
                         </button>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-bolt-elements-textTertiary">Landscape Mode</span>
+                        <span className="text-xs text-bolt-elements-textTertiary">Modo paisagem</span>
                         <button
                           className={`w-10 h-5 rounded-full transition-colors duration-200 ${
-                            isLandscape ? 'bg-[#6D28D9]' : 'bg-gray-300 dark:bg-gray-700'
+                            isLandscape ? 'bg-accent-500' : 'bg-gray-300 dark:bg-gray-700'
                           } relative`}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -858,21 +860,21 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
                       }}
                     >
                       <div
-                        className={`${size.icon} w-5 h-5 text-[#6B7280] dark:text-gray-400 group-hover:text-[#6D28D9] dark:group-hover:text-[#6D28D9] transition-colors duration-200`}
+                        className={`${size.icon} w-5 h-5 text-bolt-elements-textSecondary dark:text-gray-400 group-hover:text-accent-500 dark:group-hover:text-accent-500 transition-colors duration-200`}
                       />
                       <div className="flex-grow flex flex-col">
-                        <span className="font-medium group-hover:text-[#6D28D9] dark:group-hover:text-[#6D28D9] transition-colors duration-200">
+                        <span className="font-medium group-hover:text-accent-500 dark:group-hover:text-accent-500 transition-colors duration-200">
                           {size.name}
                         </span>
-                        <span className="text-xs text-[#6B7280] dark:text-gray-400 group-hover:text-[#6D28D9] dark:group-hover:text-[#6D28D9] transition-colors duration-200">
+                        <span className="text-xs text-bolt-elements-textSecondary dark:text-gray-400 group-hover:text-accent-500 dark:group-hover:text-accent-500 transition-colors duration-200">
                           {isLandscape && (size.frameType === 'mobile' || size.frameType === 'tablet')
                             ? `${size.height} × ${size.width}`
                             : `${size.width} × ${size.height}`}
-                          {size.hasFrame && showDeviceFrame ? ' (with frame)' : ''}
+                          {size.hasFrame && showDeviceFrame ? ' (com moldura)' : ''}
                         </span>
                       </div>
                       {selectedWindowSize.name === size.name && (
-                        <div className="text-[#6D28D9] dark:text-[#6D28D9]">
+                        <div className="text-accent-500 dark:text-accent-500">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -980,7 +982,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
 
                     <iframe
                       ref={iframeRef}
-                      title="preview"
+                      title="prévia"
                       style={{
                         border: 'none',
                         width: isLandscape ? `${selectedWindowSize.height}px` : `${selectedWindowSize.width}px`,
@@ -997,7 +999,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
               ) : (
                 <iframe
                   ref={iframeRef}
-                  title="preview"
+                  title="prévia"
                   className="border-none w-full h-full bg-bolt-elements-background-depth-1"
                   src={iframeUrl}
                   sandbox="allow-scripts allow-forms allow-popups allow-modals allow-storage-access-by-user-activation allow-same-origin"
@@ -1012,7 +1014,7 @@ export const Preview = memo(({ setSelectedElement }: PreviewProps) => {
             </>
           ) : (
             <div className="flex w-full h-full justify-center items-center bg-bolt-elements-background-depth-1 text-bolt-elements-textPrimary">
-              No preview available
+              Nenhuma prévia disponível
             </div>
           )}
 

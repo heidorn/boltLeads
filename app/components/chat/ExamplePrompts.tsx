@@ -1,37 +1,42 @@
 import React from 'react';
 
-const EXAMPLE_PROMPTS = [
-  { text: 'Create a mobile app about bolt.diy' },
-  { text: 'Build a todo app in React using Tailwind' },
-  { text: 'Build a simple blog using Astro' },
-  { text: 'Create a cookie consent form using Material UI' },
-  { text: 'Make a space invaders game' },
-  { text: 'Make a Tic Tac Toe game in html, css and js only' },
+export const EXAMPLE_PROMPTS = [
+  { text: 'Crie um painel de cadências com funil, taxa de resposta e reuniões' },
+  { text: 'Monte uma landing page de captura de leads com formulário e validação' },
+  { text: 'Faça uma calculadora de ROI de prospecção outbound' },
+  { text: 'Crie uma tabela de leads com filtros por temperatura e busca' },
+  { text: 'Construa um formulário de qualificação de ICP em várias etapas' },
+  { text: 'Faça um app de checklist diário de prospecção em React' },
 ];
 
-export function ExamplePrompts(sendMessage?: { (event: React.UIEvent, messageInput?: string): void | undefined }) {
+interface ExamplePromptsProps {
+  prompts: { text: string }[];
+  sendMessage?: (event: React.UIEvent, messageInput?: string) => void;
+}
+
+/*
+ * Seis pílulas quebravam em quatro fileiras irregulares e disputavam peso com a caixa.
+ * Viraram três linhas de texto separadas por hairline, com a barra "/" da marca — a
+ * mesma estrutura que o resto do produto usa para listar coisas.
+ */
+export function ExamplePrompts({ prompts, sendMessage }: ExamplePromptsProps) {
   return (
-    <div id="examples" className="relative flex flex-col gap-9 w-full max-w-3xl mx-auto flex justify-center mt-6">
-      <div
-        className="flex flex-wrap justify-center gap-2"
-        style={{
-          animation: '.25s ease-out 0s 1 _fade-and-move-in_g2ptj_1 forwards',
-        }}
-      >
-        {EXAMPLE_PROMPTS.map((examplePrompt, index: number) => {
-          return (
-            <button
-              key={index}
-              onClick={(event) => {
-                sendMessage?.(event, examplePrompt.text);
-              }}
-              className="border border-bolt-elements-borderColor rounded-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-950 dark:hover:bg-gray-900 text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary px-3 py-1 text-xs transition-theme"
-            >
-              {examplePrompt.text}
-            </button>
-          );
-        })}
-      </div>
+    <div
+      id="examples"
+      className="w-full max-w-prompt mx-auto mt-8 px-4 lg:px-0 border-t border-bolt-elements-borderColor"
+      style={{ animation: '.25s ease-out 0s 1 _fade-and-move-in_g2ptj_1 forwards' }}
+    >
+      {prompts.map((prompt) => (
+        <button
+          key={prompt.text}
+          onClick={(event) => sendMessage?.(event, prompt.text)}
+          className="group flex items-center gap-3 w-full py-2.5 text-left bg-transparent border-b border-bolt-elements-borderColor text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary transition-colors"
+        >
+          <span className="text-accent-500 text-xs font-bold shrink-0">/</span>
+          <span className="text-sm">{prompt.text}</span>
+          <span className="i-ph:arrow-right ml-auto shrink-0 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+        </button>
+      ))}
     </div>
   );
 }

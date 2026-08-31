@@ -42,7 +42,7 @@ export function UserMessage({ content, parts }: UserMessageProps) {
             <div className="flex items-end gap-2">
               <img
                 src={profile.avatar}
-                alt={profile?.username || 'User'}
+                alt={profile?.username || 'Usuário'}
                 className="w-[25px] h-[25px] object-cover rounded-full"
                 loading="eager"
                 decoding="sync"
@@ -61,7 +61,7 @@ export function UserMessage({ content, parts }: UserMessageProps) {
             <img
               key={index}
               src={`data:${item.mimeType};base64,${item.data}`}
-              alt={`Image ${index + 1}`}
+              alt={`Imagem ${index + 1}`}
               className="max-w-full h-auto rounded-lg"
               style={{ maxHeight: '512px', objectFit: 'contain' }}
             />
@@ -82,7 +82,7 @@ export function UserMessage({ content, parts }: UserMessageProps) {
               <img
                 key={index}
                 src={`data:${item.mimeType};base64,${item.data}`}
-                alt={`Image ${index + 1}`}
+                alt={`Imagem ${index + 1}`}
                 className="h-full w-full rounded-lg"
                 style={{ objectFit: 'fill' }}
               />

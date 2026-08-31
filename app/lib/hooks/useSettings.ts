@@ -114,33 +114,33 @@ export function useSettings(): UseSettingsReturn {
 
   const enableDebugMode = useCallback((enabled: boolean) => {
     isDebugMode.set(enabled);
-    logStore.logSystem(`Debug mode ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`Modo debug ${enabled ? 'ativo' : 'desativado'}`);
     Cookies.set('isDebugEnabled', String(enabled));
   }, []);
 
   const setEventLogs = useCallback((enabled: boolean) => {
     updateEventLogs(enabled);
-    logStore.logSystem(`Event logs ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`Registro de eventos ${enabled ? 'ativo' : 'desativado'}`);
   }, []);
 
   const setPromptId = useCallback((id: string) => {
     updatePromptId(id);
-    logStore.logSystem(`Prompt template updated to ${id}`);
+    logStore.logSystem(`Modelo de prompt alterado para ${id}`);
   }, []);
 
   const enableLatestBranch = useCallback((enabled: boolean) => {
     updateLatestBranch(enabled);
-    logStore.logSystem(`Main branch updates ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`Atualizações da branch main ${enabled ? 'ativas' : 'desativadas'}`);
   }, []);
 
   const setAutoSelectTemplate = useCallback((enabled: boolean) => {
     updateAutoSelectTemplate(enabled);
-    logStore.logSystem(`Auto select template ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`Seleção automática de template ${enabled ? 'ativa' : 'desativada'}`);
   }, []);
 
   const enableContextOptimization = useCallback((enabled: boolean) => {
     updateContextOptimization(enabled);
-    logStore.logSystem(`Context optimization ${enabled ? 'enabled' : 'disabled'}`);
+    logStore.logSystem(`Otimização de contexto ${enabled ? 'ativa' : 'desativada'}`);
   }, []);
 
   const setTheme = useCallback(

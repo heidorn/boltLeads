@@ -239,7 +239,7 @@ export async function forkChat(db: IDBDatabase, chatId: string, messageId: strin
   // Get messages up to and including the selected message
   const messages = chat.messages.slice(0, messageIndex + 1);
 
-  return createChatFromMessages(db, chat.description ? `${chat.description} (fork)` : 'Forked chat', messages);
+  return createChatFromMessages(db, chat.description ? `${chat.description} (fork)` : 'Fork do chat', messages);
 }
 
 export async function duplicateChat(db: IDBDatabase, id: string): Promise<string> {
@@ -249,7 +249,7 @@ export async function duplicateChat(db: IDBDatabase, id: string): Promise<string
     throw new Error('Chat not found');
   }
 
-  return createChatFromMessages(db, `${chat.description || 'Chat'} (copy)`, chat.messages);
+  return createChatFromMessages(db, `${chat.description || 'Chat'} (duplicado)`, chat.messages);
 }
 
 export async function createChatFromMessages(

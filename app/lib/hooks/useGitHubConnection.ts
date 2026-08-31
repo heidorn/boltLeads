@@ -57,7 +57,7 @@ export function useGitHubConnection(): UseGitHubConnectionReturn {
       setIsLoading(false);
     } catch (error) {
       console.error('Error loading saved connection:', error);
-      setError('Failed to load saved connection');
+      setError('Não foi possível carregar a conexão salva');
       setIsLoading(false);
 
       // Clean up corrupted data
@@ -102,7 +102,7 @@ export function useGitHubConnection(): UseGitHubConnectionReturn {
 
     if (!token.trim()) {
       console.log('Token validation failed - empty token');
-      setError('Token is required');
+      setError('O token é obrigatório');
 
       return;
     }
@@ -126,7 +126,7 @@ export function useGitHubConnection(): UseGitHubConnectionReturn {
       console.log('GitHub API response status:', response.status, response.statusText);
 
       if (!response.ok) {
-        throw new Error(`Authentication failed: ${response.status} ${response.statusText}`);
+        throw new Error(`Não foi possível autenticar: ${response.status} ${response.statusText}`);
       }
 
       const userData = (await response.json()) as GitHubUserResponse;
@@ -152,14 +152,14 @@ export function useGitHubConnection(): UseGitHubConnectionReturn {
       // Update the store
       updateGitHubConnection(connectionData);
 
-      toast.success(`Connected to GitHub as ${userData.login}`);
+      toast.success(`Conectado ao GitHub como ${userData.login}`);
     } catch (error) {
       console.error('Failed to connect to GitHub:', error);
 
-      const errorMessage = error instanceof Error ? error.message : 'Failed to connect to GitHub';
+      const errorMessage = error instanceof Error ? error.message : 'Não foi possível conectar ao GitHub';
 
       setError(errorMessage);
-      toast.error(`Failed to connect: ${errorMessage}`);
+      toast.error(`Não foi possível conectar: ${errorMessage}`);
       throw error;
     } finally {
       isConnecting.set(false);
@@ -183,7 +183,7 @@ export function useGitHubConnection(): UseGitHubConnectionReturn {
     });
 
     setError(null);
-    toast.success('Disconnected from GitHub');
+    toast.success('Desconectado do GitHub');
   }, []);
 
   const refreshConnection = useCallback(async () => {
@@ -198,7 +198,7 @@ export function useGitHubConnection(): UseGitHubConnectionReturn {
       await refreshConnectionData(connection);
     } catch (error) {
       console.error('Error refreshing connection:', error);
-      setError('Failed to refresh connection');
+      setError('Não foi possível atualizar a conexão');
       throw error;
     } finally {
       setIsLoading(false);

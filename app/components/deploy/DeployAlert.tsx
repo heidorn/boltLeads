@@ -142,7 +142,7 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                     rel="noopener noreferrer"
                     className="text-bolt-elements-item-contentAccent hover:underline flex items-center"
                   >
-                    <span className="mr-1">View deployed site</span>
+                    <span className="mr-1">Ver site publicado</span>
                     <div className="i-ph:arrow-square-out"></div>
                   </a>
                 </div>
@@ -160,7 +160,7 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                 {type === 'error' && (
                   <button
                     onClick={() =>
-                      postMessage(`*Fix this deployment error*\n\`\`\`\n${content || description}\n\`\`\`\n`)
+                      postMessage(`*Corrija este erro de deploy*\n\`\`\`\n${content || description}\n\`\`\`\n`)
                     }
                     className={classNames(
                       `px-2 py-1.5 rounded-md text-sm font-medium`,
@@ -172,7 +172,7 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                     )}
                   >
                     <div className="i-ph:chat-circle-duotone"></div>
-                    Ask Bolt
+                    Perguntar ao Studio
                   </button>
                 )}
                 <button
@@ -185,7 +185,7 @@ export default function DeployChatAlert({ alert, clearAlert, postMessage }: Depl
                     'text-bolt-elements-button-secondary-text',
                   )}
                 >
-                  Dismiss
+                  Dispensar
                 </button>
               </div>
             </motion.div>

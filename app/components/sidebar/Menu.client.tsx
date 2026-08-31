@@ -14,12 +14,16 @@ import { useSearchFilter } from '~/lib/hooks/useSearchFilter';
 import { classNames } from '~/utils/classNames';
 import { useStore } from '@nanostores/react';
 import { profileStore } from '~/lib/stores/profile';
+import { sidebarOpen } from '~/lib/stores/sidebar';
+
+/* Largura da gaveta. Constante porque o cálculo de saída não pode medir o DOM enquanto ele anima. */
+const MENU_WIDTH = 340;
 
 const menuVariants = {
   closed: {
     opacity: 0,
     visibility: 'hidden',
-    left: '-340px',
+    left: `-${MENU_WIDTH}px`,
     transition: {
       duration: 0.2,
       ease: cubicEasingFn,
@@ -67,7 +71,8 @@ export const Menu = () => {
   const { duplicateCurrentChat, exportChat } = useChatHistory();
   const menuRef = useRef<HTMLDivElement>(null);
   const [list, setList] = useState<ChatHistoryItem[]>([]);
-  const [open, setOpen] = useState(false);
+  const open = useStore(sidebarOpen);
+  const setOpen = (value: boolean) => sidebarOpen.set(value);
   const [dialogContent, setDialogContent] = useState<DialogContent>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const profile = useStore(profileStore);
@@ -120,7 +125,7 @@ export const Menu = () => {
 
       deleteChat(item.id)
         .then(() => {
-          toast.success('Chat deleted successfully', {
+          toast.success('Chat excluído', {
             position: 'bottom-right',
             autoClose: 3000,
           });
@@ -136,7 +141,7 @@ export const Menu = () => {
         })
         .catch((error) => {
           console.error('Failed to delete chat:', error);
-          toast.error('Failed to delete conversation', {
+          toast.error('Não foi possível excluir o chat', {
             position: 'bottom-right',
             autoClose: 3000,
           });
@@ -179,11 +184,14 @@ export const Menu = () => {
 
       // Show appropriate toast message
       if (errors.length === 0) {
-        toast.success(`${deletedCount} chat${deletedCount === 1 ? '' : 's'} deleted successfully`);
+        toast.success(`${deletedCount} ${deletedCount === 1 ? 'chat excluído' : 'chats excluídos'}`);
       } else {
-        toast.warning(`Deleted ${deletedCount} of ${itemsToDeleteIds.length} chats. ${errors.length} failed.`, {
-          autoClose: 5000,
-        });
+        toast.warning(
+          `${deletedCount} de ${itemsToDeleteIds.length} chats excluídos. Não foi possível excluir ${errors.length}.`,
+          {
+            autoClose: 5000,
+          },
+        );
       }
 
       // Reload the list after all deletions
@@ -226,14 +234,14 @@ export const Menu = () => {
 
   const handleBulkDeleteClick = useCallback(() => {
     if (selectedItems.length === 0) {
-      toast.info('Select at least one chat to delete');
+      toast.info('Selecione ao menos um chat para excluir');
       return;
     }
 
     const selectedChats = list.filter((item) => selectedItems.includes(item.id));
 
     if (selectedChats.length === 0) {
-      toast.error('Could not find selected chats');
+      toast.error('Não foi possível encontrar os chats selecionados');
       return;
     }
 
@@ -287,11 +295,18 @@ export const Menu = () => {
         return;
       }
 
-      if (event.pageX < enterThreshold) {
+      if (event.clientX < enterThreshold) {
         setOpen(true);
+        return;
       }
 
-      if (menuRef.current && event.clientX > menuRef.current.getBoundingClientRect().right + exitThreshold) {
+      /*
+       * A saída usava a posição medida do menu. Enquanto ele animava de -340 a 0, a
+       * medida devolvia a borda ainda à esquerda, e qualquer movimento além de 20px
+       * fechava o que tinha acabado de abrir — daí abrir uma vez sim, outra não.
+       * Com a largura fixa, a zona de saída não depende do quadro da animação.
+       */
+      if (event.clientX > MENU_WIDTH + exitThreshold) {
         setOpen(false);
       }
     }
@@ -337,38 +352,22 @@ export const Menu = () => {
           isSettingsOpen ? 'z-40' : 'z-sidebar',
         )}
       >
-        <div className="h-12 flex items-center justify-between px-4 border-b border-gray-100 dark:border-gray-800/50 bg-gray-50/50 dark:bg-gray-900/50 rounded-tr-2xl">
-          <div className="text-gray-900 dark:text-white font-medium"></div>
-          <div className="flex items-center gap-3">
-            <HelpButton onClick={() => window.open('https://stackblitz-labs.github.io/bolt.diy/', '_blank')} />
-            <span className="font-medium text-sm text-gray-900 dark:text-white truncate">
-              {profile?.username || 'Guest User'}
-            </span>
-            <div className="flex items-center justify-center w-[32px] h-[32px] overflow-hidden bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-500 rounded-full shrink-0">
-              {profile?.avatar ? (
-                <img
-                  src={profile.avatar}
-                  alt={profile?.username || 'User'}
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                  decoding="sync"
-                />
-              ) : (
-                <div className="i-ph:user-fill text-lg" />
-              )}
-            </div>
-          </div>
-        </div>
+        {/*
+         * O cabeçalho de perfil ficava exatamente sob o logo do topo, que tem z-index
+         * maior e passa por cima: os dois se desenhavam juntos. O perfil desceu para o
+         * rodapé, que é onde a identidade da marca o coloca.
+         */}
+        <div className="h-[var(--header-height)] shrink-0" />
         <CurrentDateTime />
         <div className="flex-1 flex flex-col h-full w-full overflow-hidden">
           <div className="p-4 space-y-3">
             <div className="flex gap-2">
               <a
                 href="/"
-                className="flex-1 flex gap-2 items-center bg-purple-50 dark:bg-purple-500/10 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-500/20 rounded-lg px-4 py-2 transition-colors"
+                className="flex-1 flex gap-2 items-center bg-bolt-elements-button-primary-background text-bolt-elements-button-primary-text hover:bg-bolt-elements-button-primary-backgroundHover rounded-lg px-4 py-2 transition-colors"
               >
                 <span className="inline-block i-ph:plus-circle h-4 w-4" />
-                <span className="text-sm font-medium">Start new chat</span>
+                <span className="text-sm font-medium">Novo chat</span>
               </a>
               <button
                 onClick={toggleSelectionMode}
@@ -378,7 +377,7 @@ export const Menu = () => {
                     ? 'bg-purple-600 dark:bg-purple-500 text-white border border-purple-700 dark:border-purple-600'
                     : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700',
                 )}
-                aria-label={selectionMode ? 'Exit selection mode' : 'Enter selection mode'}
+                aria-label={selectionMode ? 'Sair do modo de seleção' : 'Selecionar chats'}
               >
                 <span className={selectionMode ? 'i-ph:x h-4 w-4' : 'i-ph:check-square h-4 w-4'} />
               </button>
@@ -390,18 +389,18 @@ export const Menu = () => {
               <input
                 className="w-full bg-gray-50 dark:bg-gray-900 relative pl-9 pr-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-purple-500/50 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-500 border border-gray-200 dark:border-gray-800"
                 type="search"
-                placeholder="Search chats..."
+                placeholder="Buscar chats…"
                 onChange={handleSearchChange}
-                aria-label="Search chats"
+                aria-label="Buscar chats"
               />
             </div>
           </div>
           <div className="flex items-center justify-between text-sm px-4 py-2">
-            <div className="font-medium text-gray-600 dark:text-gray-400">Your Chats</div>
+            <div className="lph-slash-label">Chats</div>
             {selectionMode && (
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" onClick={selectAll}>
-                  {selectedItems.length === filteredList.length ? 'Deselect all' : 'Select all'}
+                  {selectedItems.length === filteredList.length ? 'Limpar seleção' : 'Selecionar todos'}
                 </Button>
                 <Button
                   variant="destructive"
@@ -409,7 +408,7 @@ export const Menu = () => {
                   onClick={handleBulkDeleteClick}
                   disabled={selectedItems.length === 0}
                 >
-                  Delete selected
+                  Excluir selecionados
                 </Button>
               </div>
             )}
@@ -417,7 +416,7 @@ export const Menu = () => {
           <div className="flex-1 overflow-auto px-3 pb-3">
             {filteredList.length === 0 && (
               <div className="px-4 text-gray-500 dark:text-gray-400 text-sm">
-                {list.length === 0 ? 'No previous conversations' : 'No matches found'}
+                {list.length === 0 ? 'Nenhum chat ainda' : 'Nada encontrado'}
               </div>
             )}
             <DialogRoot open={dialogContent !== null}>
@@ -451,20 +450,20 @@ export const Menu = () => {
                 {dialogContent?.type === 'delete' && (
                   <>
                     <div className="p-6 bg-white dark:bg-gray-950">
-                      <DialogTitle className="text-gray-900 dark:text-white">Delete Chat?</DialogTitle>
+                      <DialogTitle className="text-gray-900 dark:text-white">Excluir chat?</DialogTitle>
                       <DialogDescription className="mt-2 text-gray-600 dark:text-gray-400">
                         <p>
-                          You are about to delete{' '}
+                          Você vai excluir{' '}
                           <span className="font-medium text-gray-900 dark:text-white">
                             {dialogContent.item.description}
                           </span>
                         </p>
-                        <p className="mt-2">Are you sure you want to delete this chat?</p>
+                        <p className="mt-2">Essa ação não pode ser desfeita.</p>
                       </DialogDescription>
                     </div>
                     <div className="flex justify-end gap-3 px-6 py-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
                       <DialogButton type="secondary" onClick={closeDialog}>
-                        Cancel
+                        Cancelar
                       </DialogButton>
                       <DialogButton
                         type="danger"
@@ -474,7 +473,7 @@ export const Menu = () => {
                           closeDialog();
                         }}
                       >
-                        Delete
+                        Excluir
                       </DialogButton>
                     </div>
                   </>
@@ -482,10 +481,12 @@ export const Menu = () => {
                 {dialogContent?.type === 'bulkDelete' && (
                   <>
                     <div className="p-6 bg-white dark:bg-gray-950">
-                      <DialogTitle className="text-gray-900 dark:text-white">Delete Selected Chats?</DialogTitle>
+                      <DialogTitle className="text-gray-900 dark:text-white">
+                        Excluir os chats selecionados?
+                      </DialogTitle>
                       <DialogDescription className="mt-2 text-gray-600 dark:text-gray-400">
                         <p>
-                          You are about to delete {dialogContent.items.length}{' '}
+                          Você vai excluir {dialogContent.items.length}{' '}
                           {dialogContent.items.length === 1 ? 'chat' : 'chats'}:
                         </p>
                         <div className="mt-2 max-h-32 overflow-auto border border-gray-100 dark:border-gray-800 rounded-md bg-gray-50 dark:bg-gray-900 p-2">
@@ -497,12 +498,12 @@ export const Menu = () => {
                             ))}
                           </ul>
                         </div>
-                        <p className="mt-3">Are you sure you want to delete these chats?</p>
+                        <p className="mt-3">Essa ação não pode ser desfeita.</p>
                       </DialogDescription>
                     </div>
                     <div className="flex justify-end gap-3 px-6 py-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
                       <DialogButton type="secondary" onClick={closeDialog}>
-                        Cancel
+                        Cancelar
                       </DialogButton>
                       <DialogButton
                         type="danger"
@@ -517,7 +518,7 @@ export const Menu = () => {
                           closeDialog();
                         }}
                       >
-                        Delete
+                        Excluir
                       </DialogButton>
                     </div>
                   </>
@@ -525,11 +526,30 @@ export const Menu = () => {
               </Dialog>
             </DialogRoot>
           </div>
-          <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-800 px-4 py-3">
-            <div className="flex items-center gap-3">
-              <SettingsButton onClick={handleSettingsClick} />
+          <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-800 px-4 py-3 gap-3">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex items-center justify-center w-[28px] h-[28px] overflow-hidden bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-500 rounded-full shrink-0">
+                {profile?.avatar ? (
+                  <img
+                    src={profile.avatar}
+                    alt={profile?.username || 'Usuário'}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                    decoding="sync"
+                  />
+                ) : (
+                  <div className="i-ph:user-fill text-base" />
+                )}
+              </div>
+              <span className="font-medium text-sm text-gray-900 dark:text-white truncate">
+                {profile?.username || 'Convidado'}
+              </span>
             </div>
-            <ThemeSwitch />
+            <div className="flex items-center gap-3 shrink-0">
+              <HelpButton onClick={() => window.open('https://stackblitz-labs.github.io/bolt.diy/', '_blank')} />
+              <SettingsButton onClick={handleSettingsClick} />
+              <ThemeSwitch />
+            </div>
           </div>
         </div>
       </motion.div>

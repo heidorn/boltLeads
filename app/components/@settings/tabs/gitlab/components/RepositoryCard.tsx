@@ -40,11 +40,11 @@ export function RepositoryCard({ repo, onClone }: RepositoryCardProps) {
         )}
 
         <div className="flex items-center gap-3 text-xs text-bolt-elements-textSecondary">
-          <span className="flex items-center gap-1" title="Default Branch">
+          <span className="flex items-center gap-1" title="Branch padrão">
             <div className="i-ph:git-branch w-3.5 h-3.5" />
             {repo.default_branch}
           </span>
-          <span className="flex items-center gap-1" title="Last Updated">
+          <span className="flex items-center gap-1" title="Atualizado em">
             <div className="i-ph:clock w-3.5 h-3.5" />
             {new Date(repo.updated_at).toLocaleDateString(undefined, {
               year: 'numeric',
@@ -61,15 +61,15 @@ export function RepositoryCard({ repo, onClone }: RepositoryCardProps) {
                   onClone(repo);
                 }}
                 className="flex items-center gap-1 px-2 py-1 rounded text-xs bg-bolt-elements-background-depth-2 hover:bg-bolt-elements-background-depth-3 text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary transition-colors"
-                title="Clone repository"
+                title="Clonar repositório"
               >
                 <div className="i-ph:git-branch w-3.5 h-3.5" />
-                Clone
+                Clonar
               </button>
             )}
             <span className="flex items-center gap-1 group-hover:text-bolt-elements-item-contentAccent transition-colors">
               <div className="i-ph:arrow-square-out w-3.5 h-3.5" />
-              View
+              Ver
             </span>
           </div>
         </div>

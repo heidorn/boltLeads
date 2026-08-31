@@ -67,7 +67,7 @@ export function BranchSelector({
       } else {
         // GitLab
         if (!projectId) {
-          throw new Error('Project ID is required for GitLab repositories');
+          throw new Error('O ID do projeto é obrigatório para repositórios do GitLab');
         }
 
         response = await fetch('/api/gitlab-branches', {
@@ -82,7 +82,7 @@ export function BranchSelector({
       }
 
       if (!response.ok) {
-        const errorData: any = await response.json().catch(() => ({ error: 'Failed to fetch branches' }));
+        const errorData: any = await response.json().catch(() => ({ error: 'Não foi possível carregar as branches' }));
         throw new Error(errorData.error || `HTTP ${response.status}`);
       }
 
@@ -94,7 +94,7 @@ export function BranchSelector({
       setSelectedBranch(defaultBranchToSelect);
     } catch (err) {
       console.error('Failed to fetch branches:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch branches');
+      setError(err instanceof Error ? err.message : 'Não foi possível carregar as branches');
       setBranches([]);
     } finally {
       setIsLoading(false);
@@ -147,7 +147,7 @@ export function BranchSelector({
                 <GitBranch className="w-6 h-6 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">Select Branch</h3>
+                <h3 className="text-lg font-semibold text-bolt-elements-textPrimary">Selecionar branch</h3>
                 <p className="text-sm text-bolt-elements-textSecondary">
                   {repoOwner}/{repoName}
                 </p>
@@ -166,7 +166,7 @@ export function BranchSelector({
             {isLoading ? (
               <div className="flex flex-col items-center justify-center p-8 space-y-4">
                 <div className="animate-spin w-8 h-8 border-2 border-bolt-elements-borderColorActive border-t-transparent rounded-full" />
-                <p className="text-sm text-bolt-elements-textSecondary">Loading branches...</p>
+                <p className="text-sm text-bolt-elements-textSecondary">Carregando branches…</p>
               </div>
             ) : error ? (
               <div className="flex flex-col items-center justify-center p-8 space-y-4">
@@ -176,7 +176,7 @@ export function BranchSelector({
                 <p className="text-sm text-red-600 text-center">{error}</p>
                 <Button onClick={fetchBranches} variant="outline" size="sm">
                   <RefreshCw className="w-4 h-4 mr-2" />
-                  Retry
+                  Tentar de novo
                 </Button>
               </div>
             ) : (
@@ -186,7 +186,7 @@ export function BranchSelector({
                   <div className="p-4 border-b border-bolt-elements-borderColor">
                     <input
                       type="text"
-                      placeholder="Search branches..."
+                      placeholder="Buscar branches…"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full px-3 py-2 rounded-lg bg-bolt-elements-background-depth-1 border border-bolt-elements-borderColor text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary focus:outline-none focus:ring-1 focus:ring-bolt-elements-borderColorActive"
@@ -229,7 +229,7 @@ export function BranchSelector({
                   ) : (
                     <div className="flex items-center justify-center p-8">
                       <p className="text-sm text-bolt-elements-textSecondary">
-                        {searchQuery ? 'No branches found matching your search.' : 'No branches available.'}
+                        {searchQuery ? 'Nada encontrado para essa busca.' : 'Nenhuma branch disponível.'}
                       </p>
                     </div>
                   )}
@@ -244,13 +244,13 @@ export function BranchSelector({
               <div className="text-sm text-bolt-elements-textSecondary">
                 {selectedBranch && (
                   <>
-                    Selected: <span className="font-medium">{selectedBranch}</span>
+                    Selecionada: <span className="font-medium">{selectedBranch}</span>
                   </>
                 )}
               </div>
               <div className="flex items-center gap-3">
                 <Button onClick={onClose} variant="outline" size="sm">
-                  Cancel
+                  Cancelar
                 </Button>
                 <Button
                   onClick={handleConfirmSelection}
@@ -258,7 +258,7 @@ export function BranchSelector({
                   size="sm"
                   className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  Clone Branch
+                  Clonar branch
                 </Button>
               </div>
             </div>

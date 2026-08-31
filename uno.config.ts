@@ -19,71 +19,157 @@ const customIconCollection = iconPaths.reduce(
   {} as Record<string, Record<string, () => Promise<string>>>,
 );
 
+/*
+ * Paleta oficial Leads Per Hour (identidade 2026).
+ *
+ * - `noite`  — neutros frios derivados do Azul Noite (#1D262D); substituem o antigo `gray`.
+ * - `accent` — Laranja Chama (#F2552C); acento raro, uma ação primária por vista.
+ * - `cool`   — Lago Refletido / Verde água; os frios da marca (informação, Oráculo).
+ *
+ * As rampas `gray`, `purple`, `violet` e `indigo` continuam existindo porque o
+ * bolt.diy as usa em centenas de lugares — aqui elas apontam para as cores da
+ * marca, de modo que nenhum roxo ou cinza neutro sobreviva na interface.
+ */
+const BRAND = {
+  chama: '#F2552C',
+  rubi: '#D8321A',
+  noite: '#1D262D',
+  lago: '#203E49',
+  agua: '#115E66',
+  obsidiana: '#131313',
+};
+
+const NOITE_RAMP = {
+  50: '#F7F9F9',
+  100: '#EEF1F2',
+  200: '#DDE3E5',
+  300: '#C2CCD0',
+  400: '#9AA7AD',
+  500: '#6D7A81',
+  600: '#4D5960',
+  700: '#2A353D',
+  800: '#1D262D',
+  900: '#141B1F',
+  950: '#0F1417',
+};
+
+/* Laranja Chama → Rubi. */
+const CHAMA_RAMP = {
+  50: '#FFF3F0',
+  100: '#FFE4DD',
+  200: '#FFC7BA',
+  300: '#FCA28D',
+  400: '#F57756',
+  500: '#F2552C',
+  600: '#DA4D28',
+  700: '#D8321A',
+  800: '#AB2814',
+  900: '#7D1F10',
+  950: '#451009',
+};
+
+/* Verde água → Lago Refletido: o contraponto frio do acento. */
+const COOL_RAMP = {
+  50: '#EEF7F7',
+  100: '#D7ECEC',
+  200: '#AED8DA',
+  300: '#7CBCC0',
+  400: '#4A9BA6',
+  500: '#2A8A91',
+  600: '#17727A',
+  700: '#115E66',
+  800: '#124B52',
+  900: '#203E49',
+  950: '#0F2A31',
+};
+
+/* Verde de sucesso (--ok da marca). */
+const OK_RAMP = {
+  50: '#EEFBF4',
+  100: '#D4F5E3',
+  200: '#A9EBC7',
+  300: '#75DCA6',
+  400: '#4FD18D',
+  500: '#2FBF71',
+  600: '#23A05D',
+  700: '#1B7F4A',
+  800: '#16613A',
+  900: '#12492D',
+  950: '#082A19',
+};
+
+/* Âmbar de alerta (--warn da marca). */
+const WARN_RAMP = {
+  50: '#FEF8EC',
+  100: '#FCEDCE',
+  200: '#FADB9D',
+  300: '#F8C66A',
+  400: '#F6B444',
+  500: '#F5A623',
+  600: '#D4870F',
+  700: '#A8690A',
+  800: '#7E4F0C',
+  900: '#5C3A0B',
+  950: '#331F05',
+};
+
 const BASE_COLORS = {
   white: '#FFFFFF',
-  gray: {
-    50: '#FAFAFA',
-    100: '#F5F5F5',
-    200: '#E5E5E5',
-    300: '#D4D4D4',
-    400: '#A3A3A3',
-    500: '#737373',
-    600: '#525252',
-    700: '#404040',
-    800: '#262626',
-    900: '#171717',
-    950: '#0A0A0A',
-  },
-  accent: {
-    50: '#F8F5FF',
-    100: '#F0EBFF',
-    200: '#E1D6FF',
-    300: '#CEBEFF',
-    400: '#B69EFF',
-    500: '#9C7DFF',
-    600: '#8A5FFF',
-    700: '#7645E8',
-    800: '#6234BB',
-    900: '#502D93',
-    950: '#2D1959',
-  },
-  green: {
-    50: '#F0FDF4',
-    100: '#DCFCE7',
-    200: '#BBF7D0',
-    300: '#86EFAC',
-    400: '#4ADE80',
-    500: '#22C55E',
-    600: '#16A34A',
-    700: '#15803D',
-    800: '#166534',
-    900: '#14532D',
-    950: '#052E16',
-  },
-  orange: {
-    50: '#FFFAEB',
-    100: '#FEEFC7',
-    200: '#FEDF89',
-    300: '#FEC84B',
-    400: '#FDB022',
-    500: '#F79009',
-    600: '#DC6803',
-    700: '#B54708',
-    800: '#93370D',
-    900: '#792E0D',
-  },
+  ...BRAND,
+  gray: NOITE_RAMP,
+  noiteScale: NOITE_RAMP,
+  accent: CHAMA_RAMP,
+  chamaScale: CHAMA_RAMP,
+  cool: COOL_RAMP,
+
+  /*
+   * Aliases herdados do bolt.diy. O upstream espalha as famílias padrão do
+   * Tailwind pela interface inteira; aqui cada uma aponta para a cor de marca
+   * equivalente, de modo que nenhuma cor genérica sobreviva na tela.
+   */
+
+  // Roxos e azuis → frios da marca (Lago Refletido / Verde água).
+  purple: COOL_RAMP,
+  violet: COOL_RAMP,
+  indigo: COOL_RAMP,
+  fuchsia: COOL_RAMP,
+  blue: COOL_RAMP,
+  sky: COOL_RAMP,
+  cyan: COOL_RAMP,
+  teal: COOL_RAMP,
+
+  // Neutros → rampa Azul Noite.
+  slate: NOITE_RAMP,
+  zinc: NOITE_RAMP,
+  neutral: NOITE_RAMP,
+  stone: NOITE_RAMP,
+
+  green: OK_RAMP,
+  emerald: OK_RAMP,
+  lime: OK_RAMP,
+
+  /* Âmbar de alerta (--warn da marca). */
+  orange: WARN_RAMP,
+  amber: WARN_RAMP,
+  yellow: WARN_RAMP,
+
+  /* Rosas → família quente da marca (Chama/Rubi). */
+  pink: CHAMA_RAMP,
+  rose: CHAMA_RAMP,
+
+  /* Rubi: destrutivo e erro. */
   red: {
-    50: '#FEF2F2',
-    100: '#FEE2E2',
-    200: '#FECACA',
-    300: '#FCA5A5',
-    400: '#F87171',
-    500: '#EF4444',
-    600: '#DC2626',
-    700: '#B91C1C',
-    800: '#991B1B',
-    900: '#7F1D1D',
-    950: '#450A0A',
+    50: '#FEF3F1',
+    100: '#FDE3DE',
+    200: '#FBC5BB',
+    300: '#F79C8B',
+    400: '#EF6A52',
+    500: '#D8321A',
+    600: '#C22D15',
+    700: '#A12511',
+    800: '#7E1E0E',
+    900: '#5E170B',
+    950: '#360D06',
   },
 };
 
@@ -92,6 +178,8 @@ const COLOR_PRIMITIVES = {
   alpha: {
     white: generateAlphaPalette(BASE_COLORS.white),
     gray: generateAlphaPalette(BASE_COLORS.gray[900]),
+    noite: generateAlphaPalette(BRAND.noite),
+    cool: generateAlphaPalette(BASE_COLORS.cool[500]),
     red: generateAlphaPalette(BASE_COLORS.red[500]),
     accent: generateAlphaPalette(BASE_COLORS.accent[500]),
   },
@@ -104,6 +192,12 @@ export default defineConfig({
     'transition-theme': 'transition-[background-color,border-color,color] duration-150 bolt-ease-cubic-bezier',
     kdb: 'bg-bolt-elements-code-background text-bolt-elements-code-text py-1 px-1.5 rounded-md',
     'max-w-chat': 'max-w-[var(--chat-max-width)]',
+    'max-w-prompt': 'max-w-[var(--prompt-max-width)]',
+
+    /* Assinaturas da marca */
+    'lph-display': 'font-display tracking-[-0.02em]',
+    'lph-num': 'font-display tabular-nums tracking-[-0.02em]',
+    'lph-hair': 'border-b border-bolt-elements-borderColor',
   },
   rules: [
     /**
@@ -113,6 +207,12 @@ export default defineConfig({
     ['b', {}],
   ],
   theme: {
+    fontFamily: {
+      /* Inter na interface, Switzer em títulos e números — regra fixa da marca. */
+      sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+      display: ['Switzer', 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+      mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+    },
     colors: {
       ...COLOR_PRIMITIVES,
       bolt: {

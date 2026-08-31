@@ -298,7 +298,7 @@ export const loader: LoaderFunction = async ({ request, context }: LoaderFunctio
     } catch (error) {
       console.error('GitHub API error:', error);
       return json(
-        { error: error instanceof Error ? error.message : 'Unknown error' },
+        { error: error instanceof Error ? error.message : 'Erro desconhecido' },
         {
           status: 500,
           headers: {

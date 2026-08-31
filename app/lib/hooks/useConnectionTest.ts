@@ -13,7 +13,7 @@ export function useConnectionTest({ testEndpoint, serviceName, getUserIdentifier
   const testConnection = useCallback(async () => {
     setTestResult({
       status: 'testing',
-      message: 'Testing connection...',
+      message: 'Testando conexão…',
     });
 
     try {
@@ -26,25 +26,25 @@ export function useConnectionTest({ testEndpoint, serviceName, getUserIdentifier
 
       if (response.ok) {
         const data = await response.json();
-        const userIdentifier = getUserIdentifier ? getUserIdentifier(data) : 'User';
+        const userIdentifier = getUserIdentifier ? getUserIdentifier(data) : 'usuário';
 
         setTestResult({
           status: 'success',
-          message: `Connected successfully to ${serviceName} as ${userIdentifier}`,
+          message: `Conectado ao ${serviceName} como ${userIdentifier}`,
           timestamp: Date.now(),
         });
       } else {
         const errorData = (await response.json().catch(() => ({}))) as { error?: string };
         setTestResult({
           status: 'error',
-          message: `Connection failed: ${errorData.error || `${response.status} ${response.statusText}`}`,
+          message: `Não foi possível conectar: ${errorData.error || `${response.status} ${response.statusText}`}`,
           timestamp: Date.now(),
         });
       }
     } catch (error) {
       setTestResult({
         status: 'error',
-        message: `Connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        message: `Não foi possível conectar: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
         timestamp: Date.now(),
       });
     }

@@ -179,7 +179,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const token = url.searchParams.get('token');
 
   if (!projectId || !token) {
-    return json({ error: 'Missing projectId or token' }, { status: 400 });
+    return json({ error: 'projectId ou token ausente' }, { status: 400 });
   }
 
   try {
@@ -191,7 +191,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
 
     if (!projectResponse.ok) {
-      return json({ error: 'Failed to fetch project' }, { status: 400 });
+      return json({ error: 'Não foi possível obter o projeto' }, { status: 400 });
     }
 
     const projectData = (await projectResponse.json()) as any;
@@ -204,7 +204,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
 
     if (!deploymentsResponse.ok) {
-      return json({ error: 'Failed to fetch deployments' }, { status: 400 });
+      return json({ error: 'Não foi possível obter os deploys' }, { status: 400 });
     }
 
     const deploymentsData = (await deploymentsResponse.json()) as any;
@@ -227,7 +227,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error) {
     console.error('Error fetching Vercel deployment:', error);
-    return json({ error: 'Failed to fetch deployment' }, { status: 500 });
+    return json({ error: 'Não foi possível obter o deploy' }, { status: 500 });
   }
 }
 
@@ -247,7 +247,7 @@ export async function action({ request }: ActionFunctionArgs) {
     };
 
     if (!token) {
-      return json({ error: 'Not connected to Vercel' }, { status: 401 });
+      return json({ error: 'Não conectado ao Vercel' }, { status: 401 });
     }
 
     let targetProjectId = projectId;
@@ -279,7 +279,7 @@ export async function action({ request }: ActionFunctionArgs) {
       if (!createProjectResponse.ok) {
         const errorData = (await createProjectResponse.json()) as any;
         return json(
-          { error: `Failed to create project: ${errorData.error?.message || 'Unknown error'}` },
+          { error: `Não foi possível criar o projeto: ${errorData.error?.message || 'Erro desconhecido'}` },
           { status: 400 },
         );
       }
@@ -326,7 +326,7 @@ export async function action({ request }: ActionFunctionArgs) {
         if (!createProjectResponse.ok) {
           const errorData = (await createProjectResponse.json()) as any;
           return json(
-            { error: `Failed to create project: ${errorData.error?.message || 'Unknown error'}` },
+            { error: `Não foi possível criar o projeto: ${errorData.error?.message || 'Erro desconhecido'}` },
             { status: 400 },
           );
         }
@@ -426,7 +426,7 @@ export async function action({ request }: ActionFunctionArgs) {
     if (!deployResponse.ok) {
       const errorData = (await deployResponse.json()) as any;
       return json(
-        { error: `Failed to create deployment: ${errorData.error?.message || 'Unknown error'}` },
+        { error: `Não foi possível criar o deploy: ${errorData.error?.message || 'Erro desconhecido'}` },
         { status: 400 },
       );
     }
@@ -461,11 +461,11 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     if (deploymentState === 'ERROR') {
-      return json({ error: 'Deployment failed' }, { status: 500 });
+      return json({ error: 'Não foi possível concluir o deploy' }, { status: 500 });
     }
 
     if (retryCount >= maxRetries) {
-      return json({ error: 'Deployment timed out' }, { status: 500 });
+      return json({ error: 'O deploy excedeu o tempo limite' }, { status: 500 });
     }
 
     return json({
@@ -481,6 +481,6 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   } catch (error) {
     console.error('Vercel deploy error:', error);
-    return json({ error: 'Deployment failed' }, { status: 500 });
+    return json({ error: 'Não foi possível concluir o deploy' }, { status: 500 });
   }
 }
