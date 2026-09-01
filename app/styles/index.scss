@@ -118,6 +118,16 @@ html[data-resizing] * {
   outline-offset: 2px;
 }
 
+/*
+ * ...menos o campo de prompt, que já se anuncia de outro jeito: a moldura da caixa
+ * inteira acende. Empate de especificidade com `outline-none` fazia o desempate
+ * depender da ordem do CSS — em produção o outline voltava e virava um segundo
+ * retângulo laranja dentro do primeiro.
+ */
+.campo-de-prompt:focus-visible {
+  outline: none;
+}
+
 .modern-scrollbar {
   overflow: auto;
 
