@@ -46,4 +46,11 @@ changelogUI.md
 docs/instructions/Roadmap.md
 .cursorrules
 *.md
+
+# ...menos a documentação própria deste fork. A regra `*.md` acima vem do upstream
+# e engolia justamente os documentos escritos para a marca sobreviver a um merge —
+# o MARCA.md não estava versionado.
+!MARCA.md
+!GLOSSARIO-PT-BR.md
+!estudos/*.md
 .qodo
