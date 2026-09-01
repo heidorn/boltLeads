@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
 import { classNames } from '~/utils/classNames';
 import { PROVIDER_LIST } from '~/utils/constants';
@@ -69,6 +69,13 @@ interface ChatBoxProps {
 }
 
 export const ChatBox: React.FC<ChatBoxProps> = (props) => {
+  /*
+   * Foco por estado, não por CSS: `focus-within` competia com a classe do token de
+   * borda e o resultado dependia da ordem em que o Uno gerava as regras — acendia
+   * em produção e não em desenvolvimento. Aqui o estado decide, e é o mesmo nos dois.
+   */
+  const [campoAtivo, setCampoAtivo] = useState(false);
+
   return (
     <div
       className={classNames(
@@ -80,7 +87,10 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
              * A única moldura que sobra é a do campo — a que precisa existir.
              */
             'max-w-chat bg-bolt-elements-background-depth-1 pt-2 pb-3'
-          : 'max-w-prompt bg-bolt-elements-background-depth-2 backdrop-blur p-3 rounded-lg border border-bolt-elements-borderColor',
+          : classNames(
+              'max-w-prompt bg-bolt-elements-background-depth-2 backdrop-blur p-3 rounded-lg border transition-colors duration-150',
+              campoAtivo ? 'border-accent-500' : 'border-bolt-elements-borderColor',
+            ),
       )}
     >
       <div>
@@ -147,17 +157,12 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
           </button>
         </div>
       )}
-      <div
-        className={classNames(
-          'relative shadow-xs border border-bolt-elements-borderColor backdrop-blur rounded-lg',
-
-          /*
-           * Foco visível: a moldura acende no Laranja Chama quando o campo está ativo.
-           * O `outline-none` do textarea anulava a regra global de :focus-visible.
-           */
-          'transition-colors duration-150 focus-within:border-accent-500',
-        )}
-      >
+      {/*
+       * Uma moldura só: quem delimita a caixa é o contêiner de fora, e é ele que
+       * acende no foco. Duas bordas concêntricas viravam dois retângulos laranja
+       * aninhados assim que o campo era clicado.
+       */}
+      <div className="relative">
         <textarea
           ref={props.textareaRef}
           className={classNames(
@@ -220,6 +225,8 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             props.handleInputChange?.(event);
           }}
           onPaste={props.handlePaste}
+          onFocus={() => setCampoAtivo(true)}
+          onBlur={() => setCampoAtivo(false)}
           style={{
             minHeight: props.TEXTAREA_MIN_HEIGHT,
             maxHeight: props.TEXTAREA_MAX_HEIGHT,
