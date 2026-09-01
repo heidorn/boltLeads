@@ -16,6 +16,18 @@ const providerEnvKeyStatusCache: Record<string, boolean> = {};
 
 const apiKeyMemoizeCache: { [k: string]: Record<string, string> } = {};
 
+/*
+ * A chave vive no navegador de quem usa, e precisa continuar lá amanhã.
+ * Sem `expires`, o js-cookie grava um cookie de sessão — que morre ao fechar o
+ * navegador. Era por isso que a chave tinha de ser digitada a cada visita, enquanto
+ * modelo e provedor, salvos com prazo, sobreviviam.
+ */
+export const OPCOES_DO_COOKIE_DE_CHAVES = {
+  expires: 365,
+  sameSite: 'strict' as const,
+  secure: typeof location !== 'undefined' && location.protocol === 'https:',
+};
+
 export function getApiKeysFromCookies() {
   const storedApiKeys = Cookies.get('apiKeys');
   let parsedKeys: Record<string, string> = {};
@@ -80,7 +92,7 @@ export const APIKeyManager: React.FC<APIKeyManagerProps> = ({ provider, apiKey, 
     // Save to cookies
     const currentKeys = getApiKeysFromCookies();
     const newKeys = { ...currentKeys, [provider.name]: tempKey };
-    Cookies.set('apiKeys', JSON.stringify(newKeys));
+    Cookies.set('apiKeys', JSON.stringify(newKeys), OPCOES_DO_COOKIE_DE_CHAVES);
 
     setIsEditing(false);
   };
