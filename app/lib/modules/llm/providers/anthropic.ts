@@ -19,20 +19,13 @@ export default class AnthropicProvider extends BaseProvider {
     apiTokenKey: 'ANTHROPIC_API_KEY',
   };
 
+  /*
+   * Fallback: só entra em cena quando a API não responde a lista de modelos.
+   * Mantenha aqui apenas modelos que existem — os três que estavam antes
+   * (claude-3-5-sonnet-20241022, claude-3-haiku-20240307, claude-opus-4-20250514)
+   * respondiam 404 e o Studio os oferecia como se fossem escolhas válidas.
+   */
   staticModels: ModelInfo[] = [
-    /*
-     * Essential fallback models - only the most stable/reliable ones
-     * Claude 3.5 Sonnet: 200k context, excellent for complex reasoning and coding
-     */
-    {
-      name: 'claude-sonnet-5',
-      label: 'Claude Sonnet 5',
-      provider: 'Anthropic',
-      maxTokenAllowed: 200000,
-      maxCompletionTokens: 64000,
-    },
-
-    // Claude Opus 5: o mais capaz da família, para tarefas difíceis.
     {
       name: 'claude-opus-5',
       label: 'Claude Opus 5',
@@ -40,31 +33,19 @@ export default class AnthropicProvider extends BaseProvider {
       maxTokenAllowed: 200000,
       maxCompletionTokens: 64000,
     },
-
     {
-      name: 'claude-3-5-sonnet-20241022',
-      label: 'Claude 3.5 Sonnet',
+      name: 'claude-sonnet-5',
+      label: 'Claude Sonnet 5',
       provider: 'Anthropic',
       maxTokenAllowed: 200000,
-      maxCompletionTokens: 128000,
+      maxCompletionTokens: 64000,
     },
-
-    // Claude 3 Haiku: 200k context, fastest and most cost-effective
     {
-      name: 'claude-3-haiku-20240307',
-      label: 'Claude 3 Haiku',
+      name: 'claude-haiku-4-5-20251001',
+      label: 'Claude Haiku 4.5',
       provider: 'Anthropic',
       maxTokenAllowed: 200000,
-      maxCompletionTokens: 128000,
-    },
-
-    // Claude Opus 4: 200k context, 32k output limit (latest flagship model)
-    {
-      name: 'claude-opus-4-20250514',
-      label: 'Claude 4 Opus',
-      provider: 'Anthropic',
-      maxTokenAllowed: 200000,
-      maxCompletionTokens: 32000,
+      maxCompletionTokens: 64000,
     },
   ];
 

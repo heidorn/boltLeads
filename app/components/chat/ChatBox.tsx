@@ -314,7 +314,7 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
 
             {/* O modelo carrega estado, então mostra o estado — não só um caret. */}
             <IconButton
-              title="Modelo e provedor"
+              title={`Provedor: ${props.provider?.name ?? '—'}\nModelo: ${props.model ?? '—'}`}
               className={classNames('transition-all flex items-center gap-1 px-2', {
                 'bg-bolt-elements-item-backgroundAccent text-bolt-elements-item-contentAccent':
                   !props.isModelSettingsCollapsed,

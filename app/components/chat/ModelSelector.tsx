@@ -157,6 +157,29 @@ export const ModelSelector = ({
     checkLocalProviders();
   }, [providerList, modelList]);
 
+  /*
+   * Modelo e provedor vinham de cookies independentes e nada garantia que
+   * combinassem. Trocar um deixava o par incoerente, e o erro só aparecia ao enviar
+   * — como "modelo inválido", sem dizer que quem não batia era o provedor.
+   * Aqui o modelo passa a acompanhar o provedor.
+   */
+  useEffect(() => {
+    if (!provider || !setModel || modelList.length === 0) {
+      return;
+    }
+
+    const doProvedor = modelList.filter((m) => m.provider === provider.name);
+
+    // Lista vazia significa que os modelos deste provedor ainda não chegaram.
+    if (doProvedor.length === 0) {
+      return;
+    }
+
+    if (!doProvedor.some((m) => m.name === model)) {
+      setModel(doProvedor[0].name);
+    }
+  }, [provider, modelList, model, setModel]);
+
   // Debounce search queries
   useEffect(() => {
     const timer = setTimeout(() => {

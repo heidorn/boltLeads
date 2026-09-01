@@ -394,12 +394,20 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
         // Provide more specific error messages for common issues
         const errorMessage = error.message || 'Erro desconhecido';
 
-        if (errorMessage.includes('model') && errorMessage.includes('not found')) {
-          return 'Custom error: Invalid model selected. Please check that the model name is correct and available.';
+        /*
+         * O 404 da Anthropic vem como `model: <nome>` com `not_found_error` no corpo,
+         * sem a expressão "not found" na mensagem — sem estes dois casos ele escapava
+         * do classificador e chegava cru à tela.
+         */
+        if (
+          errorMessage.includes('model') &&
+          (errorMessage.includes('not found') || errorMessage.includes('not_found') || errorMessage.includes('404'))
+        ) {
+          return 'Modelo indisponível. Confira se o modelo e o provedor selecionados combinam entre si.';
         }
 
         if (errorMessage.includes('Invalid JSON response')) {
-          return 'Custom error: The AI service returned an invalid response. This may be due to an invalid model name, API rate limiting, or server issues. Try selecting a different model or check your API key.';
+          return 'O provedor devolveu uma resposta inválida. Pode ser o nome do modelo, limite de requisições ou instabilidade do serviço — tente outro modelo ou confira a chave da API.';
         }
 
         if (
@@ -407,22 +415,22 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
           errorMessage.includes('unauthorized') ||
           errorMessage.includes('authentication')
         ) {
-          return 'Custom error: Invalid or missing API key. Please check your API key configuration.';
+          return 'Chave da API ausente ou inválida. Confira a configuração do provedor.';
         }
 
         if (errorMessage.includes('token') && errorMessage.includes('limit')) {
-          return 'Custom error: Token limit exceeded. The conversation is too long for the selected model. Try using a model with larger context window or start a new conversation.';
+          return 'Limite de tokens excedido: a conversa ficou longa demais para este modelo. Use um modelo com contexto maior ou comece uma conversa nova.';
         }
 
         if (errorMessage.includes('rate limit') || errorMessage.includes('429')) {
-          return 'Custom error: API rate limit exceeded. Please wait a moment before trying again.';
+          return 'Limite de requisições do provedor atingido. Espere um instante e tente de novo.';
         }
 
         if (errorMessage.includes('network') || errorMessage.includes('timeout')) {
-          return 'Custom error: Network error. Please check your internet connection and try again.';
+          return 'Erro de rede. Confira a conexão e tente de novo.';
         }
 
-        return `Custom error: ${errorMessage}`;
+        return errorMessage;
       },
     }).pipeThrough(
       new TransformStream({
