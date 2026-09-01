@@ -62,12 +62,14 @@ export function AguardandoResposta({ desde }: AguardandoRespostaProps) {
   );
 }
 
-interface StreamParadoProps {
+interface FalhaDoStreamProps {
+  /* Um stream pode falhar calado de dois jeitos: emudecendo ou terminando vazio. */
+  mensagem: string;
   onRetry: () => void;
   onDispensar: () => void;
 }
 
-export function StreamParado({ onRetry, onDispensar }: StreamParadoProps) {
+export function FalhaDoStream({ mensagem, onRetry, onDispensar }: FalhaDoStreamProps) {
   return (
     <div
       className={classNames(
@@ -77,9 +79,7 @@ export function StreamParado({ onRetry, onDispensar }: StreamParadoProps) {
       role="alert"
     >
       <span className="i-ph:plugs text-lg text-bolt-elements-textSecondary shrink-0" />
-      <div className="flex-1 min-w-0 text-bolt-elements-textSecondary">
-        A resposta parou de chegar. Costuma ser o servidor reiniciando ou a conexão caindo no meio.
-      </div>
+      <div className="flex-1 min-w-0 text-bolt-elements-textSecondary">{mensagem}</div>
       <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={onDispensar}

@@ -643,6 +643,8 @@ export const ChatImpl = memo(
     const [esperaDesde, setEsperaDesde] = useState<number | null>(null);
     const [ultimoDado, setUltimoDado] = useState(() => Date.now());
     const [streamParado, setStreamParado] = useState(false);
+    const [respostaVazia, setRespostaVazia] = useState(false);
+    const estavaStreaming = useRef(false);
 
     useEffect(() => {
       setEsperaDesde(aguardandoResposta ? (anterior) => anterior ?? Date.now() : null);
@@ -683,17 +685,53 @@ export const ChatImpl = memo(
       };
     }, [streaming, ultimoDado]);
 
+    /*
+     * O outro jeito de falhar calado: o stream termina, o carregamento some, o chat é
+     * salvo — e a mensagem do assistente ficou com zero caractere. Sem resposta e sem
+     * erro, a tela fica idêntica à de uma conversa que nunca aconteceu.
+     */
+    useEffect(() => {
+      if (streaming) {
+        estavaStreaming.current = true;
+        setRespostaVazia(false);
+
+        return;
+      }
+
+      if (!estavaStreaming.current) {
+        return;
+      }
+
+      estavaStreaming.current = false;
+
+      const ultima = messages[messages.length - 1];
+
+      if (ultima?.role === 'assistant' && !(ultima.content || '').trim()) {
+        setRespostaVazia(true);
+      }
+    }, [streaming, messages]);
+
+    const falhaDoStream = streamParado
+      ? 'A resposta parou de chegar. Costuma ser o servidor reiniciando ou a conexão caindo no meio.'
+      : respostaVazia
+        ? 'O modelo terminou sem escrever nada. Costuma passar ao tentar de novo.'
+        : null;
+
     return (
       <BaseChat
         ref={animationScope}
         aguardandoDesde={aguardandoResposta ? esperaDesde : null}
-        streamParado={streamParado}
+        falhaDoStream={falhaDoStream}
         onRetryStream={() => {
           setStreamParado(false);
+          setRespostaVazia(false);
           setUltimoDado(Date.now());
           reload();
         }}
-        onDispensarStreamParado={() => setStreamParado(false)}
+        onDispensarFalha={() => {
+          setStreamParado(false);
+          setRespostaVazia(false);
+        }}
         textareaRef={textareaRef}
         input={input}
         showChat={showChat}

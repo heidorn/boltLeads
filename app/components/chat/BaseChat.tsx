@@ -32,7 +32,7 @@ import { ChatBox } from './ChatBox';
 import type { DesignScheme } from '~/types/design-scheme';
 import type { ElementInfo } from '~/components/workbench/Inspector';
 import LlmErrorAlert from './LLMApiAlert';
-import { AguardandoResposta, StreamParado } from './StreamStatus';
+import { AguardandoResposta, FalhaDoStream } from './StreamStatus';
 
 const TEXTAREA_MIN_HEIGHT = 76;
 
@@ -85,9 +85,11 @@ interface BaseChatProps {
 
   /** Momento em que a espera pela resposta começou; null quando não se está esperando. */
   aguardandoDesde?: number | null;
-  streamParado?: boolean;
+
+  /** Texto do aviso quando o stream falha calado; null quando está tudo bem. */
+  falhaDoStream?: string | null;
   onRetryStream?: () => void;
-  onDispensarStreamParado?: () => void;
+  onDispensarFalha?: () => void;
 }
 
 export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
@@ -139,9 +141,9 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       },
       onWebSearchResult,
       aguardandoDesde,
-      streamParado,
+      falhaDoStream,
       onRetryStream,
-      onDispensarStreamParado,
+      onDispensarFalha,
     },
     ref,
   ) => {
@@ -479,10 +481,14 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     />
                   )}
                   {llmErrorAlert && <LlmErrorAlert alert={llmErrorAlert} clearAlert={() => clearLlmErrorAlert?.()} />}
-                  {streamParado && (
-                    <StreamParado onRetry={() => onRetryStream?.()} onDispensar={() => onDispensarStreamParado?.()} />
+                  {falhaDoStream && (
+                    <FalhaDoStream
+                      mensagem={falhaDoStream}
+                      onRetry={() => onRetryStream?.()}
+                      onDispensar={() => onDispensarFalha?.()}
+                    />
                   )}
-                  {!streamParado && aguardandoDesde != null && <AguardandoResposta desde={aguardandoDesde} />}
+                  {!falhaDoStream && aguardandoDesde != null && <AguardandoResposta desde={aguardandoDesde} />}
                 </div>
                 {progressAnnotations && <ProgressCompilation data={progressAnnotations} />}
                 <ChatBox
